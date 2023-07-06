@@ -6,23 +6,14 @@
 #    By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/07/03 17:50:34 by rubsky           ###   ########.fr        #
+#    Updated: 2023/07/06 17:11:19 by rubsky           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #SETUP
 NAME := minishell	
-CFLAGS := -Werror -Wall -Wextra
+CFLAGS := -Werror -Wall -Wextra -g
 CC := cc
-
-#FILES
-SRCDIR := src
-SRC_F := main.c \
-
-SRC := 	${addprefix ${SRCDIR}/, ${SRC_F}}
-OBJDIR := obj
-OBJ_F :=  ${SRC_F:%.c=%.o}
-OBJ :=	${addprefix ${OBJDIR}/, ${OBJ_F}}
 
 #COLORS
 GREEN := \033[32m
@@ -31,16 +22,41 @@ YELLOW := \033[33m
 RED := \033[31m
 RESET := \033[0m
 
+#FILES
+SRCDIR := src
+SRC_F := main.c \
+		signals.c \
+		utils.c \
+		input.c \
+
+#OBJ FILES
+OBJ_F :=  ${SRC_F:%.c=%.o}
+OBJDIR := obj
+OBJ :=	${addprefix ${OBJDIR}/, ${OBJ_F}}
+
+#LIBRARIES
+##Directories
+LDIR := lib
+LDIR_FT := ${LDIR}/libft
+##Linking Libraries
+INC := -I./inc -I./${LDIR_FT} -I/usr/include
+LIBFT := -L./${LDIR_FT} -lft
+LIB_RL := -L/usr/lib -lreadline
+LIBS := ${LIBFT} ${LIB_RL}
+
 #RULES
 all: ${NAME}
 
-${NAME}: ${OBJ}
+${NAME}: libs ${OBJ}
 	@echo "${YELLOW}Compiling...${RESET}"
-	${CC} ${CFLAGS} -o $@ ${OBJ}
+	${CC} ${CFLAGS} ${INC} ${OBJ} ${LIBS} -o $@
 	@echo "${GREEN}Code ready to run${RESET}"
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c obj_check
-	${CC} ${CFLAGS} -I. -c $< -o $@
+	${CC} ${CFLAGS} ${INC} -c $< -o $@
+	
+libs:
+	@make -sC ${LDIR_FT}
 
 obj_check: 
 	@echo "${BLUE}Making object files...${RESET}"

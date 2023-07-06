@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 12:25:06 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/06 17:22:45 by rubsky           ###   ########.fr       */
+/*   Created: 2023/07/06 16:18:56 by rubsky            #+#    #+#             */
+/*   Updated: 2023/07/06 16:53:25 by rubsky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+/*Copy the environment pointer into the struct*/
+char	**copy_envp(char **env_org)
 {
-	struct sigaction	sigact;
-	t_data				data;
+	int		len;
+	int		i;
+	char	**tmp;
 
-	(void)argv;
-	if (argc != 1)
-		return (1);
-	data.envp = copy_envp(envp);
-	handle_signals(sigact);
-	while (1)
+	len = 0;
+	while (env_org[len])
+		len++;
+	tmp = (char **)ft_calloc(sizeof(char *), len + 1);
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	while (i < len)
 	{
-		if (handle_input(&data))
-			break ;
-			//save_data_history();
-		//lexer();
-		//parser();
-		//expander();
-		//executer();
-		//free;
+		tmp[i] = ft_strdup(env_org[i]);
+		i++;
 	}
-	return (0);
+	return (tmp);
 }
-
