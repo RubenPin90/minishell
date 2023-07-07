@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/03 17:31:11 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/06 18:59:25 by aapostol         ###   ########.fr       */
+/*   Created: 2023/07/03 17:31:11 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/07/07 15:27:50 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,5 @@ int		handle_input(t_data *data);
 
 /*utils*/
 char	**copy_envp(char **env_org);
-
 
 #endif
