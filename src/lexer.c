@@ -6,7 +6,7 @@
 /*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 15:34:10 by aapostol          #+#    #+#             */
-/*   Updated: 2023/07/14 16:04:14 by aapostol         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:47:07 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,12 @@
 
 void	lexer(char *input)
 {
-	printf("You wrote: %s\n", input);
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		printf("%c", input[i++]);
+	}
+	printf("\n");
 }
