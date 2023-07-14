@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
+#    By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/07/07 15:28:26 by rpinchas         ###   ########.fr        #
+#    Updated: 2023/07/14 14:18:16 by aapostol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ OBJ :=	${addprefix ${OBJDIR}/, ${OBJ_F}}
 ##Directories
 LDIR := lib
 LDIR_FT := ${LDIR}/libft
+LIB := ${LDIR_FT}/libft.a
+
 ##Linking Libraries
 INC := -I./inc -I./${LDIR_FT} -I/usr/include
 LIBFT := -L./${LDIR_FT} -lft
@@ -45,22 +47,19 @@ LIB_RL := -L/usr/lib -lreadline
 LIBS := ${LIBFT} ${LIB_RL}
 
 #RULES
-all: ${NAME}
+all: ${LIB} ${NAME}
 
-${NAME}: libs ${OBJ}
+${NAME}: ${OBJ}
 	@echo "${YELLOW}Compiling...${RESET}"
 	${CC} ${CFLAGS} ${INC} ${OBJ} ${LIBS} -o $@
 	@echo "${GREEN}Code ready to run${RESET}"
 
-${OBJDIR}/%.o: ${SRCDIR}/%.c obj_check
+${OBJDIR}/%.o: ${SRCDIR}/%.c
+	@mkdir -p ${OBJDIR}
 	${CC} ${CFLAGS} ${INC} -c $< -o $@
 	
-libs:
+${LIB}:
 	@make -sC ${LDIR_FT}
-
-obj_check: 
-	@echo "${BLUE}Making object files...${RESET}"
-	@mkdir -p ${OBJDIR}
 
 clean:
 	@echo "${GREEN}Removing object files...${RESET}"
