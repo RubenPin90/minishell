@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+         #
+#    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/07/14 16:07:05 by aapostol         ###   ########.fr        #
+#    Updated: 2023/07/17 19:16:02 by rpinchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,10 @@ RESET := \033[0m
 SRCDIR := src
 SRC_F := main.c \
 		signals.c \
-		utils.c \
+		env.c \
 		input.c \
 		lexer.c \
+		buildins.c
 
 #OBJ FILES
 OBJ_F :=  ${SRC_F:%.c=%.o}
