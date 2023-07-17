@@ -6,14 +6,16 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:27:44 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/07 15:26:27 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:34:21 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_signals(struct sigaction sigact)
+void	handle_signals(void)
 {
+	struct sigaction	sigact;
+
 	sigact.sa_sigaction = receive_signal;
 	sigemptyset(&sigact.sa_mask);
 	sigaddset(&sigact.sa_mask, SIGQUIT);

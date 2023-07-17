@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 17:31:11 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/07 15:27:50 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:34:15 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <libft.h>
 
 /*signals*/
-void	handle_signals(struct sigaction sigact);
+void	handle_signals(void);
 void	receive_signal(int signum, siginfo_t *info, void *context);
 
 /*input*/
