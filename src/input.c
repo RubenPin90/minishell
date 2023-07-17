@@ -43,5 +43,7 @@ int	handle_input(t_data *data)
 	add_history(data->input);
 	check_quotes(data->input);
 	lexer(data->input, &lex);
+	check_buildin(data);
+	//lexer(data->input);
 	return (0);
 }

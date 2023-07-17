@@ -14,10 +14,11 @@ RESET := \033[0m
 SRCDIR := src
 SRC_F := main.c \
 		signals.c \
-		utils.c \
+		env.c \
 		input.c \
 		lexer.c \
 		lexer_utils.c \
+		buildins.c \
 
 #OBJ FILES
 OBJ_F :=  ${SRC_F:%.c=%.o}

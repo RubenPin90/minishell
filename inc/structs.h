@@ -2,12 +2,21 @@
 # define STRUCTS_H
 # include "minishell.h"
 
+typedef struct s_lstenv
+{
+	char 			*key;
+	char 			*value;
+	struct s_lstenv *next;
+	struct s_lstenv *prev;
+}	t_lstenv;
+
 typedef struct s_data
 {
-	char			**envp;
-	char			*input;
-	struct s_lexer	*lex;
+	t_lstenv	*env;
+	char		*input;
+  struct s_lexer	*lex;
 }	t_data;
+
 
 typedef enum s_token
 {
