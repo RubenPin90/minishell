@@ -1,4 +1,3 @@
-
 #ifndef STRUCTS_H
 # define STRUCTS_H
 # include "minishell.h"
@@ -15,6 +14,7 @@ typedef struct s_data
 {
 	t_lstenv	*env;
 	char		*input;
+  struct s_lexer	*lex;
 }	t_data;
 
 

@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/07/17 19:16:02 by rpinchas         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #SETUP
 NAME := minishell	
 CFLAGS := -Werror -Wall -Wextra -g
@@ -29,7 +17,8 @@ SRC_F := main.c \
 		env.c \
 		input.c \
 		lexer.c \
-		buildins.c
+		lexer_utils.c \
+		buildins.c \
 
 #OBJ FILES
 OBJ_F :=  ${SRC_F:%.c=%.o}
