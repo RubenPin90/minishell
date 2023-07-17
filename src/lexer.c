@@ -6,12 +6,13 @@
 /*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 15:34:10 by aapostol          #+#    #+#             */
-/*   Updated: 2023/07/14 16:47:07 by aapostol         ###   ########.fr       */
+/*   Updated: 2023/07/17 12:21:19 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/lexer.h"
 
+// reads through input string and copies every word/token into a list node
 void	lexer(char *input)
 {
 	int	i;

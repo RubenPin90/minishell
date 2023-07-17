@@ -6,12 +6,13 @@
 /*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 16:35:33 by aapostol          #+#    #+#             */
-/*   Updated: 2023/07/14 16:44:24 by aapostol         ###   ########.fr       */
+/*   Updated: 2023/07/17 12:22:14 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+// create a new list node for lexer struct
 t_lexer	*new_lexer_node(char *word, int token)
 {
 	t_lexer		*new;
@@ -27,6 +28,7 @@ t_lexer	*new_lexer_node(char *word, int token)
 	new->prev = NULL;
 }
 
+// add list node to the back of linked lexer list
 void	lexer_addback(t_lexer **lst, t_lexer *new)
 {
 	t_list	*tmp;
