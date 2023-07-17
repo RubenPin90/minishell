@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/06 15:46:55 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/17 12:12:52 by aapostol         ###   ########.fr       */
+/*   Created: 2023/07/14 15:34:10 by aapostol          #+#    #+#             */
+/*   Updated: 2023/07/17 12:21:19 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/lexer.h"
 
-int	handle_input(t_data *data)
+// reads through input string and copies every word/token into a list node
+void	lexer(char *input)
 {
-	data->input = readline("> ");
-	if (!data->input)
-		return (1);
-	lexer(data->input);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		printf("%c", input[i++]);
+	}
+	printf("\n");
 }

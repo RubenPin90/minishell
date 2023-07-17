@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:27:44 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/07 15:26:27 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:04:44 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_signals(struct sigaction sigact)
+void	handle_signals()
 {
+	struct sigaction	sigact;
+
 	sigact.sa_sigaction = receive_signal;
 	sigemptyset(&sigact.sa_mask);
 	sigaddset(&sigact.sa_mask, SIGQUIT);
