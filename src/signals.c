@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:27:44 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/14 14:34:21 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:04:44 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_signals(void)
+void	handle_signals()
 {
 	struct sigaction	sigact;
 

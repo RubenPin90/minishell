@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 15:46:55 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/14 14:37:58 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/17 12:12:52 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	handle_input(t_data *data)
 	data->input = readline("> ");
 	if (!data->input)
 		return (1);
-	
-	printf("You wrote: %s\n", data->input);
+	lexer(data->input);
 	return (0);
 }

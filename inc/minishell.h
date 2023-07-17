@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 17:31:11 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/14 14:34:15 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:05:34 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include <signal.h>
-# include "structs.h"
 # include <libft.h>
+# include "structs.h"
+# include "lexer.h"
 
 /*signals*/
-void	handle_signals(void);
+void	handle_signals();
 void	receive_signal(int signum, siginfo_t *info, void *context);
 
 /*input*/

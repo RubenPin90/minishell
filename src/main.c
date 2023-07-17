@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:25:06 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/14 14:37:55 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:04:59 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	main(int argc, char **argv, char **envp)
 		if (handle_input(&data))
 			break ;
 			//save_data_history();
-		//parser();
-		//expander();
-		//executer();
-		//free;
+			//lexer();
+			//parser();
+			//expander();
+			//executer();
+			//free;
 	}
 	return (0);
 }

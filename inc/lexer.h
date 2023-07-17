@@ -1,40 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 16:16:58 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/14 16:06:15 by aapostol         ###   ########.fr       */
+/*   Created: 2023/07/14 15:35:53 by aapostol          #+#    #+#             */
+/*   Updated: 2023/07/14 16:41:50 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#ifndef LEXER_H
+# define LEXER_H
 # include "minishell.h"
 
-typedef struct s_data
-{
-	char	**envp;
-	char	*input;
-	t_list
-}	t_data;
+// lexer.c
+void	lexer(char *input);
 
-typedef enum s_token
-{
-	PIPE = 1,
-	OUTPUT,
-	INPUT
-}	t_token;
-
-typedef struct s_lexer
-{
-	char			*word;
-	t_token			token;
-	int				i;
-	struct s_lexer	*next;
-	struct s_lexer	*prev;
-}	t_lexer;
+// lexer_utils.c
+t_lexer	*new_lexer_node(char *word, int token);
+void	lexer_addback(t_lexer **lst, t_lexer *new);
 
 #endif
