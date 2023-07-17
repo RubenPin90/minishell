@@ -6,7 +6,7 @@
 /*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 15:34:10 by aapostol          #+#    #+#             */
-/*   Updated: 2023/07/17 12:21:19 by aapostol         ###   ########.fr       */
+/*   Updated: 2023/07/17 12:42:19 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	lexer(char *input)
 	while (input[i])
 	{
 		printf("%c", input[i++]);
+		//test
 	}
 	printf("\n");
 }
