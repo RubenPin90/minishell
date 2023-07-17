@@ -18,6 +18,7 @@ typedef struct s_data
 {
 	char	**envp;
 	char	*input;
+	t_list
 }	t_data;
 
 typedef enum s_token
