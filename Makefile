@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/07/14 16:07:05 by aapostol         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #SETUP
 NAME := minishell	
 CFLAGS := -Werror -Wall -Wextra -g
@@ -29,6 +17,7 @@ SRC_F := main.c \
 		utils.c \
 		input.c \
 		lexer.c \
+		lexer_utils.c \
 
 #OBJ FILES
 OBJ_F :=  ${SRC_F:%.c=%.o}

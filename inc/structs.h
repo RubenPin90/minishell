@@ -1,23 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 16:16:58 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/14 16:06:15 by aapostol         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef STRUCTS_H
 # define STRUCTS_H
 # include "minishell.h"
 
 typedef struct s_data
 {
-	char	**envp;
-	char	*input;
+	char			**envp;
+	char			*input;
+	struct s_lexer	*lex;
 }	t_data;
 
 typedef enum s_token
