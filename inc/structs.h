@@ -12,11 +12,10 @@ typedef struct s_lstenv
 
 typedef struct s_data
 {
-	t_lstenv	*env;
-	char		*input;
-  struct s_lexer	*lex;
+	t_lstenv		*env;
+	char			*input;
+  	struct s_lexer	*lex;
 }	t_data;
-
 
 typedef enum s_token
 {

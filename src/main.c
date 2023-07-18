@@ -1,4 +1,4 @@
-#include "../inc/minishell.h"
+#include "minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -6,14 +6,13 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argv;
 	if (argc != 1)
-		return (1);
+		return (ft_error(ARGC_ERR, NULL));
 	data.env = copy_envp(envp);
 	//handle_signals();
 	while (1)
 	{
 		if (handle_input(&data))
-			break ;
-			//save_data_history();
+			return (ft_error(NULL, &data));
 			//lexer();
 			//parser();
 			//expander();
