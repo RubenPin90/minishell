@@ -39,7 +39,7 @@ int	handle_input(t_data *data)
 
 	data->input = readline("> ");
 	if (!data->input)
-		return (1);
+		return (ft_error(MALLOC_ERR, NULL));
 	add_history(data->input);
 	check_quotes(data->input);
 	lexer(data->input, &lex);

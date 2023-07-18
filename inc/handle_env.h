@@ -1,6 +1,6 @@
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef HANDLE_ENV_H
+# define HANDLE_ENV_H
 # include "minishell.h"
 
 void        print_env(t_lstenv *lst);

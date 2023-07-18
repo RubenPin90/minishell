@@ -7,11 +7,12 @@
 # include <stdbool.h>
 # include <signal.h>
 # include <libft.h>
+
 # include "structs.h"
 # include "lexer.h"
 # include "buildins.h"
-# include "env.h"
-
+# include "handle_env.h"
+# include "error_handling.h"
 
 /*signals*/
 void	handle_signals();
