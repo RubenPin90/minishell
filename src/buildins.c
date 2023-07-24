@@ -10,10 +10,12 @@ void	check_buildin(t_data *data)
 	{
 		buf = ft_pwd(data);
 		ft_printf("%s\n", buf);
-		free(buf);
+		free_null(buf);
 	}
 	if (!ft_strncmp(data->input, "env", 3))
 		print_env(data->env);
+	if (!ft_strncmp(data->input, "exit", 4))
+		ft_exit(data);
 }
 
 /*
@@ -27,8 +29,8 @@ char	*ft_pwd(t_data *data)
 	size = 2;
 	buf = ft_calloc(sizeof(char), size);
 	if (!buf)
-		exit (1); //add exit function
-	while(1)
+		return (NULL);
+	while (size < 10000)
 	{
 		if (getcwd(buf, size) != NULL)
 			return (buf);
@@ -39,7 +41,17 @@ char	*ft_pwd(t_data *data)
 			buf = ft_calloc(sizeof(char), size);
 		}
 	}
+	free_null(buf);
+	return (NULL);
 }
+
+void	ft_exit(t_data *data)
+{
+	ft_printf("exit\n");
+	ft_cleanup(&data);
+	exit(0);
+}
+
 
 // int main()
 // {

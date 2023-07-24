@@ -35,15 +35,15 @@ void	check_quotes(char *str)
 
 int	handle_input(t_data *data)
 {
-	t_lexer	lex;
+	//t_lexer	lex;
 
 	data->input = readline("> ");
 	if (!data->input)
-		return (ft_error(MALLOC_ERR, NULL));
+		ft_error(MALLOC_ERR, data);
 	add_history(data->input);
 	check_quotes(data->input);
-	lexer(data->input, &lex);
 	check_buildin(data);
-	//lexer(data->input);
-	return (0);
+	//lexer(data->input, &lex);
+	free(data->input);
+	return (SUCCESS);
 }

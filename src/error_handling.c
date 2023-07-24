@@ -1,24 +1,43 @@
 #include "error_handling.h"
 
-int ft_error(char *msg, t_data *data)
+void	ft_error(char *msg, t_data *data)
 {
-    ft_putstr_fd(msg, 2);
-    if (data)
-        ft_exit(data);
-    return(FAIL);
+	ft_putstr_fd(msg, 2);
+	if (data)
+		ft_cleanup(&data);
+	exit(FAIL);
 }
 
-void ft_exit(t_data *data)
+void	ft_cleanup(t_data **data)
 {
-    if (data->input)
-        free_null(data->input);
+	if ((*data)->env)
+		lstenv_clear(&(*data)->env);
+	if ((*data)->input)
+		free_null((*data)->input);
 }
 
-void    free_null(void *ptr)
+void	free_null(void *ptr)
 {
-    if (ptr)
-    {
-        free(ptr);
-        ptr = NULL;
-    }
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
+}
+
+void	lstenv_clear(t_lstenv **head)
+{
+	t_lstenv	*cur;
+	t_lstenv	*next;
+
+	cur = *head;
+	while (cur)
+	{
+		next = cur->next;
+		free_null((void *)cur->key);
+		free_null((void *)cur->value);
+		free_null((void *)cur);
+		cur = next;
+	}
+	*head = NULL;
 }
