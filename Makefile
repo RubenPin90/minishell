@@ -12,8 +12,7 @@ RESET := \033[0m
 
 #FILES
 SRCDIR := src
-SRC_F := main.c \
-		signals.c \
+SRC_F = signals.c \
 		handle_env.c \
 		input.c \
 		lexer.c \
@@ -22,9 +21,18 @@ SRC_F := main.c \
 		error_handling.c
 
 #OBJ FILES
-OBJ_F :=  ${SRC_F:%.c=%.o}
+OBJ_F = ${SRC_F:%.c=%.o}
+OBJ_M = ${OBJDIR}/main.o
 OBJDIR := obj
-OBJ :=	${addprefix ${OBJDIR}/, ${OBJ_F}}
+OBJ = ${addprefix ${OBJDIR}/, ${OBJ_F}}
+
+#TEST FILES
+TESTDIR = tests
+TEST_SRC = 
+TEST_F = ${TEST_SRC:%.c=%.o}
+OBJ_TM = ${OBJ_TDIR}/testmain.o
+OBJ_TDIR = obj_test
+OBJ_T = ${addprefix ${OBJ_TDIR}/, ${TEST_F}}
 
 #LIBRARIES
 ##Directories
@@ -41,15 +49,19 @@ LIBS := ${LIBFT} ${LIB_RL}
 #RULES
 all: ${LIB} ${NAME}
 
-${NAME}: ${OBJ}
+${NAME}: ${OBJ} ${OBJ_M}
 	@echo "${YELLOW}Compiling...${RESET}"
-	${CC} ${CFLAGS} ${INC} ${OBJ} ${LIBS} -o $@
+	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_M} ${LIBS} -o $@
 	@echo "${GREEN}Code ready to run${RESET}"
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	@mkdir -p ${OBJDIR}
 	${CC} ${CFLAGS} ${INC} -c $< -o $@
 	
+${OBJ_TDIR}/%.o: ${TESTDIR}/%.c
+	@mkdir -p ${OBJ_TDIR}
+	${CC} ${CFLAGS} ${INC} -c $< -o $@
+
 ${LIB}:
 	@make -sC ${LDIR_FT}
 
@@ -65,5 +77,10 @@ fclean: clean
 	@echo "${BLUE}DONE!${RESET}"
 
 re: fclean all
+
+test: ${OBJ} ${OBJ_T} ${OBJ_TM}
+	@echo "${YELLOW}Compiling tests....${RESET}"
+	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIBS} -o tester
+	@echo "${GREEN}Code ready to run${RESET}"
 
 .PHONY: all clean fclean  debug tebug re

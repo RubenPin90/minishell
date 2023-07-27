@@ -41,13 +41,5 @@ char	*ft_pwd(t_data *data)
 	}
 }
 
-// int main()
-// {
-// 	char *buf;
 
-// 	buf = NULL;
-// 	buf = ft_pwd(buf);
-// 	printf("%s\n", buf);
-// 	free(buf);
-// }
 
