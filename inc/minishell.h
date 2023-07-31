@@ -21,4 +21,7 @@ void	receive_signal(int signum, siginfo_t *info, void *context);
 /*input*/
 int		handle_input(t_data *data);
 
+/*tester*/
+int	test_parser();
+
 #endif

@@ -45,6 +45,12 @@ char	*ft_pwd(t_data *data)
 	return (NULL);
 }
 
+void	ft_exit(t_data *data)
+{
+	printf("exit");
+	ft_cleanup(&data);
+	exit(0);
+}
 
 // int main()
 // {

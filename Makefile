@@ -28,7 +28,7 @@ OBJ = ${addprefix ${OBJDIR}/, ${OBJ_F}}
 
 #TEST FILES
 TESTDIR = tests
-TEST_SRC = 
+TEST_SRC = test_parser.c 
 TEST_F = ${TEST_SRC:%.c=%.o}
 OBJ_TM = ${OBJ_TDIR}/testmain.o
 OBJ_TDIR = obj_test
