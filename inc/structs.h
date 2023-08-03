@@ -14,6 +14,7 @@ typedef struct s_data
 {
 	t_lstenv		*env;
 	char			*input;
+	int				cmds;
 	struct s_lexer	*lex;
 }	t_data;
 
