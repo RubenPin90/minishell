@@ -20,9 +20,12 @@ typedef struct s_data
 
 typedef enum s_token
 {
-	PIPE = 1,
+	WORD,
+	PIPE,
+	INPUT,
 	OUTPUT,
-	INPUT
+	APPEND,
+	HEREDOC,
 }	t_token;
 
 typedef struct s_lexer

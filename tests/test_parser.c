@@ -1,18 +1,12 @@
-
 /*#file: test_parser.c
-**#descr: Containing functions for testing the parser.
-**#funcs:
-**- int cmd_counter(t_lexer *lex): Counting cmds from lexer linked list.
-**- void free_lexer(t_lexer **lex): Freeing lexer linked list.
-**- int parser():
+**#descr: Containing functions for creating the parser.
 */
 #include "minishell.h"
 
-/*#class: t_parse
-**#descr: grouping lexer nodes together into each cmd.
-**#prop: -
-**#use: -
-*/
+/**
+ * @brief Grouping lexer input list together into cmds.
+ * 
+ */
 typedef struct s_parse
 {
 	char			*cmd_link;
@@ -23,64 +17,117 @@ typedef struct s_parse
 	int				num_redir;
 }	t_parse;
 
-/*#fname: cmd_counter
-**#descr: Counting commands sent from lexer.
-**
-**Loops through lexer linked list, increases count
-**with each pipe, starting from 1.
-**#params: lex - Tokenized input list.
-**#return: count - number of commands.
-*/
-int cmd_counter(t_lexer *lex)
+/**
+ * @brief Counting token in lexer.
+ *
+ * Loops through linked list, increases count with
+ * each token, starting from 0. 
+ * @param lex Tokenized input list.
+ * @param tkn Token to be searched.
+ * @return int Number of token.
+ */
+int tkn_counter(t_lexer *lex, t_token tkn)
 {
 	int count;
 
-	count = 1;
+	count = 0;
 	while (lex)
 	{
-		if (lex->token == 1)
+		if (lex->token == tkn)
 			count++;
 		lex = lex->next;
 	}
 	return (count);
 }
 
-/*#fname: parser
-**#descr: Convertes lexer list to each commands.
-**
-**n/a
-**#params: 
-**- *data: general data struct
-**- *lex:
-**- **cmd_line
-**#return: 1 if error; 0 if success.
+int	handle_redir(t_lexer **lex, int eoc, t_parse *cmd)
+{
+	t_lexer *lst;
+	t_lexer *tmp;
+	int		num_redir;
+
+	lst = *lex;
+	num_redir = tkn_counter(lex, OUTPUT) + 1;
+	while (lst->i <= eoc)
+	{
+		if (lst->token >= INPUT || lst->token <= APPEND)
+		{
+			
+
+		}
+		lst = lst->next;
+	}
+}
+
+int	handle_heredoc(t_lexer **lst, int eoc, t_parse *cmd)
+{}
+
+int	handle_cmd(t_lexer **lst, int eoc, t_parse *cmd)
+{}
+
+
+/**
+ * @brief  
+ * 
+ * @param lst_head 
+ * @param eoc 
+ * @param cmd 
+ * @return int 
+ */
+int	extract_cmd(t_lexer **lst_head, int eoc, t_parse *cmd)
+{
+	if (handle_redir(lst_head, eoc, cmd))
+		return (1);
+	if (handle_heredoc(lst_head, eoc, cmd))
+		return (1);
+	if (handle_cmd(lst_head, eoc, cmd))
+		return (1);
+	return (0);
+}
+/**
+ * @brief Convertes lexer list to each command. 
+ * 
+ * Callocs an array of t_parse size of number of commands.
+ * Loops through the lexer linked list until it finds a '|' or NULL
+ * in the next node. Calls extract_cmd to do the necessary steps to
+ * extract the important infos of that cmd.
+ * @param data General data struct.
+ * @param lex Tokenized input list.
+ * @param cmd_line Struct array of cmds.
+ * @return int 1 if error; 0 if success
 */
 int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line)
 {
 	t_lexer	*start;
 	int		cmd_size;
+	int		cmd_id;
 
-	data->cmds = cmd_counter(lex);
+	data->cmds = tkn_counter(lex, PIPE) + 1;
 	*cmd_line = ft_calloc(sizeof(t_parse *), data->cmds);
 	if (!*cmd_line)
 		return (1);
 	start = lex;
+	cmd_id = 0;
 	while (lex)
 	{
-		if (lex->token == PIPE || lex->next == NULL)
+		if (lex->next->token == PIPE && lex->next == NULL)
 		{
-			extract_cmd()
+			if(extract_cmd(&start, lex->i, cmd_line[cmd_id++]))
+				return (1);
+			lex = lex->next;
 		}
-		lex = lex->next;
+		if (lex)
+			lex = lex->next;
 	}
 	return (0);
 }
 
-/*#fname: free_lexer
-**#descr: destroying & freeing the lexer struct.
-**#params: **lex - 2D to be able to set it to NULL.
-**#return: void
-*/
+/**
+ * @brief Destroying & freeing the lexer struct.
+ * 
+ * Checks if lex exists, if yes loops through the list
+ * and frees + sets every node to NULL. 
+ */
 void	free_lexer(t_lexer **lex)
 {
 	t_lexer	*tmp;
