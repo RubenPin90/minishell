@@ -15,6 +15,7 @@ typedef struct s_parse
 	char			*outfile;
 	char			*heredoc;
 	int				num_redir;
+	t_lexer			*redir;
 }	t_parse;
 
 /**
@@ -40,30 +41,45 @@ int tkn_counter(t_lexer *lex, t_token tkn)
 	return (count);
 }
 
+
+
+
 int	handle_redir(t_lexer **lex, int eoc, t_parse *cmd)
 {
 	t_lexer *lst;
-	t_lexer *tmp;
-	int		num_redir;
+	// t_lexer *tmp;
+	// int		num_redir;
 
 	lst = *lex;
-	num_redir = tkn_counter(lex, OUTPUT) + 1;
-	while (lst->i <= eoc)
+	(void)cmd;
+	printf("eoc: %d\n", eoc);
+	// num_redir = tkn_counter(*lex, OUTPUT) + 1;
+	while (lst && lst->i <= eoc)
 	{
 		if (lst->token >= INPUT || lst->token <= APPEND)
 		{
-			
-
+			printf("lst->i: %d lst->token: %d\n", lst->i, lst->token);
 		}
 		lst = lst->next;
 	}
+	return (0);
 }
 
 int	handle_heredoc(t_lexer **lst, int eoc, t_parse *cmd)
-{}
+{
+	(void)lst;
+	(void)eoc;
+	(void)cmd;
+	return (0);
+}
 
 int	handle_cmd(t_lexer **lst, int eoc, t_parse *cmd)
-{}
+{
+	(void)lst;
+	(void)eoc;
+	(void)cmd;
+	return (0);
+}
 
 
 /**
@@ -99,10 +115,10 @@ int	extract_cmd(t_lexer **lst_head, int eoc, t_parse *cmd)
 int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line)
 {
 	t_lexer	*start;
-	int		cmd_size;
 	int		cmd_id;
 
 	data->cmds = tkn_counter(lex, PIPE) + 1;
+	printf("data->cmds: %d\n", data->cmds);
 	*cmd_line = ft_calloc(sizeof(t_parse *), data->cmds);
 	if (!*cmd_line)
 		return (1);
@@ -110,10 +126,12 @@ int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line)
 	cmd_id = 0;
 	while (lex)
 	{
-		if (lex->next->token == PIPE && lex->next == NULL)
+		if (lex->next == NULL || lex->next->token == PIPE)
 		{
-			if(extract_cmd(&start, lex->i, cmd_line[cmd_id++]))
+			if (extract_cmd(&start, lex->i, cmd_line[cmd_id++]))
 				return (1);
+			if (cmd_id < data->cmds)
+				start = lex->next->next;
 			lex = lex->next;
 		}
 		if (lex)
@@ -159,7 +177,7 @@ int	test_parser(void)
 	start = lex;
 	while (lex)
 	{
-		printf("%s ", lex->word);
+		printf("lex->i: %d lex->word: %s lex->token: %d\n", lex->i, lex->word, lex->token);
 		lex = lex->next;
 	}
 	lex = start;
