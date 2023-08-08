@@ -33,3 +33,24 @@ void	lexer_addback(t_lexer **lst, t_lexer *new)
 	tmp->next = new;
 	new->prev = tmp;
 }
+
+/**
+ * @brief Destroying & freeing the lexer struct.
+ * 
+ * Checks if lex exists, if yes loops through the list
+ * and frees + sets every node to NULL. 
+ */
+void	free_lexer(t_lexer **lex)
+{
+	t_lexer	*tmp;
+
+	tmp = *lex;
+	while (*lex)
+	{
+		tmp = (*lex)->next;
+		free(*lex);
+		*lex = tmp;
+	}
+	*lex = NULL;
+}
+
