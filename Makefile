@@ -18,7 +18,9 @@ SRC_F = signals.c \
 		lexer.c \
 		lexer_utils.c \
 		buildins.c \
-		error_handling.c
+		error_handling.c \
+		parser.c \
+		parser_utils.c
 
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}

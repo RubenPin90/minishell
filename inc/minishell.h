@@ -13,6 +13,7 @@
 # include "buildins.h"
 # include "handle_env.h"
 # include "error_handling.h"
+# include "parser.h"
 
 /*signals*/
 void	handle_signals();
