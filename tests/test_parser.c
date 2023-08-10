@@ -11,6 +11,22 @@
 # define BLUE "\e[0;34m"
 # define PINK "\e[0;35m"
 
+
+void set_prev(t_lexer **lex)
+{
+	t_lexer *tmp;
+	t_lexer *prev;
+
+	tmp = *lex;
+	prev = NULL;
+	while(tmp)
+	{
+		tmp->prev = prev;
+		prev = tmp;
+		tmp = tmp->next;
+	}
+}
+
 void count_lexlst(t_lexer **lex)
 {
 	t_lexer *tmp;
@@ -40,15 +56,12 @@ void create_lex(t_lexer **lex, int i)
 	{
 		lexer_addback(lex, new_lexer_node("echo", 0));
 		lexer_addback(lex, new_lexer_node("hello", 0));
-		lexer_addback(lex, new_lexer_node(0, 3));
-		lexer_addback(lex, new_lexer_node("file1", 0));
-		lexer_addback(lex, new_lexer_node(0, 3));
-		lexer_addback(lex, new_lexer_node("file2", 0));
+		lexer_addback(lex, new_lexer_node("file1", 3));
+		lexer_addback(lex, new_lexer_node("file2", 3));
 	}
 	if (i == 2)
 	{
-		lexer_addback(lex, new_lexer_node(0, 2));
-		lexer_addback(lex, new_lexer_node("file1", 0));
+		lexer_addback(lex, new_lexer_node("file1", 2));
 		lexer_addback(lex, new_lexer_node("cat", 0));
 		lexer_addback(lex, new_lexer_node(0, 1));
 		lexer_addback(lex, new_lexer_node("grep", 0));
@@ -60,14 +73,10 @@ void create_lex(t_lexer **lex, int i)
 	if (i == 3)
 	{
 		lexer_addback(lex, new_lexer_node("cat", 0));
-		lexer_addback(lex, new_lexer_node(0, 5));
-		lexer_addback(lex, new_lexer_node("EOF", 0));
-		lexer_addback(lex, new_lexer_node(0, 3));
-		lexer_addback(lex, new_lexer_node("file1", 0));
-		lexer_addback(lex, new_lexer_node(0, 3));
-		lexer_addback(lex, new_lexer_node("file2", 0));
-		lexer_addback(lex, new_lexer_node(0, 3));
-		lexer_addback(lex, new_lexer_node("file3", 0));
+		lexer_addback(lex, new_lexer_node("EOF", 5));
+		lexer_addback(lex, new_lexer_node("file1", 3));
+		lexer_addback(lex, new_lexer_node("file2", 3));
+		lexer_addback(lex, new_lexer_node("file3", 3));
 	}
 }
 
@@ -82,6 +91,7 @@ int cmd_creator(char *str, int *i)
 	printf("%s %d\n", str, *i);
 	create_lex(&lex, *i);
 	count_lexlst(&lex);
+	set_prev(&lex);
 	start = lex;
 	while (lex)
 	{

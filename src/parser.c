@@ -17,10 +17,10 @@ int	extract_cmd(t_lexer **lst_head, int eoc, t_parse *cmd)
 {
 	if (handle_redir(lst_head, eoc, cmd))
 		return (1);
-	if (handle_heredoc(lst_head, eoc, cmd))
-		return (1);
-	if (handle_cmd(lst_head, eoc, cmd))
-		return (1);
+	// if (handle_heredoc(lst_head, eoc, cmd))
+	// 	return (1);
+	// if (handle_cmd(lst_head, eoc, cmd))
+	// 	return (1);
 	return (0);
 }
 /**
@@ -42,7 +42,7 @@ int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line)
 
 	data->cmds = tkn_counter(lex, PIPE) + 1;
 	printf("data->cmds: %d\n", data->cmds);
-	*cmd_line = ft_calloc(sizeof(t_parse *), data->cmds);
+	*cmd_line = ft_calloc(data->cmds, sizeof(t_parse));
 	if (!*cmd_line)
 		return (1);
 	start = lex;
@@ -51,14 +51,20 @@ int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line)
 	{
 		if (lex->next == NULL || lex->next->token == PIPE)
 		{
-			if (extract_cmd(&start, lex->i, cmd_line[cmd_id++]))
+			if (extract_cmd(&start, lex->i, cmd_line[cmd_id]))
 				return (1);
-			if (cmd_id < data->cmds)
+			if (cmd_id++ < data->cmds - 1)
+			{
 				start = lex->next->next;
-			lex = lex->next;
+				if (start)
+					lex = start;
+			}
+			else
+				break ;
 		}
-		if (lex)
+		else
 			lex = lex->next;
+		printf("cmd_line->infile: %s\n", (*cmd_line)->infile);
 	}
 	return (0);
 }

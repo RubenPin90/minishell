@@ -45,6 +45,7 @@ void	free_lexer(t_lexer **lex)
 	t_lexer	*tmp;
 
 	tmp = *lex;
+	printf("lex-> i: %d", tmp->i);
 	while (*lex)
 	{
 		tmp = (*lex)->next;

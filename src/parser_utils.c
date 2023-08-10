@@ -5,6 +5,8 @@
 
 #include "parser.h"
 
+
+
 /**
  * @brief Counting token in lexer.
  *
@@ -42,16 +44,34 @@ int tkn_counter(t_lexer *lex, t_token tkn)
 int	handle_redir(t_lexer **lex, int eoc, t_parse *cmd)
 {
 	t_lexer *lst;
+	t_lexer *tmp;
+	// bool	check;
 
 	lst = *lex;
-	(void)cmd;
 	printf("eoc: %d\n", eoc);
 	while (lst && lst->i <= eoc)
 	{
-		if (lst->token >= INPUT && lst->token <= APPEND)
+		printf("REDIR: lst->i: %d lst->token: %d\n", lst->i, lst->token);
+		// check = true;
+		if (lst->token == INPUT)
 		{
-			printf("REDIR: lst->i: %d lst->token: %d\n", lst->i, lst->token);
-			fflush(NULL);
+			// check = false;	
+			cmd->infile = lst->word;	
+			tmp = lst->prev;
+			if (tmp && lst->next)
+			{
+				tmp->next = lst->next;
+				lst->next->prev = tmp;
+			}
+			else if (tmp && !lst->next)
+				tmp->next = NULL;
+			else if (tmp == NULL)
+			{
+				tmp = lst->next;
+				tmp->prev = NULL;
+			}
+			free(lst);
+			lst = tmp;
 		}
 		lst = lst->next;
 	}
