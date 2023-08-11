@@ -43,9 +43,15 @@ void	lexer_addback(t_lexer **lst, t_lexer *new)
 void	free_lexer(t_lexer **lex)
 {
 	t_lexer	*tmp;
+	t_lexer *tmp2;
 
+	tmp2 = *lex;
+	while (tmp2)
+	{
+		printf("lex: %d", tmp2->i);
+		tmp2 = tmp2->next;
+	}
 	tmp = *lex;
-	printf("lex-> i: %d", tmp->i);
 	while (*lex)
 	{
 		tmp = (*lex)->next;

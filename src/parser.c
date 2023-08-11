@@ -41,7 +41,6 @@ int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line)
 	int		cmd_id;
 
 	data->cmds = tkn_counter(lex, PIPE) + 1;
-	printf("data->cmds: %d\n", data->cmds);
 	*cmd_line = ft_calloc(data->cmds, sizeof(t_parse));
 	if (!*cmd_line)
 		return (1);
@@ -64,7 +63,7 @@ int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line)
 		}
 		else
 			lex = lex->next;
-		printf("cmd_line->infile: %s\n", (*cmd_line)->infile);
+		printf("cmd_line->outfile: %s\n", (*cmd_line)->outfile);
 	}
 	return (0);
 }
