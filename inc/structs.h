@@ -41,7 +41,6 @@ typedef struct s_parse
 	char			*outfile;
 	char			*heredoc;
 	int				num_redir;
-	t_lexer			*redir;
 }	t_parse;
 
 typedef struct s_data

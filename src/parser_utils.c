@@ -5,6 +5,8 @@
 
 #include "parser.h"
 
+
+
 /**
  * @brief Counting token in lexer.
  *
@@ -28,6 +30,34 @@ int tkn_counter(t_lexer *lex, t_token tkn)
 	return (count);
 }
 
+void	del_node(t_lexer **n_prev, t_lexer **node, t_lexer **n_next)
+{
+	t_lexer *tmp;
+
+	tmp = *node;
+	if (*n_prev && *n_next)
+	{
+		(*n_prev)->next = *n_next;
+		(*n_next)->prev = *n_prev;
+		*node = *n_next;
+	}
+	else if (*n_prev && !*n_next)
+	{
+		(*n_prev)->next = NULL;
+		*node = NULL;
+	}
+	else if (!*n_prev)
+	{
+		*node = *n_next;
+		(*node)->prev = NULL;
+	}
+	free(tmp->word);
+	free(tmp);
+}
+
+
+
+			
 /**
  * @brief If cmd has redir-token, add it into cmd_line.   
  * 
@@ -42,19 +72,32 @@ int tkn_counter(t_lexer *lex, t_token tkn)
 int	handle_redir(t_lexer **lex, int eoc, t_parse *cmd)
 {
 	t_lexer *lst;
+	// t_lexer *tmp;
 
 	lst = *lex;
-	(void)cmd;
-	printf("eoc: %d\n", eoc);
+	// printf("eoc: %d\n", eoc);
 	while (lst && lst->i <= eoc)
 	{
-		if (lst->token >= INPUT && lst->token <= APPEND)
+		printf("REDIR: lst->i: %d lst->token: %d outfile: %s\n", lst->i, lst->token, cmd->outfile);
+		if (lst->token == OUTPUT)
 		{
-			printf("REDIR: lst->i: %d lst->token: %d\n", lst->i, lst->token);
-			fflush(NULL);
+			cmd->outfile = lst->word; //substring and free outfile if necessary. 
+			// tmp = lst;
+			// lst = lst->next;
+			del_node(&lst->prev, &lst, &lst->next);
+			t_lexer *tmp2 = lst;
+
+			while (tmp2)
+			{
+				printf("del_node lex: %d ", tmp2->i);
+				tmp2 = tmp2->next;
+			}
+			printf("\n");
 		}
-		lst = lst->next;
+		else
+			lst = lst->next;
 	}
+	printf("outfile: %s\n", cmd->outfile);
 	return (0);
 }
 /**
