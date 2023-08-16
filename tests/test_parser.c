@@ -83,7 +83,6 @@ void create_lex(t_lexer **lex, int i)
 int cmd_creator(char *str, int *i)
 {
 	t_lexer	*start;
-	t_parse	*cmd_line;
 	t_data	data;
 	t_lexer	*lex;
 
@@ -92,20 +91,24 @@ int cmd_creator(char *str, int *i)
 	create_lex(&lex, *i);
 	count_lexlst(&lex);
 	set_prev(&lex);
-	start = lex;
-	while (lex)
+	data.lex = lex;
+
+	start = data.lex;
+	while (data.lex)
 	{
-		printf("lex->i: %d lex->word: %s lex->token: %d\n", lex->i, lex->word, lex->token);
-		lex = lex->next;
+		printf("lex->i: %d lex->word: %s lex->token: %d\n", data.lex->i, data.lex->word, data.lex->token);
+		data.lex = data.lex->next;
 	}
-	lex = start;
-	if (parser(&data, lex, &cmd_line))
+	data.lex = start;
+	parser(&data);
+	while (data.lex)
 	{
-		free_lexer(&lex);
-		return (1);
+		printf("lex->i: %d lex->word: %s lex->token: %d\n", data.lex->i, data.lex->word, data.lex->token);
+		data.lex = data.lex->next;
 	}
-	free_lexer(&lex);
-	free(cmd_line);
+	data.lex = start;
+	free_lexer(&data.lex);
+	free(data.cmd_line);
 	(*i)++;
 	return(0);
 }

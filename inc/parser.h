@@ -3,8 +3,8 @@
 # include "minishell.h"
 
 /*parser*/
-int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line);
-int	extract_cmd(t_lexer **lst_head, int eoc, t_parse *cmd);
+int	parser(t_data *data);
+void	extract_cmd(t_data *data, t_lexer **lst, int *cmd_id);
 
 /*parser_utils*/
 int tkn_counter(t_lexer *lex, t_token tkn);

@@ -43,21 +43,28 @@ void	del_node(t_lexer **n_prev, t_lexer **node, t_lexer **n_next)
 	}
 	else if (*n_prev && !*n_next)
 	{
+		// printf("node: %d\n", (*node)->i);
+		// printf("n_next: %p\n", *n_next);
+		// printf("node->prev: %p\n", (*node)->prev);
+		// printf("n_prev->next: %i %p\n", (*n_prev)->next->i, (*n_prev)->next);
+		*node = *n_prev;
 		(*n_prev)->next = NULL;
-		*node = NULL;
+		*node = (*n_prev)->next;
+		// printf("node: %p\n", *node);
 	}
 	else if (!*n_prev)
 	{
-		*node = *n_next;
-		(*node)->prev = NULL;
+		 if (*n_next)
+            (*n_next)->prev = NULL;
+        *node = *n_next;
+		// *node = *n_next;
+		// (*node)->prev = NULL;
 	}
-	free(tmp->word);
 	free(tmp);
+	tmp = NULL;
 }
 
 
-
-			
 /**
  * @brief If cmd has redir-token, add it into cmd_line.   
  * 
@@ -75,29 +82,31 @@ int	handle_redir(t_lexer **lex, int eoc, t_parse *cmd)
 	// t_lexer *tmp;
 
 	lst = *lex;
-	// printf("eoc: %d\n", eoc);
+	// t_lexer *tmp2 = *lex;
+	// t_lexer *tmp3 = *lex;
 	while (lst && lst->i <= eoc)
 	{
-		printf("REDIR: lst->i: %d lst->token: %d outfile: %s\n", lst->i, lst->token, cmd->outfile);
+		// printf("REDIR: lst->i: %d lst->token: %d outfile: %s\n", lst->i, lst->token, cmd->outfile);
 		if (lst->token == OUTPUT)
 		{
-			cmd->outfile = lst->word; //substring and free outfile if necessary. 
-			// tmp = lst;
-			// lst = lst->next;
-			del_node(&lst->prev, &lst, &lst->next);
-			t_lexer *tmp2 = lst;
-
-			while (tmp2)
+			if (cmd->outfile)
+        		free(cmd->outfile);
+			cmd->outfile = ft_strdup(lst->word);
+			if (!lst->prev)
 			{
-				printf("del_node lex: %d ", tmp2->i);
-				tmp2 = tmp2->next;
+				// printf("lex before: %d %p\n", (*lex)->i, *lex);
+				*lex = lst->next;
+				// printf("lex after: %d %p\n", (*lex)->i, *lex);
+
 			}
-			printf("\n");
+			// printf("lst->prev %p, lst %p, lst->next %p\n", lst->prev, lst, lst->next);
+			del_node(&lst->prev, &lst, &lst->next);
+			// printf("lst->next %p\n", lst);
 		}
 		else
 			lst = lst->next;
 	}
-	printf("outfile: %s\n", cmd->outfile);
+	// printf("outfile: %s\n", cmd->outfile);
 	return (0);
 }
 /**
