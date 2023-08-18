@@ -5,39 +5,33 @@
 
 #include "parser.h"
 
-/**
- * @brief  
- * 
- * @param lst_head 
- * @param eoc 
- * @param cmd 
- * @return int 
- */
-void	extract_cmd(t_data *data, t_lexer **lst, int *cmd_id)
+int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 {
-	(void)*cmd_id;
+	char **tmp;
+
+	tmp = cmd;
 	while (*lst && (*lst)->token == WORD)
 	{
-		// 
+		*tmp = ft_strdup((*lst)->word);
+		if (!*tmp)
+			return (1);
 		*lst = (*lst)->next;
+		tmp++;
 	}
 	if (!*lst || (*lst)->token == PIPE)
-		return ;
+		return (0);
 	if ((*lst)->token == INPUT)
-	{
-		printf("INPUT-FILE: lst[i]: %d, filename: %s\n", (*lst)->i, (*lst)->word);
-
-	}
-	if ((*lst)->token == OUTPUT)
-		printf("OUTPUT-FILE: lst[i]: %d, filename: %s\n", (*lst)->i, (*lst)->word);
-	if ((*lst)->token == APPEND)
-		printf("APPEND-FILE: lst[i]: %d, filename: %s\n", (*lst)->i, (*lst)->word);
+		handle_infile(cmd_line, (*lst)->word);
+	if ((*lst)->token == OUTPUT || (*lst)->token == APPEND)
+		handle_outfile(cmd_line, (*lst)->word, (*lst)->token);
 	if ((*lst)->token == HEREDOC)
-		printf("HEREDOC-FILE: lst[i]: %d, filename: %s\n", (*lst)->i, (*lst)->word);
+		handle_heredoc(cmd_line, (*lst)->word);
 	if ((*lst)->next)
-		extract_cmd(data, &(*lst)->next, cmd_id);
-	else
-		return ;
+	{
+		*lst = (*lst)->next;
+		extract_cmd(data, lst, cmd_line, tmp);
+	}
+	return (0);
 }
 
 t_lexer *find_end(t_lexer *lst)
@@ -58,13 +52,13 @@ t_lexer *find_start(t_lexer *lst)
 	return (lst);
 }
 
-void	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
+int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 {
 	char **str;
 	int	count;
 
 	count = 0;
-	while (cmd_list || cmd_list->token != PIPE)
+	while (cmd_list && cmd_list->token != PIPE)
 	{
 		if (cmd_list->token == WORD)
 			count++;
@@ -74,6 +68,7 @@ void	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 	if (!str)
 		return (1);
 	current_cmd->cmd = str;
+	return (0);
 }
 /**
  * @brief Convertes lexer list to each command. 
@@ -100,13 +95,16 @@ int	parser(t_data *data)
 	cmd_id = 0;
 	while (lst)
 	{
-		init_cmd(lst, data->cmd_line + cmd_id);
-		extract_cmd(data, &lst, &cmd_id);
-		if (cmd_id++ < data->cmds - 1)
-			lst = lst->next;
-		else
+		if (init_cmd(lst, data->cmd_line + cmd_id))
+			return (1);
+		if (extract_cmd(data, &lst, data->cmd_line + cmd_id, data->cmd_line[cmd_id].cmd))
+			return (1);
+		printf("cmd_line[%d]->infile: %s\n", cmd_id, data->cmd_line[cmd_id].infile);
+		printf("cmd_line[%d]->outfile: %s append: %d\n", cmd_id, data->cmd_line[cmd_id].outfile, data->cmd_line->append);
+		printf("cmd_line[%d]->heredoc: %s\n", cmd_id, data->cmd_line[cmd_id].heredoc);
+		if (cmd_id++ == data->cmds - 1)
 			break ;
-		printf("cmd_line->outfile: %s\n", data->cmd_line->outfile);
+		lst = lst->next;
 	}
 	return (0);
 }

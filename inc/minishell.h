@@ -7,6 +7,7 @@
 # include <stdbool.h>
 # include <signal.h>
 # include <libft.h>
+# include <fcntl.h>
 
 # include "structs.h"
 # include "lexer.h"

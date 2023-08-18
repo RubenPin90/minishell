@@ -38,9 +38,9 @@ typedef struct s_parse
 	char			*cmd_link;
 	char			**cmd;
 	char			*infile;
-	char			*outfile;
 	char			*heredoc;
-	int				num_redir;
+	char			*outfile;
+	bool			append;
 }	t_parse;
 
 typedef struct s_data

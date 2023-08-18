@@ -5,8 +5,6 @@
 
 #include "parser.h"
 
-
-
 /**
  * @brief Counting token in lexer.
  *
@@ -30,39 +28,32 @@ int tkn_counter(t_lexer *lex, t_token tkn)
 	return (count);
 }
 
-void	del_node(t_lexer **n_prev, t_lexer **node, t_lexer **n_next)
-{
-	t_lexer *tmp;
+// void	del_node(t_lexer **n_prev, t_lexer **node, t_lexer **n_next)
+// {
+// 	t_lexer *tmp;
 
-	tmp = *node;
-	if (*n_prev && *n_next)
-	{
-		(*n_prev)->next = *n_next;
-		(*n_next)->prev = *n_prev;
-		*node = *n_next;
-	}
-	else if (*n_prev && !*n_next)
-	{
-		// printf("node: %d\n", (*node)->i);
-		// printf("n_next: %p\n", *n_next);
-		// printf("node->prev: %p\n", (*node)->prev);
-		// printf("n_prev->next: %i %p\n", (*n_prev)->next->i, (*n_prev)->next);
-		*node = *n_prev;
-		(*n_prev)->next = NULL;
-		*node = (*n_prev)->next;
-		// printf("node: %p\n", *node);
-	}
-	else if (!*n_prev)
-	{
-		 if (*n_next)
-            (*n_next)->prev = NULL;
-        *node = *n_next;
-		// *node = *n_next;
-		// (*node)->prev = NULL;
-	}
-	free(tmp);
-	tmp = NULL;
-}
+// 	tmp = *node;
+// 	if (*n_prev && *n_next)
+// 	{
+// 		(*n_prev)->next = *n_next;
+// 		(*n_next)->prev = *n_prev;
+// 		*node = *n_next;
+// 	}
+// 	else if (*n_prev && !*n_next)
+// 	{
+// 		*node = *n_prev;
+// 		(*n_prev)->next = NULL;
+// 		*node = (*n_prev)->next;
+// 	}
+// 	else if (!*n_prev)
+// 	{
+// 		 if (*n_next)
+//             (*n_next)->prev = NULL;
+//         *node = *n_next;
+// 	}
+// 	free(tmp);
+// 	tmp = NULL;
+// }
 
 
 /**
@@ -76,93 +67,48 @@ void	del_node(t_lexer **n_prev, t_lexer **node, t_lexer **n_next)
  * @param cmd Command struct, where the cmd infos are saved. 
  * @return int 
  */
-int	handle_redir(t_lexer **lex, int eoc, t_parse *cmd)
+int	handle_infile(t_parse *cmd_line, char *file)
 {
-	t_lexer *lst;
-	// t_lexer *tmp;
+	int fd;
 
-	lst = *lex;
-	// t_lexer *tmp2 = *lex;
-	// t_lexer *tmp3 = *lex;
-	while (lst && lst->i <= eoc)
-	{
-		// printf("REDIR: lst->i: %d lst->token: %d outfile: %s\n", lst->i, lst->token, cmd->outfile);
-		if (lst->token == OUTPUT)
-		{
-			if (cmd->outfile)
-        		free(cmd->outfile);
-			cmd->outfile = ft_strdup(lst->word);
-			if (!lst->prev)
-			{
-				// printf("lex before: %d %p\n", (*lex)->i, *lex);
-				*lex = lst->next;
-				// printf("lex after: %d %p\n", (*lex)->i, *lex);
-
-			}
-			// printf("lst->prev %p, lst %p, lst->next %p\n", lst->prev, lst, lst->next);
-			del_node(&lst->prev, &lst, &lst->next);
-			// printf("lst->next %p\n", lst);
-		}
-		else
-			lst = lst->next;
-	}
-	// printf("outfile: %s\n", cmd->outfile);
-	return (0);
-}
-/**
- * @brief If cmd has heredoc-token, add it into cmd_line.   
- * 
- * Loop through cmd and if heredoc-token will be found, the node and
- * the next node, will be cut out of the lexer list and added to the
- * cmd_line t_parse struct array.
- * @param lex Tokenized input list.
- * @param eoc End of Command (index of node where cmd ends).
- * @param cmd Command struct, where the cmd infos are saved. 
- * @return int 
- */
-int	handle_heredoc(t_lexer **lex, int eoc, t_parse *cmd)
-{
-	t_lexer *lst;
-
-	lst = *lex;
-	(void)cmd;
-	while (lst && lst->i <= eoc)
-	{
-		if (lst->token == HEREDOC)
-		{
-			printf("HEREDOC: lst->i: %d lst->token: %d\n", lst->i, lst->token);
-			fflush(NULL);
-		}
-		lst = lst->next;
-	}
+	fd = open(file, O_RDONLY);
+	if (!fd)
+		return (1);
+	close(fd);
+	if (cmd_line->infile)
+		free(cmd_line->infile);
+	cmd_line->infile = ft_strdup(file);
+	if (!cmd_line->infile)
+		return (1);
 	return (0);
 }
 
-/**
- * @brief If cmd has cmd-token, add it into cmd_line.   
- * 
- * Loop through cmd and if cmd-token will be found, the node and
- * the next node, will be cut out of the lexer list and added to the
- * cmd_line t_parse struct array.
- * @param lex Tokenized input list.
- * @param eoc End of Command (index of node where cmd ends).
- * @param cmd Command struct, where the cmd infos are saved. 
- * @return int 
- */
-int	handle_cmd(t_lexer **lex, int eoc, t_parse *cmd)
+int	handle_heredoc(t_parse *cmd_line, char *word)
 {
-	t_lexer *lst;
+	if (cmd_line->heredoc)
+		free(cmd_line->heredoc);
+	cmd_line->heredoc = ft_strdup(word);
+	if (!cmd_line->heredoc)
+		return (1);
+	return (0);
+}
 
-	lst = *lex;
-	(void)cmd;
-	while (lst && lst->i <= eoc)
-	{
-		if (lst->token == WORD)
-		{
-			printf("CMD: lst->i: %d lst->word: %s\n", lst->i, lst->word);
-			fflush(NULL);
-		}
-		lst = lst->next;
-	}
+int	handle_outfile(t_parse *cmd_line, char *file, int type)
+{
+	int fd;
+	printf("append: %d\n", cmd_line->append);
+	fd = open(file, O_RDWR | O_CREAT, 0777);
+	if (!fd)
+		return (1);
+	close(fd);
+	if (cmd_line->outfile)
+		free(cmd_line->outfile);
+	cmd_line->outfile = ft_strdup(file);
+	if (!cmd_line->outfile)
+		return (1);
+	if (type == APPEND)
+		cmd_line->append = true;
+	else
+		cmd_line->append = false;
 	return (0);
 }

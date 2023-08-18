@@ -57,7 +57,7 @@ void create_lex(t_lexer **lex, int i)
 		lexer_addback(lex, new_lexer_node("file1", 3));
 		lexer_addback(lex, new_lexer_node("echo", 0));
 		lexer_addback(lex, new_lexer_node("hello", 0));
-		lexer_addback(lex, new_lexer_node("file2", 3));
+		lexer_addback(lex, new_lexer_node("file2", 4));
 	}
 	if (i == 2)
 	{
@@ -122,7 +122,7 @@ int	test_parser(void)
 	printf("\n%s--------TEST 1---------%s\n", YELLOW, RESET);
 	cmd_creator("ls -la | wc -l", &i);
 	printf("\n%s--------TEST 2---------%s\n", YELLOW, RESET);
-	cmd_creator("> file1 echo hello > file2", &i);
+	cmd_creator("> file1 echo hello >> file2", &i);
 	printf("\n%s--------TEST 3---------%s\n", YELLOW, RESET);
 	cmd_creator("< file1 cat | grep ein | wc -l", &i);
 	printf("\n%s--------TEST 4---------%s\n", YELLOW, RESET);
