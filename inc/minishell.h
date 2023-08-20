@@ -15,6 +15,15 @@
 # include "handle_env.h"
 # include "error_handling.h"
 # include "parser.h"
+# include "tester.h"
+
+/*colors*/
+# define RESET "\e[0m"
+# define RED "\e[0;31m"
+# define GREEN "\e[0;32m"
+# define YELLOW "\e[0;33m"
+# define BLUE "\e[0;34m"
+# define PINK "\e[0;35m"
 
 /*signals*/
 void	handle_signals();
@@ -22,8 +31,6 @@ void	receive_signal(int signum, siginfo_t *info, void *context);
 
 /*input*/
 int		handle_input(t_data *data);
-
-/*tester*/
-int	test_parser();
+int		check_quotes(char *str);
 
 #endif

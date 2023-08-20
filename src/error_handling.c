@@ -1,11 +1,12 @@
 #include "error_handling.h"
 
-void	ft_error(char *msg, t_data *data)
+int	ft_error(char *msg, t_data *data)
 {
 	ft_putstr_fd(msg, 2);
 	if (data)
 		ft_cleanup(&data);
-	exit(FAIL);
+	// exit(FAIL);
+	return (1);
 }
 
 void	ft_cleanup(t_data **data)
