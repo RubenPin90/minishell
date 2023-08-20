@@ -14,7 +14,7 @@
  * @param tkn Token to be searched.
  * @return int Number of token.
  */
-int tkn_counter(t_lexer *lex, t_token tkn)
+int tkn_counter(t_lexer *lex, t_type tkn)
 {
 	int count;
 
@@ -55,17 +55,16 @@ int tkn_counter(t_lexer *lex, t_token tkn)
 // 	tmp = NULL;
 // }
 
-
 /**
- * @brief If cmd has redir-token, add it into cmd_line.   
+ * @brief Input-token is checked and copied into current cmd_line.
  * 
- * Loop through cmd and if redir-token will be found, the node and
- * the next node, will be cut out of the lexer list and added to the
- * cmd_line t_parse struct array.
- * @param lex Tokenized input list.
- * @param eoc End of Command (index of node where cmd ends).
- * @param cmd Command struct, where the cmd infos are saved. 
- * @return int 
+ * Checks input-token by opening it with read permissions only. If it can't
+ * be opened, error message is printed and returned. If there is no error with
+ * opening, fd is closed again. If there are more than 1 infiles in one command
+ * old string is freed and new string will replace it.
+ * @param cmd_line Struct of current command.
+ * @param file Word at current node.
+ * @return int 1 for error, 0 for SUCCESS.
  */
 int	handle_infile(t_parse *cmd_line, char *file)
 {
@@ -83,6 +82,15 @@ int	handle_infile(t_parse *cmd_line, char *file)
 	return (0);
 }
 
+/**
+ * @brief Heredoc-token is checked and copied into current cmd_line.
+ * 
+ * Copies Heredoc-token into cmd_line. If there is already a heredoc
+ * old string is freed and new string will replace it.
+ * @param cmd_line Struct of current command.
+ * @param file Word at current node.
+ * @return int 1 for error, 0 for SUCCESS.
+ */
 int	handle_heredoc(t_parse *cmd_line, char *word)
 {
 	if (cmd_line->heredoc)
@@ -93,6 +101,18 @@ int	handle_heredoc(t_parse *cmd_line, char *word)
 	return (0);
 }
 
+/**
+ * @brief Output-token is checked and copied into current cmd_line.
+ * 
+ * Checks output-token by opening it with read and write permissions. if it doesn't 
+ * exist, file will be created with 777 permissions. If it can't be opened, error message 
+ * is printed and returned. If there is no error with opening, fd is closed again. 
+ * If there are more than 1 outfiles in one command, old string is freed and new string will replace it.
+ * If type is APPEND, append bool is set to true.
+ * @param cmd_line Struct of current command.
+ * @param file Word at current node.
+ * @return int 1 for error, 0 for SUCCESS.
+ */
 int	handle_outfile(t_parse *cmd_line, char *file, int type)
 {
 	int fd;
