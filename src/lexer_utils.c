@@ -29,10 +29,35 @@ void	lexer_addback(t_lexer **lst, t_lexer *new)
 	}
 	tmp = *lst;
 	while (tmp->next)
-	{
-		printf("%s ", tmp->word);
 		tmp = tmp->next;
-	}
 	tmp->next = new;
 	new->prev = tmp;
 }
+
+/**
+ * @brief Destroying & freeing the lexer struct.
+ * 
+ * Checks if lex exists, if yes loops through the list
+ * and frees + sets every node to NULL. 
+ */
+void	free_lexer(t_lexer **lex)
+{
+	t_lexer	*tmp;
+	t_lexer *tmp2;
+
+	tmp2 = *lex;
+	while (tmp2)
+	{
+		printf("lex: %d", tmp2->i);
+		tmp2 = tmp2->next;
+	}
+	tmp = *lex;
+	while (*lex)
+	{
+		tmp = (*lex)->next;
+		free(*lex);
+		*lex = tmp;
+	}
+	*lex = NULL;
+}
+
