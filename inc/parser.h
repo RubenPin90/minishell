@@ -3,13 +3,13 @@
 # include "minishell.h"
 
 /*parser*/
-int	parser(t_data *data, t_lexer *lex, t_parse **cmd_line);
-int	extract_cmd(t_lexer **lst_head, int eoc, t_parse *cmd);
+int	parser(t_data *data);
+int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd);
+int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd);
 
 /*parser_utils*/
-int tkn_counter(t_lexer *lex, t_token tkn);
-int	handle_redir(t_lexer **lex, int eoc, t_parse *cmd);
-int	handle_heredoc(t_lexer **lex, int eoc, t_parse *cmd);
-int	handle_cmd(t_lexer **lex, int eoc, t_parse *cmd);
-
+int tkn_counter(t_lexer *lex, t_type tkn);
+int	handle_infile(t_parse *cmd_line, char *word);
+int	handle_heredoc(t_parse *cmd_line, char *word);
+int	handle_outfile(t_parse *cmd_line, char *word, int typ);
 #endif

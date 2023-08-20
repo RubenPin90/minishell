@@ -2,7 +2,7 @@
 # define STRUCTS_H
 # include "minishell.h"
 
-typedef enum s_token
+typedef enum s_type
 {
 	WORD,
 	PIPE,
@@ -10,7 +10,7 @@ typedef enum s_token
 	OUTPUT,
 	APPEND,
 	HEREDOC,
-}	t_token;
+}	t_type;
 
 typedef struct s_lstenv
 {
@@ -23,7 +23,7 @@ typedef struct s_lstenv
 typedef struct s_lexer
 {
 	char			*word;
-	t_token			token;
+	t_type			token;
 	int				i;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
@@ -38,10 +38,9 @@ typedef struct s_parse
 	char			*cmd_link;
 	char			**cmd;
 	char			*infile;
-	char			*outfile;
 	char			*heredoc;
-	int				num_redir;
-	t_lexer			*redir;
+	char			*outfile;
+	bool			append;
 }	t_parse;
 
 typedef struct s_data
@@ -49,6 +48,7 @@ typedef struct s_data
 	t_lstenv		*env;
 	char			*input;
 	int				cmds;
+	struct s_parse	*cmd_line;
 	struct s_lexer	*lex;
 }	t_data;
 
