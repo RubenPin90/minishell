@@ -20,6 +20,20 @@ typedef struct s_lstenv
 	struct s_lstenv	*prev;
 }	t_lstenv;
 
+typedef struct s_data
+{
+	t_lstenv		*env;
+	char			*input;
+	struct s_lexer	*lex;
+}	t_data;
+
+typedef enum s_token
+{
+	PIPE = 1,
+	OUTPUT,
+	INPUT
+}	t_token;
+
 typedef struct s_lexer
 {
 	char			*word;
@@ -28,28 +42,5 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }	t_lexer;
-
-/**
- * @brief Grouping lexer input list together into cmds.
- * 
- */
-typedef struct s_parse
-{
-	char			*cmd_link;
-	char			**cmd;
-	char			*infile;
-	char			*heredoc;
-	char			*outfile;
-	bool			append;
-}	t_parse;
-
-typedef struct s_data
-{
-	t_lstenv		*env;
-	char			*input;
-	int				cmds;
-	struct s_parse	*cmd_line;
-	struct s_lexer	*lex;
-}	t_data;
 
 #endif

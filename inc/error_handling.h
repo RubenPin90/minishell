@@ -11,7 +11,7 @@ minishell doesn't need any args"
 # define ENV_ALLOC_ERR "ERROR: Nothing was extracted from envp"
 
 
-void		ft_error(char *msg, t_data *data);
+int		ft_error(char *msg, t_data *data);
 void	ft_cleanup(t_data **data);
 void	free_null(void *ptr);
 void	lstenv_clear(t_lstenv **head);
