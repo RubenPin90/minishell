@@ -42,3 +42,20 @@ void	lstenv_clear(t_lstenv **head)
 	}
 	*head = NULL;
 }
+
+char **free_arr(char **arr)
+{
+	int i;
+
+	if (!arr)
+		return (NULL);
+	i = 0;
+	while (arr[i])
+	{
+		free_null(arr[i]);
+		i++;
+	}
+	free(arr);
+	arr = NULL;
+	return (arr);
+}

@@ -12,4 +12,5 @@ int tkn_counter(t_lexer *lex, t_type tkn);
 int	handle_infile(t_parse *cmd_line, char *word);
 int	handle_heredoc(t_parse *cmd_line, char *word);
 int	handle_outfile(t_parse *cmd_line, char *word, int typ);
+t_parse *free_parser(t_parse *cmd_line);
 #endif

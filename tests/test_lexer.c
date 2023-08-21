@@ -36,6 +36,7 @@ int	test_lexer()
 	test_input("hello | world");
 	test_input("hello >> world");
 	test_input("hello << world");
+	test_input("<< onlyheredoc");
 	test_input("hello |> world");
 	test_input("echo hello >file1 > file2");
 	test_input("cat << EOF >file1 > file2");

@@ -108,7 +108,7 @@ int cmd_creator(char *str, int *i)
 	}
 	data.lex = start;
 	free_lexer(&data.lex);
-	free(data.cmd_line);
+	data.cmd_line = free_parser(data.cmd_line, data.cmds);
 	(*i)++;
 	return(0);
 }

@@ -122,9 +122,6 @@ int	parser(t_data *data)
 			return (1);
 		if (extract_cmd(data, &lst, data->cmd_line + cmd_id, data->cmd_line[cmd_id].cmd))
 			return (1);
-		printf("cmd_line[%d]->infile: %s\n", cmd_id, data->cmd_line[cmd_id].infile);
-		printf("cmd_line[%d]->outfile: %s append: %d\n", cmd_id, data->cmd_line[cmd_id].outfile, data->cmd_line->append);
-		printf("cmd_line[%d]->heredoc: %s\n", cmd_id, data->cmd_line[cmd_id].heredoc);
 		if (cmd_id++ == data->cmds - 1)
 			break ;
 		lst = lst->next;

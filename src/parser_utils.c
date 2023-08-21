@@ -72,7 +72,7 @@ int	handle_infile(t_parse *cmd_line, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (!fd)
-		return (1);
+		return (2);
 	close(fd);
 	if (cmd_line->infile)
 		free(cmd_line->infile);
@@ -116,10 +116,10 @@ int	handle_heredoc(t_parse *cmd_line, char *word)
 int	handle_outfile(t_parse *cmd_line, char *file, int type)
 {
 	int fd;
-	printf("append: %d\n", cmd_line->append);
-	fd = open(file, O_RDWR | O_CREAT, 0777);
+
+	fd = open(file, O_RDWR | O_CREAT, 0644);
 	if (!fd)
-		return (1);
+		return (2);
 	close(fd);
 	if (cmd_line->outfile)
 		free(cmd_line->outfile);
@@ -131,4 +131,40 @@ int	handle_outfile(t_parse *cmd_line, char *file, int type)
 	else
 		cmd_line->append = false;
 	return (0);
+}
+
+/**
+ * @brief Destroy function of t_parse array. 
+ * 
+ * Checks if argument exists else returns NULL. Sets new pointer start
+ * at the beginning of the array. Loops through the array and in each
+ * index all 2D arrays and strings are freed. Afterwards start is freed 
+ * and is set to NULL.
+ * @param cmd_line T_parse array of structs.
+ * @return t_parse* pointer pointing to NULL or directly NULL.
+ */
+t_parse *free_parser(t_parse *cmd_line, int cmd_count)
+{
+	int i;
+	t_parse *start;
+
+	if (!cmd_line)
+		return (NULL);
+	start = cmd_line;
+	i = 0;	
+	while (i < cmd_count)
+	{
+		if (cmd_line->cmd)
+			cmd_line->cmd = free_arr(cmd_line->cmd);
+		if (cmd_line->infile)
+			free_null(&cmd_line->infile);
+		if (cmd_line->outfile)
+			free_null(&cmd_line->outfile);
+		if (cmd_line->heredoc)
+			free_null(&cmd_line->heredoc);
+		i++;
+	}
+	free(start);
+	start = NULL;
+	return (start);
 }
