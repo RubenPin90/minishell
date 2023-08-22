@@ -14,9 +14,9 @@ void	free_lexer(t_lexer **lex);
 void	skip_space(char *input, int *i);
 
 // lexer_checks.c
+int		check_quotes(char *str);
 int		check_token(char *input);
 int		check_redir(char *input);
-// int		check_out(char *input);
 int		check_pipe(char *input);
 int		check_type(char *input, int *i);
 
