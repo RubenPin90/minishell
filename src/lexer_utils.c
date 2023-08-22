@@ -1,4 +1,10 @@
-#include "../inc/minishell.h"
+#include "../inc/lexer.h"
+
+void	skip_space(char *input, int *i)
+{
+	while (input[*i] == ' ')
+		(*i)++;
+}
 
 // create a new list node for lexer struct
 t_lexer	*new_lexer_node(char *word, int token)
