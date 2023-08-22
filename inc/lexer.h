@@ -3,9 +3,9 @@
 # include "minishell.h"
 
 // lexer.c
-int	lexer(char *input, t_lexer *lex);
+int	lexer(t_data *data);
 int	check_token(char *input);
-t_lexer	*create_list(char *input, t_lexer *lex);
+t_lexer	*create_list(t_data *data, char *input);
 
 // lexer_utils.c
 t_lexer	*new_lexer_node(char *word, int token);

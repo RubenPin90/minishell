@@ -1,34 +1,95 @@
+/**
+ * @file lexer.c
+ * @brief 
+ * 
+ */
+
 #include "../inc/lexer.h"
 
-void	add_node(char *input, int start, int len, t_lexer *lex)
+void	add_node(t_data *data, int start, int len, int type)
 {
 	t_lexer	*node;
 
-	node = new_lexer_node(ft_substr(input, start, len), 0);
-	lexer_addback(&lex, node);
+	node = new_lexer_node(ft_substr(data->input, start, len), type);
+	if (!node)
+		return ;
+	lexer_addback(&data->lex, node);
+}
+
+int	check_type(char *input, int *i)
+{
+	if (input[*i] == '<')
+	{
+		(*i)++;
+		if (input[*i] == '<')
+		{
+			(*i)++;
+			return (HEREDOC);
+		}
+		return (INPUT);
+	}
+	if (input[*i] == '>')
+	{
+		(*i)++;
+		if (input[*i] == '>')
+		{
+			(*i)++;
+			return (APPEND);
+		}
+		return (OUTPUT);
+	}
+	if (input[*i] == '|')
+		return (PIPE);
+	return (WORD);
 }
 
 // reads through input string and copies every word/token into a node
-t_lexer	*create_list(char *input, t_lexer *lex)
+t_lexer	*create_list(t_data *data, char *input)
 {
-	int	i;
-	int	start;
-	int	len;
+	int		i;
+	int		start;
+	int		len;
+	t_lexer	*tmp;
+	int		type;
 
 	i = 0;
+	type = -1;
 	while (input[i])
 	{
 		while (input[i] == ' ')
 			i++;
-		start = i;
-		while (input[i] && input[i] != ' ')
+		// printf("%c=%d ", input[i], i);
+		type = check_type(input, &i);
+		if (type == PIPE)
+		{
+			add_node(data, i, 1, PIPE);
 			i++;
-		len = i - start;
-		add_node(input, start, len, lex);
-		i++;
+		}
+		else
+		{
+			// printf("type: %d\n", type);
+			while (input[i] == ' ')
+				i++;
+			start = i;
+			while (input[i] && input[i] != ' ' && input[i] != '>' && \
+					input[i] != '<' && input[i] != '|')
+				i++;
+			len = i - start;
+			add_node(data, start, len, type);
+			if (input[i] && input[i] == ' ')
+				i++;
+		}
+	}
+	// printf("i: %d\n", i);
+	tmp = data->lex;
+	while (tmp)
+	{
+		printf("%s=%d ", tmp->word, tmp->token);
+		fflush(NULL);
+		tmp = tmp->next;
 	}
 	printf("\n");
-	return (lex);
+	return (data->lex);
 }
 
 int	check_out(char *input)
@@ -125,10 +186,11 @@ int	check_token(char *input)
 	return (0);
 }
 
-int	lexer(char *input, t_lexer *lex)
+int	lexer(t_data *data)
 {
-	if (check_quotes(input) || check_token(input))
+	// data->lex = NULL;
+	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
-	create_list(input, lex);
+	create_list(data, data->input);
 	return (0);
 }

@@ -42,14 +42,15 @@ int	check_quotes(char *str)
 
 int	handle_input(t_data *data)
 {
-	t_lexer	lex;
+	// t_lexer	lex;
 
+	data->lex = NULL;
 	data->input = readline("> ");
 	if (!data->input)
 		ft_error(MALLOC_ERR, data);
 	add_history(data->input);
 	check_buildin(data);
-	lexer(data->input, &lex);
+	lexer(data);
 	free(data->input);
 	return (SUCCESS);
 }
