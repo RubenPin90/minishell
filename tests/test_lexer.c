@@ -5,6 +5,7 @@ int	test_lexer_list(char *line)
 	t_lexer	*lex;
 	t_lexer *tmp;
 
+	lex = NULL;
 	lex = create_list(line, lex);
 	tmp = lex;
 	while (tmp)
