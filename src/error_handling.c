@@ -52,7 +52,8 @@ char **free_arr(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		free_null(arr[i]);
+		free(arr[i]);
+		arr[i] = NULL;
 		i++;
 	}
 	free(arr);
