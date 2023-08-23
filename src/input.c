@@ -9,6 +9,7 @@ int	handle_input(t_data *data)
 	check_buildin(data);
 	lexer(data);
 	parser(data);
-	free(data->input);
+	cmdfinder(data, data->cmd_line);
+	// free(data->input);
 	return (SUCCESS);
 }

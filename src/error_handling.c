@@ -4,17 +4,17 @@ int	ft_error(char *msg, t_data *data)
 {
 	ft_putstr_fd(msg, 2);
 	if (data)
-		ft_cleanup(data);
+		ft_cleanup(data, true);
 	// exit(FAIL);
 	return (1);
 }
 
-void	ft_cleanup(t_data *data)
+void	ft_cleanup(t_data *data, bool check)
 {
-	if (data->env)
+	if (data->env && check)
 		lstenv_clear(&data->env);
 	if (data->input)
-		free_null(&data->input);
+		data->input = free_null(data->input);
 	if (data->lex)
 		free_lexer(&data->lex);
 	if (data->cmd_line)

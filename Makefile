@@ -21,7 +21,8 @@ SRC_F = signals.c \
 		buildins.c \
 		error_handling.c \
 		parser.c \
-		parser_utils.c
+		parser_utils.c \
+		cmd_finder.c
 
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}
