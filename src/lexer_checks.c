@@ -117,5 +117,7 @@ int	check_type(char *input, int *i)
 	}
 	if (input[*i] == '|')
 		return (PIPE);
-	return (WORD);
+	if (input[*i])
+		return (WORD);
+	return (STOP);
 }

@@ -4,26 +4,31 @@ int	ft_error(char *msg, t_data *data)
 {
 	ft_putstr_fd(msg, 2);
 	if (data)
-		ft_cleanup(&data);
+		ft_cleanup(data);
 	// exit(FAIL);
 	return (1);
 }
 
-void	ft_cleanup(t_data **data)
+void	ft_cleanup(t_data *data)
 {
-	if ((*data)->env)
-		lstenv_clear(&(*data)->env);
-	if ((*data)->input)
-		free_null((*data)->input);
+	if (data->env)
+		lstenv_clear(&data->env);
+	if (data->input)
+		free_null(&data->input);
+	if (data->lex)
+		free_lexer(&data->lex);
+	if (data->cmd_line)
+		data->cmd_line = free_parser(data->cmd_line);
 }
 
-void	free_null(void *ptr)
+void	*free_null(void *ptr)
 {
 	if (ptr)
 	{
 		free(ptr);
 		ptr = NULL;
 	}
+	return (ptr);
 }
 
 void	lstenv_clear(t_lstenv **head)

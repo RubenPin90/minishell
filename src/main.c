@@ -8,11 +8,14 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		ft_error(ARGC_ERR, NULL);
 	data.env = copy_envp(envp);
+	data.lex = NULL;
 	//handle_signals();
 	while (1)
 	{
 		if (handle_input(&data))
 			ft_error(NULL, &data);
+		free_lexer(&data.lex);
+		data.cmd_line = free_parser(data.cmd_line);
 	// 		//parser();
 	// 		//expander();
 	// 		//executer();

@@ -25,6 +25,11 @@
 # define BLUE "\e[0;34m"
 # define PINK "\e[0;35m"
 
+/*defines*/
+# define STOP -1
+# define SUCCESS 0
+# define FAIL 1
+
 /*signals*/
 void	handle_signals();
 void	receive_signal(int signum, siginfo_t *info, void *context);

@@ -15,6 +15,7 @@ int	test_lexer_list(char *line)
 		fflush(NULL);
 		tmp = tmp->next;
 	}
+	free_lexer(&data.lex);
 	return (0);
 }
 
@@ -45,8 +46,8 @@ int	test_input(char *line)
 
 int	test_lexer()
 {
-	printf(YELLOW"----------test-lexer OK----------\n"RESET);
-	test_input("hello world");
+	// printf(YELLOW"----------test-lexer OK----------\n"RESET);
+	// test_input("a | b   ");
 	// test_input("hello > world");
 	// test_input("hello < world");
 	// test_input("hello | world");
@@ -54,7 +55,7 @@ int	test_lexer()
 	// test_input("hello << world");
 	// test_input("<< onlyheredoc");
 	// test_input("hello |> world");
-	test_input("echo hello >file1 > file2");
+	// test_input("echo hello >file1 > file2");
 	// test_input("cat << EOF >file1 > file2");
 	// test_input("cat << EOF hello >file1 > file2");
 	// printf(YELLOW"----------test-lexer KO----------\n"RESET);
@@ -65,16 +66,16 @@ int	test_lexer()
 	// test_input("hello|world|");
 	// test_input("hello >| world");
 
-	// printf(YELLOW"----------test-lexer-list----------\n"RESET);
-	// test_lexer_list("hello world");
-	// test_lexer_list("hello > world");
-	// test_lexer_list("hello < world");
-	// test_lexer_list("hello | world");
-	// test_lexer_list("hello >> world");
-	// test_lexer_list("hello << world");
-	// test_lexer_list("hello |> world");
-	// test_lexer_list("echo hello >file1 > file2");
-	// test_lexer_list("cat << EOF >file1 > file2");
-	// test_lexer_list("cat << EOF hello >file1 > file2");
+	printf(YELLOW"----------test-lexer-list----------\n"RESET);
+	test_lexer_list("hello world");
+	test_lexer_list("hello > world");
+	test_lexer_list("hello < world");
+	test_lexer_list("hello | world");
+	test_lexer_list("hello >> world");
+	test_lexer_list("hello << world");
+	test_lexer_list("hello |> world");
+	test_lexer_list("echo hello >file1 > file2");
+	test_lexer_list("cat << EOF >file1 > file2");
+	test_lexer_list("cat << EOF hello >file1 > file2");
 	return (0);
 }

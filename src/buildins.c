@@ -10,7 +10,7 @@ void	check_buildin(t_data *data)
 	{
 		buf = ft_pwd(data);
 		ft_printf("%s\n", buf);
-		free_null(buf);
+		buf = free_null(buf);
 	}
 	if (!ft_strncmp(data->input, "env", 3))
 		print_env(data->env);
@@ -41,14 +41,14 @@ char	*ft_pwd(t_data *data)
 			buf = ft_calloc(sizeof(char), size);
 		}
 	}
-	free_null(buf);
+	buf = free_null(buf);
 	return (NULL);
 }
 
 void	ft_exit(t_data *data)
 {
 	ft_printf("exit\n");
-	ft_cleanup(&data);
+	ft_cleanup(data);
 	exit(0);
 }
 

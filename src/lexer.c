@@ -32,13 +32,14 @@ t_lexer	*create_list(t_data *data, char *input)
 	int		start;
 	int		len;
 	int		type;
-	t_lexer	*tmp;
 
 	i = 0;
 	while (input[i])
 	{
 		skip_space(input, &i);
 		type = check_type(input, &i);
+		if (type == STOP)
+			break ;
 		skip_space(input, &i);
 		start = i;
 		while (input[i] && input[i] != ' ' && input[i] != '>' && \
@@ -52,10 +53,8 @@ t_lexer	*create_list(t_data *data, char *input)
 		}
 		else
 			add_node(data, start, len, type);
-		// if (input[i] && input[i] == ' ')
-		// 	i++;
 	}
-	tmp = data->lex;
+	t_lexer *tmp = data->lex;
 	while (tmp)
 	{
 		printf("%s=%d ", tmp->word, tmp->token);
