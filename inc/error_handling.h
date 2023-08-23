@@ -12,8 +12,8 @@ minishell doesn't need any args"
 
 
 int		ft_error(char *msg, t_data *data);
-void	ft_cleanup(t_data **data);
-void	free_null(void *ptr);
+void	ft_cleanup(t_data *data);
+void	*free_null(void *ptr);
 void	lstenv_clear(t_lstenv **head);
 char	**free_arr(char **arr);
 

@@ -1,134 +1,74 @@
+/**
+ * @file lexer.c
+ * @brief Create lex list
+ * 
+ */
+
 #include "../inc/lexer.h"
 
-void	add_node(char *input, int start, int len, t_lexer *lex)
+/**
+ * @brief Add a new node to the end of the list
+ * 
+ * Copies a word from the input string into 
+ * @param data 
+ * @param start 
+ * @param len 
+ * @param type 
+ */
+void	add_node(t_data *data, int start, int len, int type)
 {
 	t_lexer	*node;
 
-	node = new_lexer_node(ft_substr(input, start, len), 0);
-	lexer_addback(&lex, node);
+	node = new_lexer_node(ft_substr(data->input, start, len), type);
+	if (!node)
+		return ;
+	lexer_addback(&data->lex, node);
 }
 
 // reads through input string and copies every word/token into a node
-t_lexer	*create_list(char *input, t_lexer *lex)
+t_lexer	*create_list(t_data *data, char *input)
 {
-	int	i;
-	int	start;
-	int	len;
+	int		i;
+	int		start;
+	int		len;
+	int		type;
 
 	i = 0;
 	while (input[i])
 	{
-		while (input[i] == ' ')
-			i++;
+		skip_space(input, &i);
+		type = check_type(input, &i);
+		if (type == STOP)
+			break ;
+		skip_space(input, &i);
 		start = i;
-		while (input[i] && input[i] != ' ')
+		while (input[i] && input[i] != ' ' && input[i] != '>' && \
+				input[i] != '<' && input[i] != '|')
 			i++;
 		len = i - start;
-		add_node(input, start, len, lex);
-		i++;
+		if (type == PIPE)
+		{
+			add_node(data, i, 1, PIPE);
+			i++;
+		}
+		else
+			add_node(data, start, len, type);
+	}
+	t_lexer *tmp = data->lex;
+	while (tmp)
+	{
+		printf("%s=%d ", tmp->word, tmp->token);
+		fflush(NULL);
+		tmp = tmp->next;
 	}
 	printf("\n");
-	return (lex);
+	return (data->lex);
 }
 
-int	check_out(char *input)
+int	lexer(t_data *data)
 {
-	static int	out;
-
-	input++;
-	if (*input == '>')
-	{
-		out++;
-		if (out >= 2)
-		{
-			out = 0;
-			return (ft_error("Third '>' found! KO\n", NULL));
-		}
-		printf("APPEND found! OK\n");
-		return (0);
-	}
-	while (*input == ' ')
-		input++;
-	if (!*input)
-	{
-		out = 0;
-		return (ft_error("Token at end of line! KO\n", NULL));
-	}
-	if (*input != '<' && *input != '>' && *input != '|')
-	{
-		out = 0;
-		return (0);
-	}
-	out = 0;
-	return (ft_error("Consecutive token found! KO\n", NULL));
-}
-
-int	check_in(char *input)
-{
-	static int	in;
-
-	input++;
-	if (*input == '<')
-	{
-		in++;
-		if (in >= 2)
-		{
-			in = 0;
-			return (ft_error("Third '>' found! KO\n", NULL));
-		}
-		printf("HEREDOC found! OK\n");
-		return (0);
-	}
-	while (*input == ' ')
-		input++;
-	if (!*input)
-	{
-		in = 0;
-		return (ft_error("Token at end of line! KO\n", NULL));
-	}
-	if (*input != '<' && *input != '>' && *input != '|')
-	{
-		in = 0;
-		return (0);
-	}
-	in = 0;
-	return (ft_error("Consecutive token found! KO\n", NULL));
-}
-
-int	check_pipe(char *input)
-{
-	input++;
-	while (*input == ' ')
-		input++;
-	if (!*input)
-		return (ft_error("Token at end of line! KO\n", NULL));
-	if (*input != '|')
-		return (0);
-	return (ft_error("Consecutive pipe found! KO\n", NULL));
-}
-
-int	check_token(char *input)
-{
-	while (*input)
-	{
-		if (*input == '|')
-			if (check_pipe(input))
-				return (1);
-		if (*input == '<')
-			if (check_in(input))
-				return (1);
-		if (*input == '>')
-			if (check_out(input))
-				return (1);
-		input++;
-	}
-	return (0);
-}
-
-int	lexer(char *input, t_lexer *lex)
-{
-	if (check_quotes(input) || check_token(input))
+	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
-	create_list(input, lex);
+	create_list(data, data->input);
 	return (0);
 }

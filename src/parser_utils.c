@@ -12,14 +12,15 @@
  * each token, starting from 0. 
  * @param lex Tokenized input list.
  * @param tkn Token to be searched.
+ * @param end
  * @return int Number of token.
  */
-int tkn_counter(t_lexer *lex, t_type tkn)
+int tkn_counter(t_lexer *lex, t_type tkn, t_type end)
 {
 	int count;
 
 	count = 0;
-	while (lex)
+	while (lex && lex->token != end)
 	{
 		if (lex->token == tkn)
 			count++;
@@ -143,26 +144,22 @@ int	handle_outfile(t_parse *cmd_line, char *file, int type)
  * @param cmd_line T_parse array of structs.
  * @return t_parse* pointer pointing to NULL or directly NULL.
  */
-t_parse *free_parser(t_parse *cmd_line, int cmd_count)
+t_parse *free_parser(t_parse *cmd_line)
 {
-	int i;
 	t_parse *start;
 
-	if (!cmd_line)
-		return (NULL);
-	start = cmd_line;
-	i = 0;	
-	while (i < cmd_count)
+	start = cmd_line;	
+	while (cmd_line->id != 0)
 	{
 		if (cmd_line->cmd)
 			cmd_line->cmd = free_arr(cmd_line->cmd);
 		if (cmd_line->infile)
-			free_null(&cmd_line->infile);
+			cmd_line->infile = free_null(cmd_line->infile);
 		if (cmd_line->outfile)
-			free_null(&cmd_line->outfile);
+			cmd_line->outfile = free_null(cmd_line->outfile);
 		if (cmd_line->heredoc)
-			free_null(&cmd_line->heredoc);
-		i++;
+			cmd_line->heredoc = free_null(cmd_line->heredoc);
+		cmd_line++;
 	}
 	free(start);
 	start = NULL;

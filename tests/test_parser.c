@@ -89,8 +89,8 @@ int cmd_creator(char *str, int *i)
 	lex = NULL;
 	printf("%s %d\n", str, *i);
 	create_lex(&lex, *i);
-	count_lexlst(&lex);
-	set_prev(&lex);
+	// count_lexlst(&lex);
+	// set_prev(&lex);
 	data.lex = lex;
 
 	start = data.lex;
@@ -100,15 +100,15 @@ int cmd_creator(char *str, int *i)
 		data.lex = data.lex->next;
 	}
 	data.lex = start;
-	parser(&data);
-	while (data.lex)
-	{
-		printf("lex->i: %d lex->word: %s lex->token: %d\n", data.lex->i, data.lex->word, data.lex->token);
-		data.lex = data.lex->next;
-	}
-	data.lex = start;
+	// parser(&data);
+	// while (data.lex)
+	// {
+	// 	printf("lex->i: %d lex->word: %s lex->token: %d\n", data.lex->i, data.lex->word, data.lex->token);
+	// 	data.lex = data.lex->next;
+	// }
+	// data.lex = start;
 	free_lexer(&data.lex);
-	data.cmd_line = free_parser(data.cmd_line, data.cmds);
+	// data.cmd_line = free_parser(data.cmd_line);
 	(*i)++;
 	return(0);
 }
@@ -129,5 +129,3 @@ int	test_parser(void)
 	cmd_creator("> file1 cat << EOF > file2 > file3", &i);
 	return (0);
 }
-
-

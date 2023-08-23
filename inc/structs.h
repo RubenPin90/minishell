@@ -35,6 +35,7 @@ typedef struct s_lexer
  */
 typedef struct s_parse
 {
+	int				id;
 	char			*cmd_link;
 	char			**cmd;
 	char			*infile;

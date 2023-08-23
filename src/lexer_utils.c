@@ -1,4 +1,10 @@
-#include "../inc/minishell.h"
+#include "../inc/lexer.h"
+
+void	skip_space(char *input, int *i)
+{
+	while (input[*i] == ' ')
+		(*i)++;
+}
 
 // create a new list node for lexer struct
 t_lexer	*new_lexer_node(char *word, int token)
@@ -43,18 +49,13 @@ void	lexer_addback(t_lexer **lst, t_lexer *new)
 void	free_lexer(t_lexer **lex)
 {
 	t_lexer	*tmp;
-	t_lexer *tmp2;
 
-	tmp2 = *lex;
-	while (tmp2)
-	{
-		printf("lex: %d", tmp2->i);
-		tmp2 = tmp2->next;
-	}
 	tmp = *lex;
 	while (*lex)
 	{
 		tmp = (*lex)->next;
+		if ((*lex)->word)
+			free((*lex)->word);
 		free(*lex);
 		*lex = tmp;
 	}
