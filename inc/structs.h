@@ -49,6 +49,7 @@ typedef struct s_data
 	t_lstenv		*env;
 	char			*input;
 	int				cmds;
+	char			**paths;
 	struct s_parse	*cmd_line;
 	struct s_lexer	*lex;
 }	t_data;

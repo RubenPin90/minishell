@@ -4,8 +4,10 @@ int	ft_error(char *msg, t_data *data)
 {
 	ft_putstr_fd(msg, 2);
 	if (data)
+	{
 		ft_cleanup(data, true);
-	// exit(FAIL);
+		exit(FAIL);
+	}
 	return (1);
 }
 
@@ -13,6 +15,8 @@ void	ft_cleanup(t_data *data, bool check)
 {
 	if (data->env && check)
 		lstenv_clear(&data->env);
+	if (data->paths)
+		data->paths = free_arr(data->paths);
 	if (data->input)
 		data->input = free_null(data->input);
 	if (data->lex)
@@ -40,9 +44,9 @@ void	lstenv_clear(t_lstenv **head)
 	while (cur)
 	{
 		next = cur->next;
-		free_null((void *)cur->key);
-		free_null((void *)cur->value);
-		free_null((void *)cur);
+		cur->key = free_null(cur->key);
+		cur->value = free_null(cur->value);
+		cur = free_null((void *)cur);
 		cur = next;
 	}
 	*head = NULL;

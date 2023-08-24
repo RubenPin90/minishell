@@ -54,14 +54,6 @@ t_lexer	*create_list(t_data *data, char *input)
 		else
 			add_node(data, start, len, type);
 	}
-	t_lexer *tmp = data->lex;
-	while (tmp)
-	{
-		printf("%s=%d ", tmp->word, tmp->token);
-		fflush(NULL);
-		tmp = tmp->next;
-	}
-	printf("\n");
 	return (data->lex);
 }
 
