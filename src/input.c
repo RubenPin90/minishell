@@ -10,6 +10,16 @@ int	handle_input(t_data *data)
 	lexer(data);
 	parser(data);
 	cmdfinder(data, data->cmd_line);
-	// free(data->input);
+	t_parse *tmp = data->cmd_line;
+	int i = 0;
+	while (tmp->id != 0)
+	{
+		printf("id %d,", tmp->id);
+		i = 0;
+		while (tmp->cmd[i])
+			printf(" cmd: %s", tmp->cmd[i++]);
+		printf("\nin: %s\nout: %s\nheredoc: %s\n",tmp->infile, tmp->outfile, tmp->heredoc);
+		tmp++;
+	}
 	return (SUCCESS);
 }

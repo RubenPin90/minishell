@@ -1,4 +1,4 @@
-#include <minishell.h>
+#include <cmdfinder.h>
 
 int	cmdfinder(t_data *data, t_parse *cmd_line)
 {
@@ -9,7 +9,7 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 	env_head = data->env;
 	while (data->env)
 	{
-		if (data->env->key = "PATH")
+		if (!ft_strncmp(data->env->key,"PATH", 5))
 		{
 			path_line = data->env->value;
 			break ;
@@ -26,6 +26,7 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 			return (1);
 		cmd_line++;
 	}
+	paths = free_arr(paths);
 	return (0);
 }
 
@@ -52,7 +53,7 @@ int	find_cmd(char **cmdpath, char **paths)
 			cmdname = free_null(cmdname);
 			return (0);
 		}
-		cmdpath = free_null(cmdpath);
+		*cmdpath = free_null(*cmdpath);
 		i++;
 	}
 	return (2);

@@ -15,6 +15,7 @@
 # include "handle_env.h"
 # include "error_handling.h"
 # include "parser.h"
+# include "cmdfinder.h"
 # include "tester.h"
 
 /*colors*/

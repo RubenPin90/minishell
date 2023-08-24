@@ -48,7 +48,7 @@ char	*ft_pwd(t_data *data)
 void	ft_exit(t_data *data)
 {
 	ft_printf("exit\n");
-	ft_cleanup(data);
+	ft_cleanup(data, true);
 	exit(0);
 }
 

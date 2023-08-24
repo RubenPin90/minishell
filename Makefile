@@ -22,7 +22,7 @@ SRC_F = signals.c \
 		error_handling.c \
 		parser.c \
 		parser_utils.c \
-		cmd_finder.c
+		cmdfinder.c
 
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}
