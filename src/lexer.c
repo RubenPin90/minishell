@@ -19,6 +19,8 @@ void	add_node(t_data *data, int start, int len, int type)
 {
 	t_lexer	*node;
 
+	if (type == PIPE)
+		len = 1;
 	node = new_lexer_node(ft_substr(data->input, start, len), type);
 	if (!node)
 		return ;
@@ -34,6 +36,7 @@ t_lexer	*create_list(t_data *data, char *input)
 	int		type;
 
 	i = 0;
+	start = 0;
 	while (input[i])
 	{
 		skip_space(input, &i);
@@ -42,17 +45,15 @@ t_lexer	*create_list(t_data *data, char *input)
 			break ;
 		skip_space(input, &i);
 		start = i;
-		while (input[i] && input[i] != ' ' && input[i] != '>' && \
-				input[i] != '<' && input[i] != '|')
-			i++;
+		// if (input[i] == '"' || input[i] == '\'')
+		// 	get_quote(input, &i, input[i]);
+		// else
+		get_word(input, &i);
+		// printf("outside - start: %d, len: %d\n", start, len);
 		len = i - start;
+		add_node(data, start, len, type);
 		if (type == PIPE)
-		{
-			add_node(data, i, 1, PIPE);
 			i++;
-		}
-		else
-			add_node(data, start, len, type);
 	}
 	t_lexer *tmp = data->lex;
 	while (tmp)

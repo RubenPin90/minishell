@@ -1,5 +1,23 @@
 #include "../inc/lexer.h"
 
+void	get_word(char *input, int *i)
+{
+	while (input[*i] && input[*i] != ' ' && input[*i] != '>' && \
+			input[*i] != '<' && input[*i] != '|')
+	{
+		if (input[*i] == '"' || input[*i] == '\'')
+			get_quote(input, i, input[*i]);
+		(*i)++;
+	}
+}
+
+void	get_quote(char *input, int *i, char quote)
+{
+	(*i)++;
+	while (input[*i] && input[*i] != quote)
+		(*i)++;
+}
+
 void	skip_space(char *input, int *i)
 {
 	while (input[*i] == ' ')

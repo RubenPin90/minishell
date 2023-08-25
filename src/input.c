@@ -8,6 +8,7 @@ int	handle_input(t_data *data)
 	add_history(data->input);
 	check_buildin(data);
 	lexer(data);
+	// expander(data);
 	parser(data);
 	free(data->input);
 	return (SUCCESS);

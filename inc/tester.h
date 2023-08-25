@@ -5,5 +5,6 @@
 /*tester*/
 int	test_parser();
 int	test_lexer();
+int	test_expander();
 
 #endif

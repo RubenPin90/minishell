@@ -3,7 +3,8 @@
 int	main(void)
 {
 	// test_lexer();
-	test_parser();
-	//	test_env();
+	test_expander();
+	// test_parser();
+	// test_env();
 	return (0);
 }
