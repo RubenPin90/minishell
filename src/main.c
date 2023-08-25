@@ -23,10 +23,10 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		if (handle_input(&data))
-			ft_error(NULL, &data);
-		// if (executer(&data))
-		// 	ft_error(NULL, &data);	
-		ft_cleanup(&data, false);
+			ft_cleanup(&data, false);
+		else 
+			if (executer(&data))
+				ft_error(NULL, &data);	
 	}
 	return (0);
 }

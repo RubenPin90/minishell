@@ -10,5 +10,5 @@ int error_msg(char *cmd, char *msg)
 	}
 	else
 		ft_putstr_fd(msg, 2);
-	return (0);
+	return (AGAIN);
 }

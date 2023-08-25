@@ -6,9 +6,9 @@ int	handle_input(t_data *data)
 	if (!data->input)
 		ft_error(MALLOC_ERR, NULL);
 	add_history(data->input);
-	check_buildin(data);
 	lexer(data);
-	parser(data);
+	if (parser(data))
+		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
 		return(1);
 	// t_parse *tmp = data->cmd_line;

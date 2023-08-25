@@ -13,15 +13,12 @@ char *findpath(t_lstenv *env)
 
 int	cmdfinder(t_data *data, t_parse *cmd_line)
 {
-	char *path_line;
 
-	path_line = findpath(data->env);
-	data->paths = ft_split(path_line, ':');
-	if (!data->paths)
-		ft_error(MALLOC_ERR, data);
 	while (cmd_line->id != 0)
 	{
-		if (find_cmd(data, &cmd_line->cmd[0], data->paths))
+		if (!check_buildin(data, cmd_line, cmd_line->cmd[0]))
+			continue ;
+		else if (check_binary(data, &cmd_line->cmd[0]))
 		{
 			data->paths = free_arr(data->paths);
 			return (error_msg(cmd_line->cmd[0], NOTFOUND_ERR));
@@ -30,6 +27,17 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 	}
 	data->paths = free_arr(data->paths);
 	return (0);
+}
+
+
+int check_binary(t_data *data, char **cmdpath)
+{
+	char *path_line;
+
+	path_line = findpath(data->env);
+	data->paths = ft_split(path_line, ':');
+	if (!data->paths)
+		ft_error(MALLOC_ERR, data);
 }
 
 int	find_cmd(t_data *data, char **cmdpath, char **paths)
