@@ -2,6 +2,9 @@
 # define STRUCTS_H
 # include "minishell.h"
 
+typedef struct s_data t_data;
+typedef int (*bltn)(t_data *data);
+
 typedef enum s_type
 {
 	WORD,
@@ -36,8 +39,8 @@ typedef struct s_lexer
 typedef struct s_parse
 {
 	int				id;
-	char			*cmd_link;
 	char			**cmd;
+	bltn			func;
 	char			*infile;
 	char			*heredoc;
 	char			*outfile;

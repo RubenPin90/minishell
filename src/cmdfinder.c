@@ -1,10 +1,13 @@
 #include <cmdfinder.h>
 
-char *findpath(t_lstenv *env)
+char *find_envkey(t_lstenv *env, char *var)
 {
+	int len;
+
+	len = ft_strlen(var);
 	while (env)
 	{
-		if (!ft_strncmp(env->key,"PATH", 5))
+		if (!ft_strncmp(env->key, var, len))
 			break ;
 		env = env->next;
 	}
@@ -13,31 +16,33 @@ char *findpath(t_lstenv *env)
 
 int	cmdfinder(t_data *data, t_parse *cmd_line)
 {
-
 	while (cmd_line->id != 0)
 	{
-		if (!check_buildin(data, cmd_line, cmd_line->cmd[0]))
-			continue ;
-		else if (check_binary(data, &cmd_line->cmd[0]))
+		if (check_buildin(cmd_line, cmd_line->cmd[0]))
 		{
-			data->paths = free_arr(data->paths);
-			return (error_msg(cmd_line->cmd[0], NOTFOUND_ERR));
+			if (check_binary(data, &cmd_line->cmd[0]))
+			{
+				data->paths = free_arr(data->paths);
+				return (error_msg(cmd_line->cmd[0], NOTFOUND_ERR));
+			}
 		}
 		cmd_line++;
 	}
 	data->paths = free_arr(data->paths);
-	return (0);
+	return (SUCCESS);
 }
-
 
 int check_binary(t_data *data, char **cmdpath)
 {
 	char *path_line;
 
-	path_line = findpath(data->env);
+	path_line = find_envkey(data->env, "PATH");
 	data->paths = ft_split(path_line, ':');
 	if (!data->paths)
 		ft_error(MALLOC_ERR, data);
+	if (find_cmd(data, cmdpath, data->paths))
+		return (FAIL);
+	return (SUCCESS);
 }
 
 int	find_cmd(t_data *data, char **cmdpath, char **paths)
@@ -61,10 +66,10 @@ int	find_cmd(t_data *data, char **cmdpath, char **paths)
 		if (access(*cmdpath, F_OK | X_OK) == 0)
 		{
 			cmdname = free_null(cmdname);
-			return (0);
+			return (SUCCESS);
 		}
 		*cmdpath = free_null(*cmdpath);
 		*cmdpath = cmdname;
 	}
-	return (1);
+	return (FAIL);
 }

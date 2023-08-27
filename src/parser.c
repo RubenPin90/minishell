@@ -5,7 +5,7 @@
 
 #include "parser.h"
 
-int	check_redir(t_data *data, t_type *token, t_parse *cmd_line, char *word)
+int	handle_redir(t_data *data, t_type token, t_parse *cmd_line, char *word)
 {
 	int ret;
 
@@ -49,7 +49,7 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 	}
 	if (!*lst || (*lst)->token == PIPE)
 		return (SUCCESS);
-	if (check_redir(data, (*lst)->token, cmd_line, (*lst)->word))
+	if (handle_redir(data, (*lst)->token, cmd_line, (*lst)->word))
 		return (AGAIN);
 	if ((*lst)->next)
 	{

@@ -1,55 +1,64 @@
 
 #include "minishell.h"
+#include <errno.h>
 
-void	check_buildin(t_data *data)
+int	check_buildin(t_parse *cmd_line, char *cmd)
 {
-	char	*buf;
+	int len;
 
-	buf = NULL;
-	if (!ft_strncmp(data->input, "pwd", 3))
-	{
-		buf = ft_pwd(data);
-		ft_printf("%s\n", buf);
-		buf = free_null(buf);
-	}
-	if (!ft_strncmp(data->input, "env", 3))
-		print_env(data->env);
-	if (!ft_strncmp(data->input, "exit", 4))
-		ft_exit(data);
+	len = ft_strlen(cmd);
+	if (!ft_strncmp(cmd, "pwd", len))
+		cmd_line->func = &ft_pwd;
+	else if (!ft_strncmp(cmd, "env", len))
+		cmd_line->func = &print_env;
+	else if (!ft_strncmp(cmd, "exit", len))
+		cmd_line->func = &ft_exit;
+	else if (!ft_strncmp(cmd, "export", len))
+		printf("export");
+		// cmd_line->func = &ft_export;
+	else if (!ft_strncmp(cmd, "cd", len))
+		printf("cd");
+		// cmd_line->func = &ft_cd;
+	else if (!ft_strncmp(cmd, "echo", len))
+		printf("echo");
+		// cmd_line->func = &ft_echo;
+	else if (!ft_strncmp(cmd, "unset", len))
+		printf("unset");
+		// cmd_line->func = &ft_unset;
+	else
+		return (FAIL);
+	return (SUCCESS);
 }
 
 /*
 */
-char	*ft_pwd(t_data *data)
+int	ft_pwd(t_data *data)
 {
-	char	*buf;
+	char	buf[8000];
 	int		size;
 
 	(void)data;
-	size = 2;
-	buf = ft_calloc(sizeof(char), size);
-	if (!buf)
-		return (NULL);
-	while (size < 10000)
+	size = 4000;
+	while (size < 8001)
 	{
-		if (getcwd(buf, size) != NULL)
-			return (buf);
-		else
-		{
-			free(buf);
-			size += 1;
-			buf = ft_calloc(sizeof(char), size);
-		}
+		if (!getcwd(buf, size) && errno == ERANGE)
+			size *= 2;
+		else 
+			break ;
 	}
-	buf = free_null(buf);
-	return (NULL);
+	if (getcwd(buf, size) == NULL)
+		return(error_msg("pwd", strerror(errno)));
+	else
+		ft_printf("%s\n", buf);
+	return (SUCCESS);
 }
 
-void	ft_exit(t_data *data)
+int	ft_exit(t_data *data)
 {
 	ft_printf("exit\n");
 	ft_cleanup(data, true);
 	exit(0);
+	return (SUCCESS);
 }
 
 

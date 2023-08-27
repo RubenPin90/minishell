@@ -123,7 +123,7 @@ int	handle_outfile(t_parse *cmd_line, char *file, int type)
 		cmd_line->append = true;
 		fd = open(file, O_RDWR | O_APPEND | O_CREAT, 0644);
 	}
-	else if (type == OUTPUT)
+	else 
 	{
 		cmd_line->append = false;
 		fd = open(file, O_RDWR | O_CREAT | O_TRUNC, 0644);
