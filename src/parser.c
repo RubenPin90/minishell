@@ -5,6 +5,22 @@
 
 #include "parser.h"
 
+int	handle_redir(t_data *data, t_type token, t_parse *cmd_line, char *word)
+{
+	int ret;
+
+	ret = SUCCESS;
+	if (token == INPUT)
+		ret = handle_infile(cmd_line, word);
+	if (token == OUTPUT || token == APPEND)
+		ret = handle_outfile(cmd_line, word, token);
+	if (token == HEREDOC)
+		ret = handle_heredoc(cmd_line, word);
+	if (ret == FAIL)
+		ft_error(MALLOC_ERR, data);
+	return (ret);
+}
+
 /**
  * @brief Transfer and assign tokens into each command.  
  * 
@@ -27,44 +43,21 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 	{
 		*tmp = ft_strdup((*lst)->word);
 		if (!*tmp)
-			return (1);
+			ft_error(MALLOC_ERR, data);
 		*lst = (*lst)->next;
 		tmp++;
 	}
 	if (!*lst || (*lst)->token == PIPE)
-		return (0);
-	if ((*lst)->token == INPUT)
-		handle_infile(cmd_line, (*lst)->word);
-	if ((*lst)->token == OUTPUT || (*lst)->token == APPEND)
-		handle_outfile(cmd_line, (*lst)->word, (*lst)->token);
-	if ((*lst)->token == HEREDOC)
-		handle_heredoc(cmd_line, (*lst)->word);
+		return (SUCCESS);
+	if (handle_redir(data, (*lst)->token, cmd_line, (*lst)->word))
+		return (AGAIN);
 	if ((*lst)->next)
 	{
 		*lst = (*lst)->next;
 		extract_cmd(data, lst, cmd_line, tmp);
 	}
-	return (0);
+	return (SUCCESS);
 }
-
-
-// t_lexer *find_end(t_lexer *lst)
-// {
-// 	while (lst && lst->next)
-// 	{
-// 		lst = lst->next;
-// 	}
-// 	return (lst);
-// }
-
-// t_lexer *find_start(t_lexer *lst)
-// {
-// 	while (lst && lst->prev)
-// 	{
-// 		lst = lst->prev;
-// 	}
-// 	return (lst);
-// }
 
 /**
  * @brief Initializing t_parse struct for current cmd
@@ -85,9 +78,9 @@ int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 	count = tkn_counter(cmd_list, WORD, PIPE);
 	arr = ft_calloc(count + 1, sizeof(char *));
 	if (!arr)
-		return (1);
+		return (FAIL);
 	current_cmd->cmd = arr;
-	return (0);
+	return (SUCCESS);
 }
 
 void set_ids(t_parse *cmd_line, int len)
@@ -124,19 +117,19 @@ int	parser(t_data *data)
 	cmd_linelen = data->cmds + 1;
 	data->cmd_line = (t_parse *)ft_calloc(cmd_linelen, sizeof(t_parse));
 	if (!data->cmd_line)
-		return (1);
+		ft_error(MALLOC_ERR, data);
 	set_ids(data->cmd_line, cmd_linelen);
 	lst = data->lex;
 	i = 0;
 	while (lst)
 	{
 		if (init_cmd(lst, data->cmd_line + i))
-			return (1);
+			ft_error(MALLOC_ERR, data);
 		if (extract_cmd(data, &lst, data->cmd_line + i, data->cmd_line[i].cmd))
-			return (1);
+			return (AGAIN);
 		if (i++ == data->cmds - 1)
 			break ;
 		lst = lst->next;
 	}
-	return (0);
+	return (SUCCESS);
 }

@@ -3,8 +3,8 @@
 # define BUILDINS_H
 # include "minishell.h"
 
-char	*ft_pwd(t_data *data);
-void	ft_exit(t_data *data);
-void	check_buildin(t_data *data);
+int		ft_pwd(t_data *data);
+int		ft_exit(t_data *data);
+int		check_buildin(t_parse *cmd_line, char *cmd);
 
 # endif

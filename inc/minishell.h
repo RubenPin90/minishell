@@ -15,6 +15,8 @@
 # include "handle_env.h"
 # include "error_handling.h"
 # include "parser.h"
+# include "cmdfinder.h"
+# include "executer.h"
 # include "tester.h"
 
 /*colors*/
@@ -29,6 +31,7 @@
 # define STOP -1
 # define SUCCESS 0
 # define FAIL 1
+# define AGAIN 2
 
 /*signals*/
 void	handle_signals();
