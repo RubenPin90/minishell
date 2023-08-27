@@ -1,6 +1,6 @@
 #include "../inc/lexer.h"
 
-void	get_word(t_data *data, char *input, int *i)
+char	*get_word(t_data *data, char *input, int *i)
 {
 	char	*tmp;
 
@@ -15,12 +15,13 @@ void	get_word(t_data *data, char *input, int *i)
 			// free (tmp);
 		}
 		if (input[*i] == '"' || input[*i] == '\'')
-			get_quote(data, input, i, input[*i]);
+			input = get_quote(data, input, i, input[*i]);
 		(*i)++;
 	}
+	return (input);
 }
 
-void	get_quote(t_data *data, char *input, int *i, char quote)
+char	*get_quote(t_data *data, char *input, int *i, char quote)
 {
 	char 	*tmp;
 
@@ -37,6 +38,7 @@ void	get_quote(t_data *data, char *input, int *i, char quote)
 		}
 		(*i)++;
 	}
+	return (input);
 }
 
 void	skip_space(char *input, int *i)

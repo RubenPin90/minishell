@@ -48,7 +48,7 @@ t_lexer	*create_list(t_data *data, char *input)
 		// if (input[i] == '"' || input[i] == '\'')
 		// 	get_quote(input, &i, input[i]);
 		// else
-		get_word(data, input, &i);
+		input = get_word(data, input, &i);
 		// printf("outside - start: %d, len: %d\n", start, len);
 		len = i - start;
 		add_node(data, start, len, type);
@@ -56,10 +56,11 @@ t_lexer	*create_list(t_data *data, char *input)
 			i++;
 	}
 	t_lexer *tmp = data->lex;
+	printf("input in lexer: %s\n", input);
 	while (tmp)
 	{
 		printf("%s=%d ", tmp->word, tmp->token);
-		fflush(NULL);
+		// fflush(NULL);
 		tmp = tmp->next;
 	}
 	printf("\n");
