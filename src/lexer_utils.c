@@ -1,21 +1,42 @@
 #include "../inc/lexer.h"
 
-void	get_word(char *input, int *i)
+void	get_word(t_data *data, char *input, int *i)
 {
+	char	*tmp;
+
 	while (input[*i] && input[*i] != ' ' && input[*i] != '>' && \
 			input[*i] != '<' && input[*i] != '|')
 	{
+		if (input[*i] == '$')
+		{
+			tmp = input;
+			input = expander(input, i);
+			printf("%s\n", input);
+			// free (tmp);
+		}
 		if (input[*i] == '"' || input[*i] == '\'')
-			get_quote(input, i, input[*i]);
+			get_quote(data, input, i, input[*i]);
 		(*i)++;
 	}
 }
 
-void	get_quote(char *input, int *i, char quote)
+void	get_quote(t_data *data, char *input, int *i, char quote)
 {
+	char 	*tmp;
+
+	(void)data;
 	(*i)++;
 	while (input[*i] && input[*i] != quote)
+	{
+		if (input[*i] == '$' && quote == '"')
+		{
+			tmp = input;
+			input = expander(input, i);
+			printf("%s\n", input);
+			// free(tmp);
+		}
 		(*i)++;
+	}
 }
 
 void	skip_space(char *input, int *i)
@@ -79,4 +100,3 @@ void	free_lexer(t_lexer **lex)
 	}
 	*lex = NULL;
 }
-

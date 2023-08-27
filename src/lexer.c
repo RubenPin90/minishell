@@ -48,7 +48,7 @@ t_lexer	*create_list(t_data *data, char *input)
 		// if (input[i] == '"' || input[i] == '\'')
 		// 	get_quote(input, &i, input[i]);
 		// else
-		get_word(input, &i);
+		get_word(data, input, &i);
 		// printf("outside - start: %d, len: %d\n", start, len);
 		len = i - start;
 		add_node(data, start, len, type);

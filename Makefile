@@ -18,6 +18,7 @@ SRC_F = signals.c \
 		lexer.c \
 		lexer_utils.c \
 		lexer_checks.c \
+		expander.c \
 		buildins.c \
 		error_handling.c \
 		parser.c \
