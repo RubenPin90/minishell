@@ -27,7 +27,7 @@
 # define BLUE "\e[0;34m"
 # define PINK "\e[0;35m"
 
-/*defines*/
+/*return values*/
 # define STOP -1
 # define SUCCESS 0
 # define FAIL 1
