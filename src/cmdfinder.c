@@ -18,13 +18,11 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 {
 	while (cmd_line->id != 0)
 	{
-		if (check_buildin(cmd_line, cmd_line->cmd[0]))
+		if (check_buildin(cmd_line, cmd_line->cmd[0]) && \
+		check_binary(data, &cmd_line->cmd[0]))
 		{
-			if (check_binary(data, &cmd_line->cmd[0]))
-			{
-				data->paths = free_arr(data->paths);
-				return (error_msg(cmd_line->cmd[0], NOTFOUND_ERR));
-			}
+			data->paths = free_arr(data->paths);
+			return (error_msg(cmd_line->cmd[0], NOTFOUND_ERR));
 		}
 		cmd_line++;
 	}
