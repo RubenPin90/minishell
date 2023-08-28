@@ -41,4 +41,7 @@ void	receive_signal(int signum, siginfo_t *info, void *context);
 int		handle_input(t_data *data);
 int		check_quotes(char *str);
 
+/*init*/
+void	init_data(t_data *data);
+
 #endif

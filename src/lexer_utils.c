@@ -16,34 +16,16 @@ char	*get_word(t_data *data, char *input, t_word *word)
 			tmp = input;
 			input = expander(input, &i);
 			printf("get_word, input[i] == '$': %s\n", input);
+			// printf("get_word, input[i] == '$': %s\n", input);
 			// free (tmp);
 		}
 		if (input[i] == '"' || input[i] == '\'')
-		{
-			input = get_quote(data, input, &i, input[i]);
-			word->start++;
-			word->quoted = true;
-		}
-		i++;
-	}
-	word->len = i - word->start - word->quoted;
-	word->i = i;
-	return (input);
-}
-
-char	*get_quote(t_data *data, char *input, int *i, char quote)
-{
-	char 	*tmp;
-
-	(void)data;
-	(*i)++;
-	while (input[*i] && input[*i] != quote)
-	{
-		if (input[*i] == '$' && quote == '"')
+		char	*get_quote(t_data *data, char *input, int *i, char quote)
 		{
 			tmp = input;
 			input = expander(input, i);
 			printf("%s\n", input);
+			// printf("%s\n", input);
 			// free(tmp);
 		}
 		(*i)++;
