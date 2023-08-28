@@ -15,7 +15,6 @@
  * @param len 
  * @param type 
  */
- */
 void	add_node(t_data *data, char *input, t_word *word)
 {
 	t_lexer	*node;
@@ -34,24 +33,15 @@ t_lexer	*create_list(t_data *data, char **datainput)
 {
 	t_word	word;
 	char	*input;
-	int		i;
-	int		start;
-	int		len;
-	int		type;
 
 	input = *datainput;
 	word.i = 0;
 	word.start = 0;
 	while (input[word.i])
-	i = 0;
-	while (input[i])
 	{
 		skip_space(input, &word.i);
 		word.type = check_type(input, &word.i);
 		if (word.type == STOP)
-		skip_space(input, &i);
-		type = check_type(input, &i);
-		if (type == STOP)
 			break ;
 		skip_space(input, &word.i);
 		printf("start: %d\n", word.start);
@@ -60,19 +50,6 @@ t_lexer	*create_list(t_data *data, char **datainput)
 		add_node(data, input, &word);
 		if (word.type == PIPE)
 			word.i++;
-		skip_space(input, &i);
-		start = i;
-		while (input[i] && input[i] != ' ' && input[i] != '>' && \
-				input[i] != '<' && input[i] != '|')
-			i++;
-		len = i - start;
-		if (type == PIPE)
-		{
-			add_node(data, i, 1, PIPE);
-			i++;
-		}
-		else
-			add_node(data, start, len, type);
 	}
 	*datainput = input;
 	return (data->lex);
@@ -94,6 +71,5 @@ int	lexer(t_data *data)
 	}
 	printf("\n");
 ///
-	create_list(data, data->input);
 	return (0);
 }
