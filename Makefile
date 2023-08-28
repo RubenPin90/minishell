@@ -12,7 +12,8 @@ RESET := \033[0m
 
 #FILES
 SRCDIR := src
-SRC_F = signals.c \
+SRC_F = init.c \
+		signals.c \
 		handle_env.c \
 		input.c \
 		lexer.c \
@@ -24,8 +25,7 @@ SRC_F = signals.c \
 		error_utils.c \
 		parser.c \
 		parser_utils.c \
-		cmdfinder.c
-
+		cmdfinder.c \
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}
 OBJ_M = ${OBJDIR}/main.o

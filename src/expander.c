@@ -21,14 +21,14 @@ char	*expand_input(char *input, char *new, char *value, int var_len)
 		new[i] = input[i];
 		i++;
 	}
-	printf("new: %s, input[i]: %c, i: %d\n", new, input[i], i);
+	// printf("new: %s, input[i]: %c, i: %d\n", new, input[i], i);
 	j = 0;
 	while (value[j])
 	{
 		new[i + j] = value[j];
 		j++;
 	}
-	printf("new: %s, new index: %d, value[j]: %c\n", new, i+j, value[j]);
+	// printf("new: %s, new index: %d, value[j]: %c\n", new, i+j, value[j]);
 	// printf("input[var_len]: '%c', \n", input[var_len]);
 	// printf("var_len: %d\n", var_len);
 	k = i + var_len;
@@ -38,14 +38,14 @@ char	*expand_input(char *input, char *new, char *value, int var_len)
 		i++;
 		k++;
 	}
-	printf("new: %s, j: %d\n", new, i + j);
+	// printf("new: %s, j: %d\n", new, i + j);
 	// printf("new: %ld\n", ft_strlen(new));
 	return (new);
 }
 
 char	*expander(char *input, int *i)
 {
-	char 	value[] = "{x}";
+	char 	value[] = "aapostol";
 	char 	*new;
 	int		var_len;
 	int		str_len;
@@ -54,7 +54,7 @@ char	*expander(char *input, int *i)
 	j = *i; // i is the index of $
 	// j = find_dsign(input);
 	if (!ft_isalpha(input[j + 1]))
-		return ("Error\n");
+		return (input);
 	j++;
 	while (ft_isalnum(input[j]))
 		j++;
@@ -63,7 +63,7 @@ char	*expander(char *input, int *i)
 	new = (char *)ft_calloc(str_len + 1, sizeof(char));
 	if (!new)
 		return ("Error\n");
-	printf("input: %s, value: %s, var_len: %d\n", input, value, var_len);
+	// printf("input: %s, value: %s, var_len: %d\n", input, value, var_len);
 	new = expand_input(input, new, value, var_len);
 	return (new);
 }
