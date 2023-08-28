@@ -63,7 +63,7 @@ int	lexer(t_data *data)
 	printf("data->input: %s\n", data->input);
 ///
 	t_lexer *tmp = data->lex;
-	printf("input str in lexer.c: %s\n", input);
+	printf("input str in lexer.c: %s\n", data->input);
 	while (tmp)
 	{
 		printf("nodes in lex: %s=%d ", tmp->word, tmp->token);
