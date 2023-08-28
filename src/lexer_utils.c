@@ -1,23 +1,33 @@
 #include "../inc/lexer.h"
 
-char	*get_word(t_data *data, char *input, int *i)
+char	*get_word(t_data *data, char *input, t_word *word)
 {
 	char	*tmp;
+	int		i;
 
-	while (input[*i] && input[*i] != ' ' && input[*i] != '>' && \
-			input[*i] != '<' && input[*i] != '|')
+	i = word->i;
+	word->start = i;
+	word->quoted = false;
+	while (input[i] && input[i] != ' ' && input[i] != '>' && \
+			input[i] != '<' && input[i] != '|')
 	{
-		if (input[*i] == '$')
+		if (input[i] == '$')
 		{
 			tmp = input;
-			input = expander(input, i);
-			printf("%s\n", input);
+			input = expander(input, &i);
+			printf("get_word, input[i] == '$': %s\n", input);
 			// free (tmp);
 		}
-		if (input[*i] == '"' || input[*i] == '\'')
-			input = get_quote(data, input, i, input[*i]);
-		(*i)++;
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			input = get_quote(data, input, &i, input[i]);
+			word->start++;
+			word->quoted = true;
+		}
+		i++;
 	}
+	word->len = i - word->start - word->quoted;
+	word->i = i;
 	return (input);
 }
 

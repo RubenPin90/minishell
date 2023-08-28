@@ -15,55 +15,43 @@
  * @param len 
  * @param type 
  */
-void	add_node(t_data *data, int start, int len, int type)
+void	add_node(t_data *data, char *input, t_word *word)
 {
 	t_lexer	*node;
 
-	if (type == PIPE)
-		len = 1;
-	node = new_lexer_node(ft_substr(data->input, start, len), type);
+	if (word->type == PIPE)
+		word->len = 1;
+	node = new_lexer_node(ft_substr(input, word->start, word->len), \
+			word->type);
 	if (!node)
 		return ;
 	lexer_addback(&data->lex, node);
 }
 
 // reads through input string and copies every word/token into a node
-t_lexer	*create_list(t_data *data, char *input)
+t_lexer	*create_list(t_data *data, char **datainput)
 {
-	int		i;
-	int		start;
-	int		len;
-	int		type;
+	t_word	word;
+	char	*input;
 
-	i = 0;
-	start = 0;
-	while (input[i])
+	input = *datainput;
+	word.i = 0;
+	word.start = 0;
+	while (input[word.i])
 	{
-		skip_space(input, &i);
-		type = check_type(input, &i);
-		if (type == STOP)
+		skip_space(input, &word.i);
+		word.type = check_type(input, &word.i);
+		if (word.type == STOP)
 			break ;
-		skip_space(input, &i);
-		start = i;
-		// if (input[i] == '"' || input[i] == '\'')
-		// 	get_quote(input, &i, input[i]);
-		// else
-		input = get_word(data, input, &i);
-		// printf("outside - start: %d, len: %d\n", start, len);
-		len = i - start;
-		add_node(data, start, len, type);
-		if (type == PIPE)
-			i++;
+		skip_space(input, &word.i);
+		printf("start: %d\n", word.start);
+		input = get_word(data, input, &word);
+		printf("len: %d\n", word.len);
+		add_node(data, input, &word);
+		if (word.type == PIPE)
+			word.i++;
 	}
-	t_lexer *tmp = data->lex;
-	printf("input in lexer: %s\n", input);
-	while (tmp)
-	{
-		printf("%s=%d ", tmp->word, tmp->token);
-		// fflush(NULL);
-		tmp = tmp->next;
-	}
-	printf("\n");
+	*datainput = input;
 	return (data->lex);
 }
 
@@ -71,6 +59,17 @@ int	lexer(t_data *data)
 {
 	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
-	create_list(data, data->input);
+	create_list(data, &data->input);
+	printf("data->input: %s\n", data->input);
+///
+	t_lexer *tmp = data->lex;
+	printf("input str in lexer.c: %s\n", input);
+	while (tmp)
+	{
+		printf("nodes in lex: %s=%d ", tmp->word, tmp->token);
+		tmp = tmp->next;
+	}
+	printf("\n");
+///
 	return (0);
 }

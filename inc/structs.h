@@ -29,6 +29,15 @@ typedef struct s_lexer
 	struct s_lexer	*prev;
 }	t_lexer;
 
+typedef struct s_word
+{
+	int		start;
+	int		len;
+	int		type;
+	int		i;
+	bool	quoted;
+}	t_word;
+
 /**
  * @brief Grouping lexer input list together into cmds.
  * 
