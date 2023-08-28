@@ -73,14 +73,14 @@ int	handle_infile(t_parse *cmd_line, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (!fd)
-		return (2);
+		return (error_msg(file, FD_NONEX_ERR));
 	close(fd);
 	if (cmd_line->infile)
 		free(cmd_line->infile);
 	cmd_line->infile = ft_strdup(file);
 	if (!cmd_line->infile)
-		return (1);
-	return (0);
+		return (FAIL);
+	return (SUCCESS);
 }
 
 /**
@@ -98,8 +98,8 @@ int	handle_heredoc(t_parse *cmd_line, char *word)
 		free(cmd_line->heredoc);
 	cmd_line->heredoc = ft_strdup(word);
 	if (!cmd_line->heredoc)
-		return (1);
-	return (0);
+		return (FAIL);
+	return (SUCCESS);
 }
 
 /**
@@ -118,20 +118,25 @@ int	handle_outfile(t_parse *cmd_line, char *file, int type)
 {
 	int fd;
 
-	fd = open(file, O_RDWR | O_CREAT, 0644);
+	if (type == APPEND)
+	{
+		cmd_line->append = true;
+		fd = open(file, O_RDWR | O_APPEND | O_CREAT, 0644);
+	}
+	else 
+	{
+		cmd_line->append = false;
+		fd = open(file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	}
 	if (!fd)
-		return (2);
+		return (error_msg(file, FD_ACCESS_ERR));
 	close(fd);
 	if (cmd_line->outfile)
 		free(cmd_line->outfile);
 	cmd_line->outfile = ft_strdup(file);
 	if (!cmd_line->outfile)
-		return (1);
-	if (type == APPEND)
-		cmd_line->append = true;
-	else
-		cmd_line->append = false;
-	return (0);
+		return (FAIL);
+	return (SUCCESS);
 }
 
 /**
