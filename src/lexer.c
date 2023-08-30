@@ -44,9 +44,9 @@ t_lexer	*create_list(t_data *data, char **datainput)
 		if (word.type == STOP)
 			break ;
 		skip_space(input, &word.i);
-		printf("start: %d\n", word.start);
+		// printf("start: %d\n", word.start);
 		input = get_word(data, input, &word);
-		printf("len: %d\n", word.len);
+		// printf("len: %d\n", word.len);
 		add_node(data, input, &word);
 		if (word.type == PIPE)
 			word.i++;
@@ -60,16 +60,16 @@ int	lexer(t_data *data)
 	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
 	create_list(data, &data->input);
-	printf("data->input: %s\n", data->input);
-///
-	t_lexer *tmp = data->lex;
-	printf("input str in lexer.c: %s\n", data->input);
-	while (tmp)
-	{
-		printf("nodes in lex: %s=%d ", tmp->word, tmp->token);
-		tmp = tmp->next;
-	}
-	printf("\n");
-///
+// 	printf("data->input: %s\n", data->input);
+// ///
+// 	t_lexer *tmp = data->lex;
+// 	printf("input str in lexer.c: %s\n", data->input);
+// 	while (tmp)
+// 	{
+// 		printf("nodes in lex: %s=%d ", tmp->word, tmp->token);
+// 		tmp = tmp->next;
+// 	}
+// 	printf("\n");
+// ///
 	return (0);
 }
