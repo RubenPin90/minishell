@@ -26,6 +26,7 @@ SRC_F = init.c \
 		parser.c \
 		parser_utils.c \
 		cmdfinder.c \
+		executer.c
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}
 OBJ_M = ${OBJDIR}/main.o
