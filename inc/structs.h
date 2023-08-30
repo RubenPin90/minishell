@@ -54,11 +54,13 @@ typedef struct s_parse
 	char			*heredoc;
 	char			*outfile;
 	bool			append;
+	int				*fd_pipes;
 }	t_parse;
 
 typedef struct s_data
 {
 	t_lstenv		*env;
+	char			**env_arr;
 	char			*input;
 	int				cmds;
 	char			**paths;

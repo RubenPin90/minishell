@@ -14,16 +14,16 @@ int	check_buildin(t_parse *cmd_line, char *cmd)
 	else if (!ft_strncmp(cmd, "exit", len))
 		cmd_line->func = &ft_exit;
 	else if (!ft_strncmp(cmd, "export", len))
-		printf("export");
+		printf("export\n");
 		// cmd_line->func = &ft_export;
 	else if (!ft_strncmp(cmd, "cd", len))
-		printf("cd");
+		printf("cd\n");
 		// cmd_line->func = &ft_cd;
 	else if (!ft_strncmp(cmd, "echo", len))
-		printf("echo");
+		printf("echo\n");
 		// cmd_line->func = &ft_echo;
 	else if (!ft_strncmp(cmd, "unset", len))
-		printf("unset");
+		printf("unset\n");
 		// cmd_line->func = &ft_unset;
 	else
 		return (FAIL);
