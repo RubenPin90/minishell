@@ -22,7 +22,6 @@ int		check_redir(char *input);
 int		check_pipe(char *input);
 int		check_type(char *input, int *i);
 
-
 // expander.c
 char	*expander(char *input, int *i);
 

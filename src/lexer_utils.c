@@ -2,7 +2,7 @@
 
 char	*get_word(t_data *data, char *input, t_word *word)
 {
-	char	*tmp;
+	// char	*tmp;
 	int		i;
 
 	i = word->i;
@@ -13,7 +13,7 @@ char	*get_word(t_data *data, char *input, t_word *word)
 	{
 		if (input[i] == '$')
 		{
-			tmp = input;
+			// tmp = input;
 			input = expander(input, &i);
 			// printf("get_word, input[i] == '$': %s\n", input);
 			// free (tmp);
@@ -33,7 +33,7 @@ char	*get_word(t_data *data, char *input, t_word *word)
 
 char	*get_quote(t_data *data, char *input, int *i, char quote)
 {
-	char 	*tmp;
+	// char 	*tmp;
 
 	(void)data;
 	(*i)++;
@@ -41,7 +41,7 @@ char	*get_quote(t_data *data, char *input, int *i, char quote)
 	{
 		if (input[*i] == '$' && quote == '"')
 		{
-			tmp = input;
+			// tmp = input;
 			input = expander(input, i);
 			// printf("%s\n", input);
 			// free(tmp);

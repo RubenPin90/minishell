@@ -1,19 +1,6 @@
 
 #include "minishell.h"
 
-int	print_env(t_data *data)
-{
-	t_lstenv *lst;
-
-	lst = data->env;
-	while (lst)
-	{
-		printf("%s=%s\n", lst->key, lst->value);
-		lst = lst->next;
-	}
-	return (SUCCESS);
-}
-
 t_lstenv	*copy_envp(char **env_org)
 {
 	int			i;
