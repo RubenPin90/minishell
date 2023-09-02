@@ -11,6 +11,6 @@ void        env_extract(t_lstenv **lst, t_lstenv *new);
 /*env_utils*/
 int			print_env(t_data *data);
 char		**list_to_arr(t_data *data, t_lstenv *lst);
-char		*ft_strjoin_wrapper(char *key, char *value);
+char		*find_envkey(t_lstenv *env, char *var);
 
 #endif

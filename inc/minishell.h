@@ -8,10 +8,11 @@
 # include <signal.h>
 # include <libft.h>
 # include <fcntl.h>
+# include <errno.h>
 
 # include "structs.h"
 # include "lexer.h"
-# include "buildins.h"
+# include "builtins.h"
 # include "env.h"
 # include "error_handling.h"
 # include "parser.h"
@@ -47,6 +48,7 @@ void	init_data(t_data *data);
 /*sys_utils*/
 void	cmd_printer(t_data *data);
 void	lexer_printer(t_data *data);
-int	lex_len(t_lstenv *lst);
+int		lex_len(t_lstenv *lst);
+char	*ft_strjoin_wrapper(char *str1, char* str2, char *str3);
 
 #endif

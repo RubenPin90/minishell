@@ -48,13 +48,16 @@ typedef struct s_word
 typedef struct s_parse
 {
 	int				id;
+	char			*cmd_path;
 	char			**cmd;
 	bltn			func;
+	bool			parent;
 	char			*infile;
 	char			*heredoc;
 	char			*outfile;
 	bool			append;
-	int				*fd_pipes;
+	pid_t			pid;
+	int				fd_pipes[2];
 }	t_parse;
 
 typedef struct s_data

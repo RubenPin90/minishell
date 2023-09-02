@@ -9,6 +9,7 @@ void cmd_printer(t_data *data)
 	printf("cmds: %d\n", data->cmds);
 	while (tmp->id != 0)
 	{
+		printf("cmd_path: %s\n", tmp->cmd_path);
 		printf("cmd[%d]:", tmp->id);
 		for (int i = 0; tmp->cmd[i]; i++)
 			printf("%s ", tmp->cmd[i]);
@@ -44,4 +45,23 @@ int	lex_len(t_lstenv *lst)
 		i++;
 	}
 	return (i);
+}
+
+char *ft_strjoin_wrapper(char *str1, char*str2, char *str3)
+{
+	char *tmp;
+	char *strnew;
+
+	strnew = ft_strjoin(str1, str2);
+	if (!strnew)
+		return (NULL);
+	tmp = strnew;
+	strnew = ft_strjoin(strnew, str3);
+	if (!strnew)
+	{
+		tmp = free_null(tmp);
+		return (NULL);
+	}
+	tmp = free_null(tmp);
+	return(strnew);
 }

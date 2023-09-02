@@ -25,7 +25,7 @@ char **list_to_arr(t_data *data, t_lstenv *lst)
 	j = 0;
 	while (lst && j <= i)
 	{
-		data->env_arr[j] = ft_strjoin_wrapper(lst->key, lst->value);
+		data->env_arr[j] = ft_strjoin_wrapper(lst->key, "=", lst->value);
 		if (!data->env_arr[j])
 			ft_error(MALLOC_ERR, data);
 		lst = lst->next;
@@ -34,21 +34,17 @@ char **list_to_arr(t_data *data, t_lstenv *lst)
 	return (data->env_arr);
 }
 
-char *ft_strjoin_wrapper(char *key, char *value)
-{
-	char *tmp;
-	char *str;
 
-	str = ft_strjoin(key, "=");
-	if (!str)
-		return (NULL);
-	tmp = str;
-	str = ft_strjoin(str, value);
-	if (!str)
+char *find_envkey(t_lstenv *env, char *var)
+{
+	int len;
+
+	len = ft_strlen(var);
+	while (env)
 	{
-		tmp = free_null(tmp);
-		return (NULL);
+		if (!ft_strncmp(env->key, var, len))
+			break ;
+		env = env->next;
 	}
-	tmp = free_null(tmp);
-	return(str);
+	return (env->value);
 }

@@ -7,5 +7,6 @@ void	init_data(t_data *data)
 	data->cmd_line = NULL;
 	data->lex = NULL;
 	data->env = NULL;
+	data->env_arr = NULL;
 	data->input = NULL;
 }

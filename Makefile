@@ -26,7 +26,13 @@ SRC_F = sys_init.c \
 		parser_utils.c \
 		cmdfinder.c \
 		executer.c \
-		buildins.c \
+		builtins.c \
+		builtin_cd.c \
+		builtin_echo.c \
+		builtin_exit.c \
+		builtin_export.c \
+		builtin_pwd.c \
+		builtin_unset.c \
 		error_handling.c \
 		error_utils.c
 #OBJ FILES
