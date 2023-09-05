@@ -15,14 +15,13 @@
  * @param len 
  * @param type 
  */
-void	add_node(t_data *data, char *input, t_word *word)
+void	add_node(t_data *data, char *lst_word, t_word *word)
 {
 	t_lexer	*node;
 
 	if (word->type == PIPE)
 		word->len = 1;
-	node = new_lexer_node(ft_substr(input, word->start, word->len), \
-			word->type);
+	node = new_lexer_node(lst_word, word->type);
 	if (!node)
 		return ;
 	lexer_addback(&data->lex, node);
@@ -31,25 +30,29 @@ void	add_node(t_data *data, char *input, t_word *word)
 // reads through input string and copies every word/token into a node
 t_lexer	*create_list(t_data *data, char **datainput)
 {
-	t_word	word;
 	char	*input;
+	char	*lst_word;
+	t_word	*word;
 
 	input = *datainput;
-	word.i = 0;
-	word.start = 0;
-	while (input[word.i])
+	data->word = ft_calloc(sizeof(t_word), 1); // init with 0
+	word = data->word;
+	while (input[word->i])
 	{
-		skip_space(input, &word.i);
-		word.type = check_type(input, &word.i);
-		if (word.type == STOP)
+		skip_space(input, &word->i);
+		word->type = check_type(input, &(word->i));
+		if (word->type == STOP)
 			break ;
-		skip_space(input, &word.i);
-		// printf("start: %d\n", word.start);
-		input = get_word(data, input, &word);
-		// printf("len: %d\n", word.len);
-		add_node(data, input, &word);
-		if (word.type == PIPE)
-			word.i++;
+		skip_space(input, &(word->i));
+		// printf("start: %d\n", word->start);
+		lst_word = get_word(data, input, word);
+		// if (!lst_word)
+		// 	break ;
+		printf("lst_word: %s\n", lst_word);
+		add_node(data, lst_word, word);
+		printf("lex: %s=%d\n", data->lex->word, data->lex->token);
+		if (word->type == PIPE)
+			word->i++;
 	}
 	*datainput = input;
 	return (data->lex);

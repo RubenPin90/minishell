@@ -2,53 +2,87 @@
 
 char	*get_word(t_data *data, char *input, t_word *word)
 {
+	char	*unquoted;
 	char	*tmp;
 	int		i;
 
 	i = word->i;
 	word->start = i;
-	word->quoted = false;
 	while (input[i] && input[i] != ' ' && input[i] != '>' && \
-			input[i] != '<' && input[i] != '|')
+			input[i] != '<' && input[i] != '|' && input[i] != '"' && \
+			input[i] != '\'')
 	{
 		if (input[i] == '$')
 		{
 			tmp = input;
-			input = expander(input, &i);
-			// printf("get_word, input[i] == '$': %s\n", input);
-			// free (tmp);
-		}
-		if (input[i] == '"' || input[i] == '\'')
-		{
-			input = get_quote(data, input, &i, input[i]);
-			word->start++;
-			word->quoted = true;
+			input = expander(tmp, &i);
+			tmp = free_null(tmp);
 		}
 		i++;
 	}
-	word->len = i - word->start - word->quoted;
 	word->i = i;
-	return (input);
+	word->len = i - word->start;
+	unquoted = ft_substr(input, word->start, word->len);
+	if (!word->str)
+		word->str = ft_strdup(unquoted);
+	else
+	{
+		tmp = word->str;
+		word->str = ft_strjoin(tmp, unquoted);
+		tmp = free_null(tmp);
+	}
+	free(unquoted);
+	if (input[i] && (input[i] == '"' || input[i] == '\''))
+		word->str = get_quote(data, input, word, input[i]);
+	printf("word->str in get_word: %s\n", word->str);
+	return (word->str);
 }
 
-char	*get_quote(t_data *data, char *input, int *i, char quote)
+int	get_quote_len(char *input, int *i, char quote)
 {
-	char 	*tmp;
+	int		len;
 
-	(void)data;
+	len = 0;
 	(*i)++;
 	while (input[*i] && input[*i] != quote)
 	{
-		if (input[*i] == '$' && quote == '"')
-		{
-			tmp = input;
-			input = expander(input, i);
-			// printf("%s\n", input);
-			// free(tmp);
-		}
+		len++;
 		(*i)++;
 	}
-	return (input);
+	return (len);
+}
+
+char	*get_quote(t_data *data, char *input, t_word *word, char quote)
+{
+	char	*new;
+	char	*tmp;
+	int		len;
+	int		i;
+
+	i = word->i;
+	if (input[i] == '$' && quote == '"')
+	{
+		tmp = input;
+		input = expander(tmp, &i);
+		free(tmp);
+	}
+	len = get_quote_len(input, &i, quote);
+	if (!len)
+		return (NULL);
+	new = ft_substr(input, word->i + 1, len);
+	if (!new)
+		ft_error(MALLOC_ERR, data);
+	tmp = word->str;
+	word->str = ft_strjoin(tmp, new);
+	tmp = free_null(tmp);
+	new = free_null(new);
+	i++;
+	if (input[i] && (input[i] != '"' && input[i] != '\''))
+		word->str = get_word(data, input, word);
+	// call get_quote again if input[*i] == quotes
+	word->i = i;
+	printf("word->str in get_quote: %s\n", word->str);
+	return (word->str);
 }
 
 void	skip_space(char *input, int *i)

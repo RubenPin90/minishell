@@ -87,7 +87,7 @@ fclean: clean
 
 re: fclean all
 
-test: ${OBJ} ${OBJ_T} ${OBJ_TM}
+test: ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIB}
 	@echo "${YELLOW}Compiling tests....${RESET}"
 	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIBS} -o tester
 	@echo "${GREEN}Code ready to run${RESET}"

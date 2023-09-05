@@ -7,7 +7,7 @@ int	test_lexer_list(char *line)
 
 	data.input = line;
 	data.lex = NULL;
-	data.lex = create_list(&data, line);
+	data.lex = create_list(&data, &line);
 	tmp = data.lex;
 	while (tmp)
 	{

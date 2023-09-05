@@ -12,7 +12,7 @@ int	find_dsign(char *input)
 
 int	expand_quotes(char *quote, char *expected)
 {
-	int		i;
+	// int		i;
 	// char	*value = "aapostol";
 	char	*output;
 	t_word	word;
@@ -23,7 +23,7 @@ int	expand_quotes(char *quote, char *expected)
 	word.quoted = false;
 	word.start = word.i;
 	// printf("before expander-----\nquote: %s, expected: %s\n", quote, expected);
-	i = find_dsign(quote);
+	// i = find_dsign(quote);
 	data.lex = create_list(&data, &quote);
 	output = data.lex->word;
 	printf("quote: %s, output: %s, expected: %s\n", quote, output, expected);
@@ -42,7 +42,7 @@ int	test_expander()
 	expand_quotes("'$USER'", "$USER");
 	expand_quotes("\"'$USER'\"", "'aapostol'");
 	expand_quotes("'\"$USER\"'", "\"$USER\"");
-	expand_quotes("$\"USER\"", "USER");
+	expand_quotes("$\"USER\"", "USER");  
 	expand_quotes("$'USER'", "USER");
 	expand_quotes("\"$'USER'\"", "$'USER'");
 	expand_quotes("'$\"USER\"'", "$\"USER\"");
