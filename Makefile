@@ -21,6 +21,7 @@ SRC_F = sys_init.c \
 		lexer.c \
 		lexer_utils.c \
 		lexer_checks.c \
+		lexer_list_utils.c \
 		expander.c \
 		parser.c \
 		parser_utils.c \
@@ -95,7 +96,7 @@ fclean: clean
 
 re: fclean all
 
-test: ${OBJ} ${OBJ_T} ${OBJ_TM}
+test: ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIB}
 	@echo "${YELLOW}Compiling tests....${RESET}"
 	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIBS} -o tester
 	@echo "${GREEN}Code ready to run${RESET}"

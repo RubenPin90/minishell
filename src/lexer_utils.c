@@ -2,129 +2,110 @@
 
 char	*get_word(t_data *data, char *input, t_word *word)
 {
-	// char	*tmp;
+	char	*unquoted;
+	char	*tmp;
 	int		i;
 
+	unquoted = handle_unquoted(data, input, word->i);
+	if (!unquoted)
+		ft_error(MALLOC_ERR, data);
+	if (!word->str)
+		word->str = ft_strdup(unquoted);
+	else
+	{
+		tmp = word->str;
+		word->str = ft_strjoin(tmp, unquoted);
+		tmp = free_null(tmp);
+	}
+	free(unquoted);
 	i = word->i;
-	word->start = i;
-	word->quoted = false;
+	if (input[i] && (input[i] == '"' || input[i] == '\''))
+		word->str = handle_quoted(data, input, word, input[i]);
+	// printf("word->str in get_word: %s\n", word->str);
+	return (word->str);
+}
+
+char	*handle_unquoted(t_data *data, char *input, int i)
+{
+	char	*tmp;
+
+	data->word->start = i;
 	while (input[i] && input[i] != ' ' && input[i] != '>' && \
-			input[i] != '<' && input[i] != '|')
+			input[i] != '<' && input[i] != '|' && input[i] != '"' && \
+			input[i] != '\'')
 	{
 		if (input[i] == '$')
 		{
-			// tmp = input;
-			input = expander(input, &i);
-			// printf("get_word, input[i] == '$': %s\n", input);
-			// free (tmp);
-		}
-		if (input[i] == '"' || input[i] == '\'')
-		{
-			input = get_quote(data, input, &i, input[i]);
-			word->start++;
-			word->quoted = true;
+			tmp = input;
+			input = expander(tmp, &i);
+			tmp = free_null(tmp);
 		}
 		i++;
 	}
-	word->len = i - word->start - word->quoted;
-	word->i = i;
-	return (input);
+	data->word->len = i - data->word->start;
+	data->word->i = i;
+	return (ft_substr(input, data->word->start, data->word->len));
 }
 
-char	*get_quote(t_data *data, char *input, int *i, char quote)
+char	*handle_quoted(t_data *data, char *input, t_word *word, char quote)
 {
-	// char 	*tmp;
+	char	*new;
+	char	*tmp;
+	int		len;
+	int		i;
 
-	(void)data;
+	i = word->i;
+	if (input[i] == '$' && quote == '"')
+	{
+		tmp = input;
+		input = expander(tmp, &i);
+		free(tmp);
+	}
+	len = get_quote_len(input, &i, quote);
+	// if (!len)
+	// 	return (NULL);
+	new = ft_substr(input, word->i + 1, len);
+	if (!new)
+		ft_error(MALLOC_ERR, data);
+	if (!word->str)
+		word->str = ft_strdup(new);
+	else
+	{
+		tmp = word->str;
+		word->str = ft_strjoin(tmp, new);
+		tmp = free_null(tmp);
+	}
+	new = free_null(new);
+	i++;
+	// printf("%s, last i: %c\n", word->str, input[i]);
+	// if (input[i] && (input[i] != '"' && input[i] != '\'' && input[i] != ' '))
+	word->i = i;
+	if (input[i] && input[i] != ' ' && input[i] != '>' && \
+			input[i] != '<' && input[i] != '|') // && input[i] != '"' && 
+			// input[i] != '\'')
+		word->str = get_word(data, input, word);
+	// if (input[i] && (input[i] == '"' || input[i] == '\''))
+	// 	word->str = handle_quoted
+	// printf("word->str in get_quote: %s\n", word->str);
+	return (word->str);
+}
+
+int	get_quote_len(char *input, int *i, char quote)
+{
+	int		len;
+
+	len = 0;
 	(*i)++;
 	while (input[*i] && input[*i] != quote)
 	{
-		if (input[*i] == '$' && quote == '"')
-		{
-			// tmp = input;
-			input = expander(input, i);
-			// printf("%s\n", input);
-			// free(tmp);
-		}
+		len++;
 		(*i)++;
 	}
-	return (input);
+	return (len);
 }
 
 void	skip_space(char *input, int *i)
 {
 	while (input[*i] == ' ')
 		(*i)++;
-}
-
-void count_lexlst(t_lexer *lex)
-{
-	t_lexer *tmp;
-	int		i;
-
-	i = 0;
-	tmp = lex;
-	while (tmp)
-	{
-		tmp->i = i;
-		tmp = tmp->next;
-		i++;
-	}
-}
-
-// create a new list node for lexer struct
-t_lexer	*new_lexer_node(char *word, int token)
-{
-	t_lexer		*new;
-
-	new = (t_lexer *)malloc(sizeof(t_lexer));
-	if (!new)
-		return (NULL);
-	new->word = word;
-	new->token = token;
-	new->next = NULL;
-	new->prev = NULL;
-	return (new);
-}
-
-// add list node to the back of linked lexer list
-void	lexer_addback(t_lexer **lst, t_lexer *new)
-{
-	t_lexer	*tmp;
-
-	if (*lst == NULL)
-	{
-		*lst = new;
-		(*lst)->next = NULL;
-		(*lst)->prev = NULL;
-		return ;
-	}
-	tmp = *lst;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-	new->next = NULL;
-	new->prev = tmp;
-}
-
-/**
- * @brief Destroying & freeing the lexer struct.
- * 
- * Checks if lex exists, if yes loops through the list
- * and frees + sets every node to NULL. 
- */
-void	free_lexer(t_lexer **lex)
-{
-	t_lexer	*tmp;
-
-	tmp = *lex;
-	while (*lex)
-	{
-		tmp = (*lex)->next;
-		if ((*lex)->word)
-			free((*lex)->word);
-		free(*lex);
-		*lex = tmp;
-	}
-	*lex = NULL;
 }

@@ -27,20 +27,20 @@ void set_prev(t_lexer **lex)
 	}
 }
 
-void count_lexlst(t_lexer **lex)
-{
-	t_lexer *tmp;
-	int		i;
+// void count_lexlst(t_lexer **lex)
+// {
+// 	t_lexer *tmp;
+// 	int		i;
 
-	i = 0;
-	tmp = *lex;
-	while (tmp)
-	{
-		tmp->i = i;
-		tmp = tmp->next;
-		i++;
-	}
-}
+// 	i = 0;
+// 	tmp = *lex;
+// 	while (tmp)
+// 	{
+// 		tmp->i = i;
+// 		tmp = tmp->next;
+// 		i++;
+// 	}
+// }
 
 void create_lex(t_lexer **lex, int i)
 {

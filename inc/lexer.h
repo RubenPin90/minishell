@@ -5,16 +5,13 @@
 // lexer.c
 int		lexer(t_data *data);
 t_lexer	*create_list(t_data *data, char **datainput);
-void	add_node(t_data *data, char *input, t_word *word);
 
 // lexer_utils.c
-t_lexer	*new_lexer_node(char *word, int token);
-void	lexer_addback(t_lexer **lst, t_lexer *new);
-void	free_lexer(t_lexer **lex);
-void	skip_space(char *input, int *i);
-char	*get_quote(t_data *data, char *input, int *i, char quote);
 char	*get_word(t_data *data, char *input, t_word *word);
-void	count_lexlst(t_lexer *lex);
+char	*handle_unquoted(t_data *data, char *input, int i);
+char	*handle_quoted(t_data *data, char *input, t_word *word, char quote);
+int		get_quote_len(char *input, int *i, char quote);
+void	skip_space(char *input, int *i);
 
 // lexer_checks.c
 int		check_quotes(char *str);
@@ -22,6 +19,14 @@ int		check_token(char *input);
 int		check_redir(char *input);
 int		check_pipe(char *input);
 int		check_type(char *input, int *i);
+
+// lexer_list_utils.c
+t_lexer	*add_node(t_data *data, char *input, t_word *word);
+t_lexer	*new_lexer_node(char *word, int token);
+void	lexer_addback(t_lexer **lst, t_lexer *new);
+void	count_lexlst(t_lexer *lex);
+void	free_lexer(t_lexer **lex);
+
 
 // expander.c
 char	*expander(char *input, int *i);
