@@ -14,6 +14,7 @@ void	free_lexer(t_lexer **lex);
 void	skip_space(char *input, int *i);
 char	*get_quote(t_data *data, char *input, int *i, char quote);
 char	*get_word(t_data *data, char *input, t_word *word);
+void	count_lexlst(t_lexer *lex);
 
 // lexer_checks.c
 int		check_quotes(char *str);
@@ -21,7 +22,6 @@ int		check_token(char *input);
 int		check_redir(char *input);
 int		check_pipe(char *input);
 int		check_type(char *input, int *i);
-
 
 // expander.c
 char	*expander(char *input, int *i);

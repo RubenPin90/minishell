@@ -10,17 +10,54 @@ int	handle_redir(t_data *data, t_type token, t_parse *cmd_line, char *word)
 	int ret;
 
 	ret = SUCCESS;
-	if (token == INPUT)
-		ret = handle_infile(cmd_line, word);
+	if (token == INPUT || token == HEREDOC)
+		ret = handle_infile(cmd_line, word, token);
 	if (token == OUTPUT || token == APPEND)
 		ret = handle_outfile(cmd_line, word, token);
-	if (token == HEREDOC)
-		ret = handle_heredoc(cmd_line, word);
+	// if (token == HEREDOC)
+	// 	ret = handle_heredoc(cmd_line, word);
 	if (ret == FAIL)
 		ft_error(MALLOC_ERR, data);
 	return (ret);
 }
 
+int	add_redir(t_parse *cmd_line, t_lexer *node)
+{
+	if (!cmd_line->redir)
+		cmd_line->redir = node;
+	return(SUCCESS);
+}
+
+
+int	ft_push_redir(t_lexer **a, t_lexer **b)
+{
+	t_lexer	*tmp;
+	bool check;
+
+	tmp = *a;
+	check = false;
+	if ((*a)->prev && (*a)->next)
+	{
+		(*a)->prev->next = (*a)->next;
+		(*a)->next->prev = (*a)->prev;
+		*a = (*a)->prev;
+		lexer_addback(b, tmp);
+	}
+	else if ((*a)->prev && !(*a)->next)
+	{
+		(*a)->prev->next = NULL;
+		*a = (*a)->prev;
+		lexer_addback(b, tmp);
+	}
+	else if (!(*a)->prev && (*a)->next)
+	{
+		(*a)->next->prev = NULL;
+		*a = (*a)->next;
+		lexer_addback(b, tmp);
+		check = true;
+	}
+	return (check);
+}
 /**
  * @brief Transfer and assign tokens into each command.  
  * 
@@ -37,6 +74,7 @@ int	handle_redir(t_data *data, t_type token, t_parse *cmd_line, char *word)
 int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 {
 	char **tmp;
+	int check;
 
 	tmp = cmd;
 	while (*lst && (*lst)->token == WORD)
@@ -44,18 +82,19 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 		*tmp = ft_strdup((*lst)->word);
 		if (!*tmp)
 			ft_error(MALLOC_ERR, data);
+		if (!(*lst)->next)
+			return (SUCCESS);
 		*lst = (*lst)->next;
 		tmp++;
 	}
-	if (!*lst || (*lst)->token == PIPE)
+	if ((*lst)->token == PIPE)
 		return (SUCCESS);
-	if (handle_redir(data, (*lst)->token, cmd_line, (*lst)->word))
-		return (AGAIN);
-	if ((*lst)->next)
-	{
+	check = ft_push_redir(lst, &cmd_line->redir);
+	if (!(*lst)->next)
+		return (SUCCESS);
+	if (check == false)
 		*lst = (*lst)->next;
-		extract_cmd(data, lst, cmd_line, tmp);
-	}
+	extract_cmd(data, lst, cmd_line, tmp);
 	return (SUCCESS);
 }
 
@@ -121,6 +160,8 @@ int	parser(t_data *data)
 	set_ids(data->cmd_line, cmd_linelen);
 	lst = data->lex;
 	i = 0;
+	printf("---before:\n");
+	lexer_printer(data->lex);
 	while (lst)
 	{
 		if (init_cmd(lst, data->cmd_line + i))
@@ -131,5 +172,13 @@ int	parser(t_data *data)
 			break ;
 		lst = lst->next;
 	}
+	data->lex = lst;
+	while(data->lex->prev)
+		data->lex = data->lex->prev;
+	printf("---after:\n");
+	printf("------lexer:\n");
+	lexer_printer(data->lex);
+	printf("------parser:\n");
+	cmd_printer(data);
 	return (SUCCESS);
 }

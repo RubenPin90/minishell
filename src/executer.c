@@ -1,91 +1,133 @@
 
 #include "executer.h"
+#include <sys/wait.h>
 
-void cmd_printer(t_data *data)
+int	create_pipes(t_parse *cmd_line, int cmds)
 {
-	t_parse *tmp;
-
-	tmp = data->cmd_line;
-	printf("input: %s\n", data->input);
-	printf("cmds: %d\n", data->cmds);
-	while (tmp->id != 0)
-	{
-		printf("cmd[%d]:", tmp->id);
-		for (int i = 0; tmp->cmd[i]; i++)
-			printf("%s ", tmp->cmd[i]);
-		printf("\n");
-		printf("infile: %s\n", tmp->infile);
-		printf("outfile: %s\n", tmp->outfile);
-		printf("append: %d\n", tmp->append);
-		printf("heredoc: %s\n", tmp->heredoc);
-		tmp++;	
-	}
-}
-
-void	lexer_printer(t_data *data)
-{
-	t_lexer *tmp;
-
-	tmp = data->lex;
-	while (tmp)
-	{
-		printf("lex[%d]: %s=%d", tmp->i, tmp->word, tmp->token);
-		tmp = tmp->next;
-	}
-}
-
-char **list_to_arr(t_data *data, t_lstenv *lst)
-{
-	t_lstenv *tmp;
 	int i;
-	int j;
-	char *str;
 
-	tmp = lst;
 	i = 0;
-	while(tmp)
+	while(cmd_line->id != 0)
 	{
-		i++;
-		tmp = tmp->next;
+		if (++i < cmds)
+		{
+			if (pipe(cmd_line->fd_pipes) == -1)
+				return (error_msg("pipe", strerror(errno)));
+		}
+		cmd_line++;
 	}
-	data->env_arr = ft_calloc(i + 1, sizeof(char *));
-	if (!data->env_arr)
-		ft_error(MALLOC_ERR, data);
-	j = 0;
-	while (lst && j <= i)
-	{
-		str = ft_strjoin(lst->key, "=");
-		data->env_arr[j] = ft_strjoin(str, lst->value);
-		str = free_null(str);
-		j++;
-		lst = lst->next;
-	}
-	return (data->env_arr);
-}
-
-
-
-int	exec_single_cmd(t_parse *cmd_line, t_data *data)
-{
-	if (cmd_line->func)
-		(*cmd_line->func)(data);
-	else
-		execve(cmd_line->cmd[0], cmd_line->cmd, list_to_arr(data, data->env));
 	return (SUCCESS);
 }
 
+int	exec_binary(t_data *data, t_parse *cmd, char *cmdpath)
+{
+	cmd->pid = fork();
+	if (cmd->pid == 0)
+		execve(cmdpath, cmd->cmd, data->env_arr);
+	return (SUCCESS);
+}
+
+int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
+{
+	if (parent == true)
+	{
+		if(cmd->func(data))
+			return (FAIL);
+	}
+	else
+	{
+		cmd->pid = fork();
+		if (cmd->pid == 0)
+		{
+			cmd->func(data);
+			exit(0);
+		}
+	}
+	return(SUCCESS);
+}
+
+int	exec_single_cmd(t_parse *cmd, bool check, t_data *data)
+{
+	int		status;
+
+	if (cmd->func)
+		exec_builtin(data, cmd, check);
+	else
+		exec_binary(data, cmd, cmd->cmd_path);
+	waitpid(cmd->pid, &status, 0);
+	return (SUCCESS);
+}
+
+int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
+{
+	t_parse *tmp;
+	int status;
+
+	tmp = cmd_line;
+	create_pipes(data->cmd_line, cmds);
+	while (cmd_line->id != 0)
+	{
+		if (cmd_line->func)
+			exec_builtin(data, cmd_line, false);
+		else
+			exec_binary(data, cmd_line, cmd_line->cmd_path);
+		cmd_line++;
+	}
+	while (tmp->id != 0)
+	{
+		waitpid(tmp->pid, &status, 0);
+		tmp++;
+	}
+	return (SUCCESS);
+}
+
+int	handle_fds(t_parse *cmd)
+{
+	(void)cmd;
+	// while (cmd->id != 0)
+	// {
+	// 	if (cmd->infile)
+	// 	{
+	// 		here_check = ft_strncmp("heredoc", cmd->infile, 8);
+	// 		if (here_check)
+	// 		{
+	// 			cmd->fd_in = open(cmd->infile, O_RDONLY);
+	// 			if (!cmd->fd_in)
+	// 				return (error_msg(cmd->infile, FD_NONEX_ERR));
+	// 		}
+	// 		else
+	// 			break ;
+	// 	}
+	// 	if (cmd->outfile)
+	// 	{
+	// 		if (cmd->append)
+	// 			cmd->fd_out = open(cmd->outfile, O_RDWR | O_APPEND);
+	// 		else
+	// 			cmd->fd_out = open(cmd->outfile, O_RDWR | O_TRUNC);
+	// 		if (!cmd->fd_out)
+	// 			return (error_msg(cmd->outfile, FD_ACCESS_ERR));
+	// 	}
+	// 	cmd++;
+	// }
+	return (SUCCESS);
+}
+
+
 int executer(t_data *data)
 {
-	int	err;
+	// int	err;
 
-	err = 0;
-	cmd_printer(data);
-	//create_pipes(data->cmd_line, data);
-	if (data->cmds == 1)
-		err = exec_single_cmd(data->cmd_line, data);
+	// err = 0;
+	(void)data;
+	// cmd_printer(data);
+	// data->env_arr = list_to_arr(data, data->env);
+	// if (handle_fds(data->cmd_line))
+	// 	return(AGAIN);
+	// if (data->cmds == 1)
+	// 	err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	// else
 	// 	err = exec_multi_cmds(data->cmd_line, data->cmds, data);
-	if (err != 0)
-		ft_error("ERROR\n", data);
+	// if (err != 0)
+	// 	ft_error("ERROR\n", data);
 	return (0);	
 }

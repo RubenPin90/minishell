@@ -12,21 +12,29 @@ RESET := \033[0m
 
 #FILES
 SRCDIR := src
-SRC_F = init.c \
+SRC_F = sys_init.c \
+		sys_input.c \
+		sys_utils.c \
 		signals.c \
-		handle_env.c \
-		input.c \
+		env_create.c \
+		env_utils.c \
 		lexer.c \
 		lexer_utils.c \
 		lexer_checks.c \
 		expander.c \
-		buildins.c \
-		error_handling.c \
-		error_utils.c \
 		parser.c \
 		parser_utils.c \
 		cmdfinder.c \
-		executer.c
+		executer.c \
+		builtins.c \
+		builtin_cd.c \
+		builtin_echo.c \
+		builtin_exit.c \
+		builtin_export.c \
+		builtin_pwd.c \
+		builtin_unset.c \
+		error_handling.c \
+		error_utils.c
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}
 OBJ_M = ${OBJDIR}/main.o

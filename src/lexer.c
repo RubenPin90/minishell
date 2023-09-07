@@ -60,6 +60,7 @@ int	lexer(t_data *data)
 	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
 	create_list(data, &data->input);
+	count_lexlst(data->lex);
 // 	printf("data->input: %s\n", data->input);
 // ///
 // 	t_lexer *tmp = data->lex;

@@ -8,11 +8,12 @@
 # include <signal.h>
 # include <libft.h>
 # include <fcntl.h>
+# include <errno.h>
 
 # include "structs.h"
 # include "lexer.h"
-# include "buildins.h"
-# include "handle_env.h"
+# include "builtins.h"
+# include "env.h"
 # include "error_handling.h"
 # include "parser.h"
 # include "cmdfinder.h"
@@ -37,11 +38,19 @@
 void	handle_signals();
 void	receive_signal(int signum, siginfo_t *info, void *context);
 
-/*input*/
+/*sys_input*/
 int		handle_input(t_data *data);
 int		check_quotes(char *str);
 
-/*init*/
+/*sys_init*/
 void	init_data(t_data *data);
+
+/*sys_utils*/
+void	cmd_printer(t_data *data);
+void	lexer_printer(t_lexer *lex);
+int		lex_len(t_lstenv *lst);
+char	*ft_strjoin_wrapper(char *str1, char* str2, char *str3);
+char	**arr_expand(char **arr, char *str);
+int		ft_arrlen(char **arr);
 
 #endif
