@@ -6,36 +6,28 @@
 
 #include "../inc/lexer.h"
 
-/**
- * @brief Add a new node to the end of the list
- * 
- * Copies a word from the input string into 
- * @param data 
- * @param start 
- * @param len 
- * @param type 
- */
-void	add_node(t_data *data, char *lst_word, t_word *word)
+// NOTE: delete this function
+void	print_lexlst(t_data *data)
 {
-	t_lexer	*node;
+	t_lexer	*tmp = data->lex;
 
-	if (word->type == PIPE)
-		word->len = 1;
-	node = new_lexer_node(lst_word, word->type);
-	if (!node)
-		return ;
-	lexer_addback(&data->lex, node);
+	tmp = data->lex;
+	while (tmp)
+	{
+		printf("lex[%d]: %s\n", tmp->i, tmp->word);
+		tmp = tmp->next;
+	}
 }
 
 // reads through input string and copies every word/token into a node
 t_lexer	*create_list(t_data *data, char **datainput)
 {
 	char	*input;
-	char	*lst_word;
+	// char	*lst_word;
 	t_word	*word;
 
 	input = *datainput;
-	data->word = ft_calloc(sizeof(t_word), 1); // init with 0
+	data->word = ft_calloc(sizeof(t_word), 1); // TODO: init with 0
 	word = data->word;
 	while (input[word->i])
 	{
@@ -44,13 +36,9 @@ t_lexer	*create_list(t_data *data, char **datainput)
 		if (word->type == STOP)
 			break ;
 		skip_space(input, &(word->i));
-		// printf("start: %d\n", word->start);
-		lst_word = get_word(data, input, word);
-		// if (!lst_word)
-		// 	break ;
-		printf("lst_word: %s\n", lst_word);
-		add_node(data, lst_word, word);
-		printf("lex: %s=%d\n", data->lex->word, data->lex->token);
+		get_word(data, input, word);
+		add_node(data, word->str, word);
+		word->str = free_null(word->str);
 		if (word->type == PIPE)
 			word->i++;
 	}
@@ -63,16 +51,7 @@ int	lexer(t_data *data)
 	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
 	create_list(data, &data->input);
-// 	printf("data->input: %s\n", data->input);
-// ///
-// 	t_lexer *tmp = data->lex;
-// 	printf("input str in lexer.c: %s\n", data->input);
-// 	while (tmp)
-// 	{
-// 		printf("nodes in lex: %s=%d ", tmp->word, tmp->token);
-// 		tmp = tmp->next;
-// 	}
-// 	printf("\n");
-// ///
+	count_lexlst(data->lex);
+	// print_lexlst(data);
 	return (0);
 }

@@ -13,6 +13,7 @@ typedef enum s_type
 	OUTPUT,
 	APPEND,
 	HEREDOC,
+	EMPTY
 }	t_type;
 
 typedef struct s_lstenv

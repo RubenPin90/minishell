@@ -19,6 +19,7 @@ SRC_F = init.c \
 		lexer.c \
 		lexer_utils.c \
 		lexer_checks.c \
+		lexer_list_utils.c \
 		expander.c \
 		buildins.c \
 		error_handling.c \
