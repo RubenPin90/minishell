@@ -65,6 +65,7 @@ char	*expander(char *input, int *i)
 		return ("Error\n");
 	// printf("input: %s, value: %s, var_len: %d\n", input, value, var_len);
 	new = expand_input(input, new, value, var_len);
+	// printf("new: %s\n", new);
 	return (new);
 }
 

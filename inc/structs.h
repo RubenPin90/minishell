@@ -13,6 +13,7 @@ typedef enum s_type
 	OUTPUT,
 	APPEND,
 	HEREDOC,
+	EMPTY
 }	t_type;
 
 typedef struct s_lstenv
@@ -34,11 +35,12 @@ typedef struct s_lexer
 
 typedef struct s_word
 {
+	char	*str;
 	int		start;
 	int		len;
 	int		type;
 	int		i;
-	bool	quoted;
+	// bool	quoted;
 }	t_word;
 
 /**
@@ -72,6 +74,7 @@ typedef struct s_data
 	char			**paths;
 	struct s_parse	*cmd_line;
 	struct s_lexer	*lex;
+	struct s_word	*word;
 }	t_data;
 
 #endif
