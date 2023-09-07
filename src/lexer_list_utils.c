@@ -58,6 +58,7 @@ void	lexer_addback(t_lexer **lst, t_lexer *new)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
+	new->next = NULL;
 	new->prev = tmp;
 }
 
