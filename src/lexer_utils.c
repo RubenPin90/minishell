@@ -57,18 +57,31 @@ void	skip_space(char *input, int *i)
 		(*i)++;
 }
 
+void count_lexlst(t_lexer *lex)
+{
+	t_lexer *tmp;
+	int		i;
+
+	i = 0;
+	tmp = lex;
+	while (tmp)
+	{
+		tmp->i = i;
+		tmp = tmp->next;
+		i++;
+	}
+}
+
 // create a new list node for lexer struct
 t_lexer	*new_lexer_node(char *word, int token)
 {
 	t_lexer		*new;
-	static int	i;
 
 	new = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!new)
 		return (NULL);
 	new->word = word;
 	new->token = token;
-	new->i = i++;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
@@ -82,12 +95,15 @@ void	lexer_addback(t_lexer **lst, t_lexer *new)
 	if (*lst == NULL)
 	{
 		*lst = new;
+		(*lst)->next = NULL;
+		(*lst)->prev = NULL;
 		return ;
 	}
 	tmp = *lst;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
+	new->next = NULL;
 	new->prev = tmp;
 }
 

@@ -6,10 +6,10 @@ int	create_pipes(t_parse *cmd_line, int cmds)
 {
 	int i;
 
-	i = 1;
+	i = 0;
 	while(cmd_line->id != 0)
 	{
-		if (++i <= cmds)
+		if (++i < cmds)
 		{
 			if (pipe(cmd_line->fd_pipes) == -1)
 				return (error_msg("pipe", strerror(errno)));
@@ -26,7 +26,6 @@ int	exec_binary(t_data *data, t_parse *cmd, char *cmdpath)
 		execve(cmdpath, cmd->cmd, data->env_arr);
 	return (SUCCESS);
 }
-
 
 int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 {
@@ -51,7 +50,6 @@ int	exec_single_cmd(t_parse *cmd, bool check, t_data *data)
 {
 	int		status;
 
-	//redir_fds
 	if (cmd->func)
 		exec_builtin(data, cmd, check);
 	else
@@ -69,7 +67,6 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 	create_pipes(data->cmd_line, cmds);
 	while (cmd_line->id != 0)
 	{
-		redir_fds();
 		if (cmd_line->func)
 			exec_builtin(data, cmd_line, false);
 		else
@@ -84,18 +81,53 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 	return (SUCCESS);
 }
 
+int	handle_fds(t_parse *cmd)
+{
+	(void)cmd;
+	// while (cmd->id != 0)
+	// {
+	// 	if (cmd->infile)
+	// 	{
+	// 		here_check = ft_strncmp("heredoc", cmd->infile, 8);
+	// 		if (here_check)
+	// 		{
+	// 			cmd->fd_in = open(cmd->infile, O_RDONLY);
+	// 			if (!cmd->fd_in)
+	// 				return (error_msg(cmd->infile, FD_NONEX_ERR));
+	// 		}
+	// 		else
+	// 			break ;
+	// 	}
+	// 	if (cmd->outfile)
+	// 	{
+	// 		if (cmd->append)
+	// 			cmd->fd_out = open(cmd->outfile, O_RDWR | O_APPEND);
+	// 		else
+	// 			cmd->fd_out = open(cmd->outfile, O_RDWR | O_TRUNC);
+	// 		if (!cmd->fd_out)
+	// 			return (error_msg(cmd->outfile, FD_ACCESS_ERR));
+	// 	}
+	// 	cmd++;
+	// }
+	return (SUCCESS);
+}
+
+
 int executer(t_data *data)
 {
-	int	err;
+	// int	err;
 
-	err = 0;
-	cmd_printer(data);
-	data->env_arr = list_to_arr(data, data->env);
-	if (data->cmds == 1)
-		err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
-	else
-		err = exec_multi_cmds(data->cmd_line, data->cmds, data);
-	if (err != 0)
-		ft_error("ERROR\n", data);
+	// err = 0;
+	(void)data;
+	// cmd_printer(data);
+	// data->env_arr = list_to_arr(data, data->env);
+	// if (handle_fds(data->cmd_line))
+	// 	return(AGAIN);
+	// if (data->cmds == 1)
+	// 	err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
+	// else
+	// 	err = exec_multi_cmds(data->cmd_line, data->cmds, data);
+	// if (err != 0)
+	// 	ft_error("ERROR\n", data);
 	return (0);	
 }

@@ -67,36 +67,34 @@ int tkn_counter(t_lexer *lex, t_type tkn, t_type end)
  * @param file Word at current node.
  * @return int 1 for error, 0 for SUCCESS.
  */
-int	handle_infile(t_parse *cmd_line, char *file)
+int	handle_infile(t_parse *cmd_line, char *file, int type)
 {
-	int fd;
-
-	fd = open(file, O_RDONLY);
-	if (!fd)
-		return (error_msg(file, FD_NONEX_ERR));
-	close(fd);
-	if (cmd_line->infile)
-		free(cmd_line->infile);
-	cmd_line->infile = ft_strdup(file);
-	if (!cmd_line->infile)
-		return (FAIL);
+	if (type == HEREDOC)
+		if (handle_heredoc(cmd_line, file))
+			return (FAIL);
+	if (type == INPUT)
+	{
+		if (access(file, F_OK | R_OK) == -1)
+			return (error_msg(file, strerror(errno)));
+		if (cmd_line->infile)
+			free(cmd_line->infile);
+		cmd_line->infile = ft_strdup(file);
+		if (!cmd_line->infile)
+			return (FAIL);
+	}
 	return (SUCCESS);
 }
 
 /**
  * @brief Heredoc-token is checked and copied into current cmd_line.
  * 
- * Copies Heredoc-token into cmd_line. If there is already a heredoc
- * old string is freed and new string will replace it.
  * @param cmd_line Struct of current command.
  * @param file Word at current node.
  * @return int 1 for error, 0 for SUCCESS.
  */
-int	handle_heredoc(t_parse *cmd_line, char *word)
+int	handle_heredoc(t_parse *cmd_line, char *delim)
 {
-	if (cmd_line->heredoc)
-		free(cmd_line->heredoc);
-	cmd_line->heredoc = ft_strdup(word);
+	cmd_line->heredoc = arr_expand(cmd_line->heredoc, delim);
 	if (!cmd_line->heredoc)
 		return (FAIL);
 	return (SUCCESS);

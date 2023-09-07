@@ -14,6 +14,7 @@ void	free_lexer(t_lexer **lex);
 void	skip_space(char *input, int *i);
 char	*get_quote(t_data *data, char *input, int *i, char quote);
 char	*get_word(t_data *data, char *input, t_word *word);
+void	count_lexlst(t_lexer *lex);
 
 // lexer_checks.c
 int		check_quotes(char *str);

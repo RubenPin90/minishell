@@ -17,19 +17,26 @@ void cmd_printer(t_data *data)
 		printf("infile: %s\n", tmp->infile);
 		printf("outfile: %s\n", tmp->outfile);
 		printf("append: %d\n", tmp->append);
-		printf("heredoc: %s\n", tmp->heredoc);
+		lexer_printer(tmp->redir);
+		// if (tmp->heredoc)
+		// {
+		// 	printf("heredoc:");
+		// 	for (int i = 0; tmp->heredoc[i]; i++)
+		// 		printf("%s", tmp->heredoc[i]);
+		// 	printf("\n");
+		// }
 		tmp++;	
 	}
 }
 
-void	lexer_printer(t_data *data)
+void	lexer_printer(t_lexer *lex)
 {
 	t_lexer *tmp;
 
-	tmp = data->lex;
+	tmp = lex;
 	while (tmp)
 	{
-		printf("lex[%d]: %s=%d", tmp->i, tmp->word, tmp->token);
+		printf("lex[%d]: %s=%d\n", tmp->i, tmp->word, tmp->token);
 		tmp = tmp->next;
 	}
 }
@@ -64,4 +71,38 @@ char *ft_strjoin_wrapper(char *str1, char*str2, char *str3)
 	}
 	tmp = free_null(tmp);
 	return(strnew);
+}
+
+char **arr_expand(char **arr, char *str)
+{
+	int		i;
+	int		arrlen;
+	char	**new_arr;
+
+	if (!arr && !str)
+		return (NULL);
+	arrlen = 0;
+	if (arr)
+		arrlen = ft_arrlen(arr);
+	new_arr =  ft_calloc(arrlen + 1, sizeof(char *));
+	if (!new_arr)
+		return (NULL);
+	i = -1;
+	while(++i < arrlen)
+		new_arr[i] = arr[i];
+	new_arr[i] = ft_strdup(str);
+	if (!new_arr[i])
+		new_arr = free_arr(new_arr);
+	arr = free_arr(arr);
+	return (new_arr);
+}
+
+int	ft_arrlen(char **arr)
+{
+	int i;
+
+	i = 0;
+	while(arr && arr[i])	
+		i++;
+	return(i);
 }
