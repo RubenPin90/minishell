@@ -51,26 +51,26 @@ int	test_quotes(char *quote, char *expected)
 
 int	test_expander()
 {
-	printf(YELLOW"----------test-list----------\n"RESET);
-	test_quotes("hello", "hello");
-	test_quotes("\"hello\"", "hello");
-	test_quotes("\"hello\" world", "hello world");
-	test_quotes("\"hello\"world", "helloworld");
-	test_quotes("\"hello\"\"world\"", "helloworld");
-	test_quotes("\"hello\" \"world\"", "hello world");
-	// printf(YELLOW"----------test-expander----------\n"RESET);
-	// test_quotes("\"$USER\"", "aapostol");
-	// test_quotes("'$USER'", "$USER");
-	// test_quotes("\"'$USER'\"", "'aapostol'");
-	// test_quotes("'\"$USER\"'", "\"$USER\"");
-	// test_quotes("$\"USER\"", "USER");  
-	// test_quotes("$'USER'", "USER");
-	// test_quotes("\"$'USER'\"", "$'USER'");
-	// test_quotes("'$\"USER\"'", "$\"USER\"");
-	// test_quotes("\"$\"USER\"\"", "$USER");
-	// test_quotes("'$'USER''", "$USER");
-	// test_quotes("\"\"$USER\"\"", "aapostol");
-	// test_quotes("''$USER''", "aapostol");
+	// printf(YELLOW"----------test-list----------\n"RESET);
+	// test_quotes("hello", "hello");
+	// test_quotes("\"hello\"", "hello");
+	// test_quotes("\"hello\" world", "hello world");
+	// test_quotes("\"hello\"world", "helloworld");
+	// test_quotes("\"hello\"\"world\"", "helloworld");
+	// test_quotes("\"hello\" \"world\"", "hello world");
+	printf(YELLOW"----------test-expander----------\n"RESET);
+	test_quotes("\"$USER\"", "aapostol");
+	test_quotes("'$USER'", "$USER");
+	test_quotes("\"'$USER'\"", "'aapostol'");
+	test_quotes("'\"$USER\"'", "\"$USER\"");
+	test_quotes("$\"USER\"", "USER");  
+	test_quotes("$'USER'", "USER");
+	test_quotes("\"$'USER'\"", "$'USER'");
+	test_quotes("'$\"USER\"'", "$\"USER\"");
+	test_quotes("\"$\"USER\"\"", "$USER");
+	test_quotes("'$'USER''", "$USER");
+	test_quotes("\"\"$USER\"\"", "aapostol");
+	test_quotes("''$USER''", "aapostol");
 	return (0);
 }
 

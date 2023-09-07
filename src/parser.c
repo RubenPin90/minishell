@@ -90,7 +90,7 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 	if ((*lst)->token == PIPE)
 		return (SUCCESS);
 	check = ft_push_redir(lst, &cmd_line->redir);
-	if (!(*lst)->next)
+	if ((*lst)->token != WORD && !(*lst)->next)
 		return (SUCCESS);
 	if (check == false)
 		*lst = (*lst)->next;
@@ -160,8 +160,6 @@ int	parser(t_data *data)
 	set_ids(data->cmd_line, cmd_linelen);
 	lst = data->lex;
 	i = 0;
-	printf("---before:\n");
-	lexer_printer(data->lex);
 	while (lst)
 	{
 		if (init_cmd(lst, data->cmd_line + i))
@@ -175,10 +173,7 @@ int	parser(t_data *data)
 	data->lex = lst;
 	while(data->lex->prev)
 		data->lex = data->lex->prev;
-	printf("---after:\n");
-	printf("------lexer:\n");
-	lexer_printer(data->lex);
-	printf("------parser:\n");
+	lexer_printer(data->lex, true);
 	cmd_printer(data);
 	return (SUCCESS);
 }

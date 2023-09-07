@@ -118,8 +118,8 @@ int executer(t_data *data)
 	// int	err;
 
 	// err = 0;
-	(void)data;
-	// cmd_printer(data);
+	printf("\n_______EXECUTOR:\n\n");
+	cmd_printer(data);
 	// data->env_arr = list_to_arr(data, data->env);
 	// if (handle_fds(data->cmd_line))
 	// 	return(AGAIN);

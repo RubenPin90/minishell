@@ -5,6 +5,7 @@ void cmd_printer(t_data *data)
 	t_parse *tmp;
 
 	tmp = data->cmd_line;
+	printf(YELLOW"_______CMD_PRINTER_______\n\n"RESET);
 	printf("input: %s\n", data->input);
 	printf("cmds: %d\n", data->cmds);
 	while (tmp->id != 0)
@@ -17,7 +18,7 @@ void cmd_printer(t_data *data)
 		printf("infile: %s\n", tmp->infile);
 		printf("outfile: %s\n", tmp->outfile);
 		printf("append: %d\n", tmp->append);
-		lexer_printer(tmp->redir);
+		lexer_printer(tmp->redir, false);
 		// if (tmp->heredoc)
 		// {
 		// 	printf("heredoc:");
@@ -29,11 +30,13 @@ void cmd_printer(t_data *data)
 	}
 }
 
-void	lexer_printer(t_lexer *lex)
+void	lexer_printer(t_lexer *lex, int check)
 {
 	t_lexer *tmp;
 
 	tmp = lex;
+	if (check)
+		printf(YELLOW"_______LEX_PRINTER_______\n\n"RESET);
 	while (tmp)
 	{
 		printf("lex[%d]: %s=%d\n", tmp->i, tmp->word, tmp->token);
