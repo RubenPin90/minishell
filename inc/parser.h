@@ -4,7 +4,7 @@
 
 /*parser*/
 int		handle_redir(t_data *data, t_type token, t_parse *cmd_line, char *word);
-int		parser(t_data *data);
+int		parser(t_data *data, t_lexer *lst);
 int		init_cmd(t_lexer *cmd_list, t_parse *current_cmd);
 int		extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd);
 
