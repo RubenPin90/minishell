@@ -29,40 +29,34 @@ int	add_redir(t_parse *cmd_line, t_lexer *node)
 }
 
 
-int	ft_push_redir(t_lexer **a, t_lexer **b)
+bool	ft_push_redir(t_lexer **a, t_lexer **b, bool check)
 {
 	t_lexer	*tmp;
-	bool check;
 
 	tmp = *a;
-	check = false;
 	if ((*a)->prev && (*a)->next)
 	{
 		(*a)->prev->next = (*a)->next;
 		(*a)->next->prev = (*a)->prev;
 		*a = (*a)->prev;
-		lexer_addback(b, tmp);
 	}
 	else if ((*a)->prev && !(*a)->next)
 	{
 		(*a)->prev->next = NULL;
 		*a = (*a)->prev;
-		lexer_addback(b, tmp);
 	}
 	else if (!(*a)->prev && (*a)->next)
 	{
 		(*a)->next->prev = NULL;
 		*a = (*a)->next;
-		lexer_addback(b, tmp);
 		check = true;
 	}
 	else
-	{
 		*a = NULL;
-		lexer_addback(b, tmp);
-	}
+	lexer_addback(b, tmp);
 	return (check);
 }
+
 /**
  * @brief Transfer and assign tokens into each command.  
  * 
@@ -79,9 +73,10 @@ int	ft_push_redir(t_lexer **a, t_lexer **b)
 int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 {
 	char **tmp;
-	int check;
+	bool check;
 
 	tmp = cmd;
+	check = false;
 	while (*lst && (*lst)->token == WORD)
 	{
 		*tmp = ft_strdup((*lst)->word);
@@ -94,7 +89,7 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 	}
 	if ((*lst)->token == PIPE)
 		return (SUCCESS);
-	check = ft_push_redir(lst, &cmd_line->redir);
+	check = ft_push_redir(lst, &cmd_line->redir, check);
 	if (!*lst || (check == false && !(*lst)->next))
 		return (SUCCESS);
 	if (check == false)
@@ -167,15 +162,12 @@ int	parser(t_data *data, t_lexer *lst)
 	{
 		if (init_cmd(lst, data->cmd_line + i))
 			ft_error(MALLOC_ERR, data);
-		if (extract_cmd(data, &lst, data->cmd_line + i, data->cmd_line[i].cmd))
-			return (AGAIN);
+		extract_cmd(data, &lst, data->cmd_line + i, data->cmd_line[i].cmd);
 		if (i++ == data->cmds - 1)
 			break ;
 		lst = lst->next;
 	}
 	while(lst && lst->prev)
 		lst = lst->prev;
-	lexer_printer(lst, true);
-	cmd_printer(data);
 	return (SUCCESS);
 }
