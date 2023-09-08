@@ -46,11 +46,18 @@ t_lexer	*create_list(t_data *data, char **datainput)
 	return (data->lex);
 }
 
+// FIXME: expander, create_list was commented out, quotes need to be handled by lexer_utils
 int	lexer(t_data *data)
 {
+	char	*tmp;
+
 	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
-	create_list(data, &data->input);
+	tmp = data->input;
+	data->input = expander(data, tmp);
+	tmp = free_null(tmp);
+	printf("data->input: %s\n", data->input);
+	// create_list(data, &data->input);
 	count_lexlst(data->lex);
 	// print_lexlst(data);
 	return (0);
