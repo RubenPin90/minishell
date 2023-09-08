@@ -9,7 +9,7 @@ int	handle_input(t_data *data)
 		return (AGAIN);
 	add_history(data->input);
 	lexer(data);
-	if (parser(data))
+	if (parser(data, data->lex))
 		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
 		return(FAIL);

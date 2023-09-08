@@ -56,6 +56,11 @@ int	ft_push_redir(t_lexer **a, t_lexer **b)
 		lexer_addback(b, tmp);
 		check = true;
 	}
+	else
+	{
+		*a = NULL;
+		lexer_addback(b, tmp);
+	}
 	return (check);
 }
 /**
@@ -90,7 +95,7 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 	if ((*lst)->token == PIPE)
 		return (SUCCESS);
 	check = ft_push_redir(lst, &cmd_line->redir);
-	if ((*lst)->token != WORD && !(*lst)->next)
+	if (!*lst || (check == false && !(*lst)->next))
 		return (SUCCESS);
 	if (check == false)
 		*lst = (*lst)->next;
@@ -146,9 +151,8 @@ void set_ids(t_parse *cmd_line, int len)
  * @param data General data struct.
  * @return int 1 if error; 0 if success
 */
-int	parser(t_data *data)
+int	parser(t_data *data, t_lexer *lst)
 {
-	t_lexer *lst;
 	int		cmd_linelen;
 	int		i;
 
@@ -158,7 +162,6 @@ int	parser(t_data *data)
 	if (!data->cmd_line)
 		ft_error(MALLOC_ERR, data);
 	set_ids(data->cmd_line, cmd_linelen);
-	lst = data->lex;
 	i = 0;
 	while (lst)
 	{
@@ -170,10 +173,9 @@ int	parser(t_data *data)
 			break ;
 		lst = lst->next;
 	}
-	data->lex = lst;
-	while(data->lex->prev)
-		data->lex = data->lex->prev;
-	lexer_printer(data->lex, true);
+	while(lst && lst->prev)
+		lst = lst->prev;
+	lexer_printer(lst, true);
 	cmd_printer(data);
 	return (SUCCESS);
 }
