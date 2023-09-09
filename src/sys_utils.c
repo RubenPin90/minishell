@@ -19,13 +19,7 @@ void cmd_printer(t_data *data)
 		printf("outfile: %s\n", tmp->outfile);
 		printf("append: %d\n", tmp->append);
 		lexer_printer(tmp->redir, false);
-		// if (tmp->heredoc)
-		// {
-		// 	printf("heredoc:");
-		// 	for (int i = 0; tmp->heredoc[i]; i++)
-		// 		printf("%s", tmp->heredoc[i]);
-		// 	printf("\n");
-		// }
+		printf("fd_in: %d, fd_out: %d", tmp->fd_in, tmp->fd_out);
 		tmp++;	
 	}
 }

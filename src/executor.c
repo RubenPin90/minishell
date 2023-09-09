@@ -1,5 +1,5 @@
 
-#include "executer.h"
+#include "executor.h"
 #include <sys/wait.h>
 
 int	create_pipes(t_parse *cmd_line, int cmds)
@@ -81,53 +81,25 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 	return (SUCCESS);
 }
 
-int	handle_fds(t_parse *cmd)
+int executor(t_data *data)
 {
-	(void)cmd;
-	// while (cmd->id != 0)
-	// {
-	// 	if (cmd->infile)
-	// 	{
-	// 		here_check = ft_strncmp("heredoc", cmd->infile, 8);
-	// 		if (here_check)
-	// 		{
-	// 			cmd->fd_in = open(cmd->infile, O_RDONLY);
-	// 			if (!cmd->fd_in)
-	// 				return (error_msg(cmd->infile, FD_NONEX_ERR));
-	// 		}
-	// 		else
-	// 			break ;
-	// 	}
-	// 	if (cmd->outfile)
-	// 	{
-	// 		if (cmd->append)
-	// 			cmd->fd_out = open(cmd->outfile, O_RDWR | O_APPEND);
-	// 		else
-	// 			cmd->fd_out = open(cmd->outfile, O_RDWR | O_TRUNC);
-	// 		if (!cmd->fd_out)
-	// 			return (error_msg(cmd->outfile, FD_ACCESS_ERR));
-	// 	}
-	// 	cmd++;
-	// }
-	return (SUCCESS);
-}
+	int	err;
 
-
-int executer(t_data *data)
-{
-	// int	err;
-
-	// err = 0;
+	err = 0;
+	data->env_arr = list_to_arr(data, data->env);
+	if (handle_heredoc(data, data->cmd_line))
+		return (AGAIN);
+	if (cmdfinder(data, data->cmd_line))
+		return(AGAIN);
+	if (handle_fds(data, data->cmd_line))
+		return(AGAIN);
 	printf("\n_______EXECUTOR:\n\n");
 	cmd_printer(data);
-	// data->env_arr = list_to_arr(data, data->env);
-	// if (handle_fds(data->cmd_line))
-	// 	return(AGAIN);
-	// if (data->cmds == 1)
-	// 	err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
-	// else
-	// 	err = exec_multi_cmds(data->cmd_line, data->cmds, data);
-	// if (err != 0)
-	// 	ft_error("ERROR\n", data);
-	return (0);	
+	if (data->cmds == 1)
+		err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
+	else
+		err = exec_multi_cmds(data->cmd_line, data->cmds, data);
+	if (err != 0)
+		ft_error("ERROR\n", data);
+	return (SUCCESS);	
 }

@@ -5,30 +5,6 @@
 
 #include "parser.h"
 
-int	handle_redir(t_data *data, t_type token, t_parse *cmd_line, char *word)
-{
-	int ret;
-
-	ret = SUCCESS;
-	if (token == INPUT || token == HEREDOC)
-		ret = handle_infile(cmd_line, word, token);
-	if (token == OUTPUT || token == APPEND)
-		ret = handle_outfile(cmd_line, word, token);
-	// if (token == HEREDOC)
-	// 	ret = handle_heredoc(cmd_line, word);
-	if (ret == FAIL)
-		ft_error(MALLOC_ERR, data);
-	return (ret);
-}
-
-int	add_redir(t_parse *cmd_line, t_lexer *node)
-{
-	if (!cmd_line->redir)
-		cmd_line->redir = node;
-	return(SUCCESS);
-}
-
-
 bool	ft_push_redir(t_lexer **a, t_lexer **b, bool check)
 {
 	t_lexer	*tmp;
