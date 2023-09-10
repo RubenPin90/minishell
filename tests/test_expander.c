@@ -23,33 +23,52 @@ void	print_output(t_data *data)
 	printf("\n");
 }
 
-int	test_quotes(char *quote, char *expected)
+// int	test_quotes(char *quote, char *expected)
+// {
+// 	// int		i;
+// 	// char	*value = "aapostol";
+// 	char	*output;
+// 	t_word	word;
+// 	t_data	data;
+
+// 	init_data(&data);
+// 	word.i = 0;
+// 	word.start = word.i;
+// 	// printf("before expander-----\nquote: %s, expected: %s\n", quote, expected);
+// 	// i = find_dsign(quote);
+// 	data.lex = create_list(&data, &quote);
+// 	count_lexlst(data.lex);
+// 	output = data.lex->word;
+// 	printf("quote: %s\nexpected: %s\noutput: ", quote, expected);
+// 	print_output(&data);
+// 	if(!strcmp(output, expected))
+// 		printf(GREEN"OK\n"RESET);
+// 	else
+// 		printf(RED"KO\n"RESET);
+// 	free(output);
+// 	return (0);
+// }
+
+int	test_expander(char *quote, char *expected)
 {
-	// int		i;
-	// char	*value = "aapostol";
-	char	*output;
-	t_word	word;
-	t_data	data;
+	t_data		data;
+	extern char	**environ;
 
 	init_data(&data);
-	word.i = 0;
-	word.start = word.i;
-	// printf("before expander-----\nquote: %s, expected: %s\n", quote, expected);
-	// i = find_dsign(quote);
-	data.lex = create_list(&data, &quote);
-	count_lexlst(data.lex);
-	output = data.lex->word;
-	printf("quote: %s\nexpected: %s\noutput: ", quote, expected);
-	print_output(&data);
-	if(!strcmp(output, expected))
+	data.env = copy_envp(environ);
+	data.input = ft_strdup(quote);
+	printf("before expander-----\nquote: %s, expected: %s\n", data.input, expected);
+	expander(&data, data.input);
+	printf("data->input: %s\nexpected: %s\n", data.input, expected);
+	if(!strcmp(data.input, expected))
 		printf(GREEN"OK\n"RESET);
 	else
 		printf(RED"KO\n"RESET);
-	free(output);
+	ft_cleanup(&data, true);
 	return (0);
 }
 
-int	test_expander()
+int	test_lexer_expander()
 {
 	// printf(YELLOW"----------test-list----------\n"RESET);
 	// test_quotes("hello", "hello");
@@ -58,19 +77,59 @@ int	test_expander()
 	// test_quotes("\"hello\"world", "helloworld");
 	// test_quotes("\"hello\"\"world\"", "helloworld");
 	// test_quotes("\"hello\" \"world\"", "hello world");
+	// printf(YELLOW"----------test-quotes----------\n"RESET);
+	// test_quotes("\"$USER\"", "aapostol");
+	// test_quotes("'$USER'", "$USER");
+	// test_quotes("\"'$USER'\"", "'aapostol'");
+	// test_quotes("'\"$USER\"'", "\"$USER\"");
+	// test_quotes("$\"USER\"", "USER");
+	// test_quotes("$'USER'", "USER");
+	// test_quotes("\"$'USER'\"", "$'USER'");
+	// test_quotes("'$\"USER\"'", "$\"USER\"");
+	// test_quotes("\"$\"USER\"\"", "$USER");
+	// test_quotes("'$'USER''", "$USER");
+	// test_quotes("\"\"$USER\"\"", "aapostol");
+	// test_quotes("''$USER''", "aapostol");
 	printf(YELLOW"----------test-expander----------\n"RESET);
-	test_quotes("\"$USER\"", "aapostol");
-	test_quotes("'$USER'", "$USER");
-	test_quotes("\"'$USER'\"", "'aapostol'");
-	test_quotes("'\"$USER\"'", "\"$USER\"");
-	test_quotes("$\"USER\"", "USER");  
-	test_quotes("$'USER'", "USER");
-	test_quotes("\"$'USER'\"", "$'USER'");
-	test_quotes("'$\"USER\"'", "$\"USER\"");
-	test_quotes("\"$\"USER\"\"", "$USER");
-	test_quotes("'$'USER''", "$USER");
-	test_quotes("\"\"$USER\"\"", "aapostol");
-	test_quotes("''$USER''", "aapostol");
+	// test_expander("\"$USER\"", "ada");
+	// test_expander("'$USER'", "$USER");
+	// test_expander("\"'$USER'\"", "'ada'");
+	// test_expander("'\"$USER\"'", "\"$USER\"");
+	// test_expander("$\"USER\"", "USER");
+	// test_expander("$'USER'", "USER");
+	// test_expander("\"$'USER'\"", "$'USER'");
+	// test_expander("'$\"USER\"'", "$\"USER\"");
+	// test_expander("\"$\"USER\"\"", "$USER");
+	// test_expander("'$'USER''", "$USER");
+	// test_expander("\"\"$USER\"\"", "ada");
+	// NOTE: result not yet freed from quotes
+	test_expander("''$USER''", "''ada''");
+	test_expander("$USER", "ada");
+	test_expander("\"$\"USER", "\"$\"USER");
+	test_expander("'$'USER", "'$'USER");
+	test_expander("'$USER'", "'$USER'");
+	test_expander("\"$USER\"", "\"ada\"");
+	test_expander("$USERR", "");
+	test_expander("'$A'\"$USER'ada'\"", "'$A'\"ada'ada'\"");
+	test_expander("\"   $    USER\"", "\"   $    USER\"");
+	test_expander("   $    USER", "   $    USER");
+	test_expander("$\"$USER\"", "\"ada\"");
+	test_expander("\"$\"", "\"$\"");
+	test_expander("'$'", "'$'");
+	test_expander("\"  $  \"", "\"  $  \"");
+	test_expander("$\"\"", "\"\"");
+	test_expander("$\"abc\"", "\"abc\"");
+	test_expander("\"$USER\"", "\"ada\"");
+	test_expander("'$USER'", "'$USER'");
+	test_expander("\"'$USER'\"", "\"'ada'\"");
+	test_expander("'\"$USER\"'", "'\"$USER\"'");
+	test_expander("$\"USER\"", "\"USER\"");
+	test_expander("$'USER'", "'USER'");
+	test_expander("\"$'USER'\"", "\"$'USER'\"");
+	test_expander("'$\"USER\"'", "'$\"USER\"'");
+	test_expander("\"$\"USER\"\"", "\"$\"USER\"\"");
+	test_expander("'$'USER''", "'$'USER''");
+	test_expander("\"\"$USER\"\"", "\"\"ada\"\"");
 	return (0);
 }
 

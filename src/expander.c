@@ -1,23 +1,32 @@
 #include "../inc/lexer.h"
 
-char	*expand_input(char *input, char *new, char *value, int var_len)
+char	*expand_input(char *input, int index, char *value, int var_len)
 {
-	int	i;
-	int	j;
-	int	k;
+	char	*new;
+	int		str_len;
+	int		i;
+	int		j;
+	int		k;
 
+	str_len = ft_strlen(input) - var_len + ft_strlen(value);
+	printf("str_len: %d\n", str_len);
+	new = (char *)ft_calloc(str_len + 1, sizeof(char));
+	if (!new)
+		return (NULL);
 	i = 0;
-	while (input[i] != '$')
+	while (i != index)
 	{
 		new[i] = input[i];
 		i++;
 	}
+	printf("new: %s\n", new);
 	j = 0;
 	while (value[j])
 	{
 		new[i + j] = value[j];
 		j++;
 	}
+	printf("new: %s\n", new);
 	k = i + var_len;
 	while (input[k])
 	{
@@ -25,47 +34,92 @@ char	*expand_input(char *input, char *new, char *value, int var_len)
 		i++;
 		k++;
 	}
+	printf("new: %s\n", new);
 	return (new);
 }
 
 int	get_var_len(char *input, int i)
 {
+	int	len;
+
+	len = 0;
 	while (input[i] && !hard_cut(input[i]))
+	{
 		i++;
-	return (i);
+		len++;
+	}
+	return (len);
 }
 
-char	*expander(t_data *data, char *input)
+char	*get_value(t_data *data, char *input, int start, int len)
 {
-	char 	value[] = "aapostol";
+	char	*var;
+	char	*val;
+
+	var = ft_substr(input, start, len);
+	if (!var)
+		ft_error(MALLOC_ERR, data);
+	val = find_envkey(data->env, var);
+	var = free_null(var);
+	if (!val)
+		return (ft_strdup(""));
+	return (val);
+}
+
+void	expander(t_data *data, char *input)
+{
+	char 	*value;
 	char 	*new;
 	int		var_len;
-	int		str_len;
 	int		i;
+	char	*tmp;
+	bool	expand;
+	bool	quoted;
 
 	i = 0;
-	(void)data;
+	expand = true;
+	quoted = false;
 	while (input[i])
 	{
-		if (input[i] == '$')
+		if (input[i] == '"') // || input[i] == '\'')
 		{
-			if (input[i + 1] == ' ' || input[i + 1] == '"' || 
-			input[i + 1] == '\'')
-				i++;
+			if (quoted == false)
+				quoted = true;
 			else
-			{
+				quoted = false;
+		}
+		if (input[i] == '\'' && quoted == false)
+		{
+			if (expand == true)
+				expand = false;
+			else
+				expand = true;
+		}
+		if (input[i] == '$' && input[i + 1] && (input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
+			i++;
+		if (input[i] == '$' && expand == true)
+		{
+			// if (input[i + 1] && (input[i + 1] == ' ' || input[i + 1] == '"' || 
+			// input[i + 1] == '\'') && quoted == false)
+			// 	i++;
+			// else
+			// {
+				printf("i: %d\n", i);
 				var_len = get_var_len(input, i);
-				str_len = ft_strlen(input) - var_len + ft_strlen(value);
-				new = (char *)ft_calloc(str_len + 1, sizeof(char));
+				value = get_value(data, input, i + 1, var_len - 1);
+				if (!value)
+					ft_error(MALLOC_ERR, data);
+				new = expand_input(input, i, value, var_len);
 				if (!new)
 					ft_error(MALLOC_ERR, data);
-				new = expand_input(input, new, value, var_len);
-				i = -1;
+				printf("new: %s=%p, %ld\n", new, new, ft_strlen(new));
+				tmp = input;
 				input = new;
-			}
+				tmp = free_null(tmp);
+				data->input = input;
+			// }
 		}
 		if (input[i])
 			i++;
 	}
-	return (input);
 }

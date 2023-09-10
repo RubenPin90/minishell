@@ -32,6 +32,6 @@ int		get_len(char *input, int *i, char quote);
 
 
 // expander.c
-char	*expander(t_data *data, char *input);
+void	expander(t_data *data, char *input);
 
 #endif
