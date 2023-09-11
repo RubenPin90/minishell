@@ -31,6 +31,7 @@ t_lexer	*create_list(t_data *data, char **datainput)
 	word = data->word;
 	while (input[word->i])
 	{
+		// printf(GREEN"input[word->i]: %c\n"RESET, input[word->i]);
 		skip_space(input, &word->i);
 		word->type = check_type(input, &(word->i));
 		if (word->type == STOP)
@@ -38,6 +39,7 @@ t_lexer	*create_list(t_data *data, char **datainput)
 		skip_space(input, &(word->i));
 		get_word(data, input, word);
 		add_node(data, word->str, word);
+		printf("node: %s\n", word->str);
 		word->str = free_null(word->str);
 		if (word->type == PIPE)
 			word->i++;
@@ -53,7 +55,7 @@ int	lexer(t_data *data)
 		return (1);
 	expander(data, data->input);
 	create_list(data, &data->input);
-	// count_lexlst(data->lex);
-	// print_lexlst(data);
+	count_lexlst(data->lex);
+	print_lexlst(data);
 	return (0);
 }

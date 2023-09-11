@@ -10,10 +10,12 @@ t_lexer	*create_list(t_data *data, char **datainput);
 char	*get_word(t_data *data, char *input, t_word *word);
 char	*handle_unquoted(t_data *data, char *input, int i);
 char	*handle_quoted(t_data *data, char *input, t_word *word, char quote);
+int		get_len(t_data *data, char *input, int *i, char quote);
 int		unquoted_len(char *input, int *i);
 int		quoted_len(char *input, int *i, char quote);
 void	skip_space(char *input, int *i);
 int		hard_cut(char c);
+int		soft_cut(char c);
 
 // lexer_checks.c
 int		check_quotes(char *str);
@@ -28,7 +30,6 @@ t_lexer	*new_lexer_node(char *word, int token);
 void	lexer_addback(t_lexer **lst, t_lexer *new);
 void	count_lexlst(t_lexer *lex);
 void	free_lexer(t_lexer **lex);
-int		get_len(char *input, int *i, char quote);
 
 
 // expander.c

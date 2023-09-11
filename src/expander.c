@@ -43,7 +43,7 @@ int	get_var_len(char *input, int i)
 	int	len;
 
 	len = 0;
-	while (input[i] && !hard_cut(input[i]))
+	while (input[i] && !soft_cut(input[i]))
 	{
 		i++;
 		len++;
@@ -96,7 +96,7 @@ void	expander(t_data *data, char *input)
 			else
 				expand = true;
 		}
-		// printf("input[i]: %c quoted: %d\n", input[i], quoted);
+		printf("input[i]: %c quoted: %d\n", input[i], quoted);
 		// if (input[i] == '$' && input[i + 1] && (input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
 		// 	;
 		if (input[i] == '$' && expand == true && input[i + 1] && !(input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
