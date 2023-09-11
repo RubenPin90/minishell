@@ -130,6 +130,10 @@ int	test_lexer_expander()
 	test_expander("\"$\"USER\"\"", "\"$\"USER\"\"");
 	test_expander("'$'USER''", "'$'USER''");
 	test_expander("\"\"$USER\"\"", "\"\"ada\"\"");
+	test_expander("\"$\"abc\"\"", "\"$\"abc\"\"");
+	test_expander("$\"\"", "\"\"");
+	test_expander("\"\"\"\"$\"\"\"\"", "\"\"\"\"\"\"\"\"");
+	test_expander("\"$\" \"\"\"\"$\"\"\"\"", "\"$\" \"\"\"\"\"\"\"\"");
 	test_expander("\"$hello\" how are you\"$\" \"\"\"\"$\"\"\"\"", "\"\" how are you\"$\" \"\"\"\"\"\"\"\"");
 	return (0);
 }

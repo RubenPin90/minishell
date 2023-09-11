@@ -9,7 +9,7 @@ char	*expand_input(char *input, int index, char *value, int var_len)
 	int		k;
 
 	str_len = ft_strlen(input) - var_len + ft_strlen(value);
-	printf("str_len: %d\n", str_len);
+	// printf("str_len: %d\n", str_len);
 	new = (char *)ft_calloc(str_len + 1, sizeof(char));
 	if (!new)
 		return (NULL);
@@ -19,14 +19,14 @@ char	*expand_input(char *input, int index, char *value, int var_len)
 		new[i] = input[i];
 		i++;
 	}
-	printf("new: %s\n", new);
+	// printf("new: %s\n", new);
 	j = 0;
 	while (value[j])
 	{
 		new[i + j] = value[j];
 		j++;
 	}
-	printf("new: %s\n", new);
+	// printf("new: %s\n", new);
 	k = i + var_len;
 	while (input[k])
 	{
@@ -81,7 +81,7 @@ void	expander(t_data *data, char *input)
 	quoted = false;
 	while (input[i])
 	{
-		printf("input[i]: %c\n", input[i]);
+		// printf("input[i]: %c\n", input[i]);
 		if (input[i] == '"') // || input[i] == '\'')
 		{
 			if (quoted == false)
@@ -96,17 +96,17 @@ void	expander(t_data *data, char *input)
 			else
 				expand = true;
 		}
-		printf("quoted: %d\n", quoted);
-		if (input[i] == '$' && input[i + 1] && (input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
-			i++;
-		if (input[i] == '$' && expand == true)
+		// printf("input[i]: %c quoted: %d\n", input[i], quoted);
+		// if (input[i] == '$' && input[i + 1] && (input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
+		// 	;
+		if (input[i] == '$' && expand == true && input[i + 1] && !(input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
 		{
 			// if (input[i + 1] && (input[i + 1] == ' ' || input[i + 1] == '"' || 
 			// input[i + 1] == '\'') && quoted == false)
 			// 	i++;
 			// else
 			// {
-				printf("i: %d\n", i);
+				// printf("i: %d\n", i);
 				var_len = get_var_len(input, i);
 				value = get_value(data, input, i + 1, var_len - 1);
 				if (!value)
