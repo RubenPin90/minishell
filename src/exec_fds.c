@@ -6,10 +6,8 @@ int	handle_fds(t_data *data, t_parse *cmd)
 	{
 		if(cmd->redir)
 		{
-			if (handle_infile(cmd, cmd->redir))
-				ft_error(MALLOC_ERR, data);
-			if (handle_outfile(cmd, cmd->redir))
-				ft_error(MALLOC_ERR, data);
+			handle_infile(data, cmd, cmd->redir);
+			handle_outfile(data, cmd, cmd->redir);
 		}
 		cmd++;
 	}
@@ -17,13 +15,14 @@ int	handle_fds(t_data *data, t_parse *cmd)
 }
 
 
-int	handle_infile(t_parse *cmd, t_lexer *redir)
+int	handle_infile(t_data *data, t_parse *cmd, t_lexer *redir)
 {
 	int fd;
 	bool update_fd;
 
 	fd = -1;
 	update_fd = false;
+	(void)data;
 	while (redir)
 	{
 		if (redir->token == HEREDOC)
@@ -52,11 +51,12 @@ int	handle_infile(t_parse *cmd, t_lexer *redir)
 	return (SUCCESS);
 }
 
-int	handle_outfile(t_parse *cmd, t_lexer *redir)
+int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 {
 	int fd;
 
 	fd = -1;
+	(void)data;
 	while (redir)
 	{
 		if (redir->token == APPEND)

@@ -87,14 +87,13 @@ int executor(t_data *data)
 
 	err = 0;
 	data->env_arr = list_to_arr(data, data->env);
-	if (handle_heredoc(data, data->cmd_line))
-		return (AGAIN);
+	handle_heredoc(data, data->cmd_line);
+	cmd_printer(data);
 	if (cmdfinder(data, data->cmd_line))
 		return(AGAIN);
 	if (handle_fds(data, data->cmd_line))
 		return(AGAIN);
 	printf("\n_______EXECUTOR:\n\n");
-	cmd_printer(data);
 	if (data->cmds == 1)
 		err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else

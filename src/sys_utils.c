@@ -17,9 +17,8 @@ void cmd_printer(t_data *data)
 		printf("\n");
 		printf("infile: %s\n", tmp->infile);
 		printf("outfile: %s\n", tmp->outfile);
-		printf("append: %d\n", tmp->append);
 		lexer_printer(tmp->redir, false);
-		printf("fd_in: %d, fd_out: %d", tmp->fd_in, tmp->fd_out);
+		printf("fd_in: %d, fd_out: %d\n", tmp->fd_in, tmp->fd_out);
 		tmp++;	
 	}
 }

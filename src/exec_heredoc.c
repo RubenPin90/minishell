@@ -5,7 +5,7 @@ int	heredocfun(t_parse *cmd, char *delim)
 	int fd;
 	char *str;
 
-	fd = open(".tmpfile.txt", O_RDWR | O_TRUNC | O_CREAT, 0644);
+	fd = open(cmd->infile, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		return (error_msg("heredoc", strerror(errno)));
 	while (1)
@@ -23,12 +23,25 @@ int	heredocfun(t_parse *cmd, char *delim)
 	}
 	str = free_null(str);
 	if (cmd->fd_in)
-		close(cmd->fd_in);
+		close(cmd->fd_in); //add security.
 	cmd->fd_in = fd;
 	return (SUCCESS);
 }
 
-int	find_heredoc(t_parse *cmd, t_lexer *redir)
+void	heredoc_name(t_data *data, t_parse *cmd)
+{
+	char *id;
+
+	id = ft_itoa(cmd->id);
+	if (!id)
+		ft_error(MALLOC_ERR, data);
+	cmd->infile = ft_strjoin(".herefile_cmd", id);
+	id = free_null(id);
+	if (!cmd->infile)
+		ft_error(MALLOC_ERR, data);
+}
+
+int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 {
 	int ret;
 
@@ -37,33 +50,24 @@ int	find_heredoc(t_parse *cmd, t_lexer *redir)
 	{
 		if (redir->token == HEREDOC)
 		{
-			//create unique heredoc name and save it in cmd.
-			//ft_strdup name to cmd as infile.
 			ret = heredocfun(cmd, redir->word);
-			if (ret)
-				return (ret);
+			if (ret == FAIL)
+				ft_error(MALLOC_ERR, data);
 		}
 		redir = redir->next;
 	}
 	return (ret);
 }
 
-int	handle_heredoc(t_data *data, t_parse *cmd_line)
+void	handle_heredoc(t_data *data, t_parse *cmd_line)
 {
-	int ret;
-
-	ret = 0;
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->redir)
+		if (cmd_line->redir && tkn_counter(cmd_line->redir, HEREDOC, STOP))
 		{
-			ret = find_heredoc(cmd_line, cmd_line->redir);
-			if (ret == FAIL)
-				ft_error(MALLOC_ERR, data);
-			else if (ret == AGAIN)
-				return (ret);
+			heredoc_name(data, cmd_line);
+			find_heredoc(data, cmd_line, cmd_line->redir);
 		}
 		cmd_line++;
 	}
-	return (ret);
 }
