@@ -34,7 +34,7 @@ char	*expand_input(char *input, int index, char *value, int var_len)
 		i++;
 		k++;
 	}
-	printf("new: %s\n", new);
+	// printf("new: %s\n", new);
 	return (new);
 }
 
@@ -96,7 +96,7 @@ void	expander(t_data *data, char *input)
 			else
 				expand = true;
 		}
-		printf("input[i]: %c quoted: %d\n", input[i], quoted);
+		// printf("input[i]: %c quoted: %d\n", input[i], quoted);
 		// if (input[i] == '$' && input[i + 1] && (input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
 		// 	;
 		if (input[i] == '$' && expand == true && input[i + 1] && !(input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
@@ -116,7 +116,7 @@ void	expander(t_data *data, char *input)
 					ft_error(MALLOC_ERR, data);
 				if (quoted == true)
 					quoted = false;
-				printf("new: %s=%p, %ld\n", new, new, ft_strlen(new));
+				// printf("new: %s=%p, %ld\n", new, new, ft_strlen(new));
 				tmp = input;
 				input = new;
 				tmp = free_null(tmp);

@@ -27,7 +27,8 @@ t_lexer	*create_list(t_data *data, char **datainput)
 	t_word	*word;
 
 	input = *datainput;
-	data->word = ft_calloc(sizeof(t_word), 1); // TODO: init with 0
+	data->word = ft_calloc(sizeof(t_word), 1);
+	data->word->quoted = false;
 	word = data->word;
 	while (input[word->i])
 	{
@@ -39,7 +40,7 @@ t_lexer	*create_list(t_data *data, char **datainput)
 		skip_space(input, &(word->i));
 		get_word(data, input, word);
 		add_node(data, word->str, word);
-		printf("node: %s\n", word->str);
+		// printf("node: %s\n", word->str);
 		word->str = free_null(word->str);
 		if (word->type == PIPE)
 			word->i++;
@@ -48,7 +49,6 @@ t_lexer	*create_list(t_data *data, char **datainput)
 	return (data->lex);
 }
 
-// FIXME: expander, create_list was commented out, quotes need to be handled by lexer_utils
 int	lexer(t_data *data)
 {
 	if (check_quotes(data->input) || check_token(data->input))

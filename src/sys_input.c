@@ -3,6 +3,7 @@
 int	handle_input(t_data *data)
 {
 	data->input = readline("> ");
+	printf(PINK"%s\n"RESET, data->input);
 	if (!data->input)
 		ft_error(MALLOC_ERR, NULL);
 	if (!ft_strlen(data->input))
