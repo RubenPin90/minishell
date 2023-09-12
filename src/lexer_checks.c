@@ -1,5 +1,6 @@
 #include "../inc/lexer.h"
 
+// TODO: what should happen when open quotes are found?
 int	check_quotes(char *str)
 {
 	int		i;
@@ -68,7 +69,6 @@ int	check_redir(char *input)
 			redir = 0;
 			return (ft_error("Third token found! KO\n", NULL));
 		}
-		// printf("HEREDOC/APPEND found! OK\n");
 		return (0);
 	}
 	redir = 0;

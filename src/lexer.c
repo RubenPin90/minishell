@@ -19,11 +19,46 @@ void	print_lexlst(t_data *data)
 	}
 }
 
+void	add_word(t_data *data, char *input, t_word *word, int *i)
+{
+	char	*new;
+	char	*tmp;
+	int		len;
+
+	len = get_len(data, input, i, input[*i]);
+	new = ft_substr(input, word->start, len);
+	if (!new)
+		ft_error(MALLOC_ERR, data);
+	if (!word->str)
+		word->str = ft_strdup(new);
+	else
+	{
+		tmp = word->str;
+		word->str = ft_strjoin(tmp, new);
+		tmp = free_null(tmp);
+	}
+	new = free_null(new);
+}
+
+char	*get_word(t_data *data, char *input, t_word *word)
+{
+	int		i;
+
+	i = word->i;
+	word->start = i;
+	add_word(data, input, word, &i);
+	check_end_quote(input, &i, word);
+	word->i = i;
+	if (input[i] && !hard_cut(input[i]))
+		word->str = get_word(data, input, word);
+	i++;
+	return (word->str);
+}
+
 // reads through input string and copies every word/token into a node
 t_lexer	*create_list(t_data *data, char **datainput)
 {
 	char	*input;
-	// char	*lst_word;
 	t_word	*word;
 
 	input = *datainput;
@@ -32,7 +67,6 @@ t_lexer	*create_list(t_data *data, char **datainput)
 	word = data->word;
 	while (input[word->i])
 	{
-		// printf(GREEN"input[word->i]: %c\n"RESET, input[word->i]);
 		skip_space(input, &word->i);
 		word->type = check_type(input, &(word->i));
 		if (word->type == STOP)
@@ -40,7 +74,6 @@ t_lexer	*create_list(t_data *data, char **datainput)
 		skip_space(input, &(word->i));
 		get_word(data, input, word);
 		add_node(data, word->str, word);
-		// printf("node: %s\n", word->str);
 		word->str = free_null(word->str);
 		if (word->type == PIPE)
 			word->i++;

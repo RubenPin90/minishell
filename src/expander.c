@@ -66,6 +66,7 @@ char	*get_value(t_data *data, char *input, int start, int len)
 	return (val);
 }
 
+// TODO: norminize expander
 void	expander(t_data *data, char *input)
 {
 	char 	*value;
