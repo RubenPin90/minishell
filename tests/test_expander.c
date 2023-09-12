@@ -108,6 +108,7 @@ int	test_expander(char *quote, char *expected)
 
 	init_data(&data);
 	data.input = ft_strdup(quote);
+	data.env = copy_envp(environ);
 	printf("input: %s, expected: %s\n", data.input, expected);
 	expander(&data, data.input);
 	create_list(&data, &data.input);
@@ -123,6 +124,7 @@ int	test_lexer_expander()
 	char	*user;
 
 	user = get_user();
+	printf("user: %s\n", user);
 	printf(YELLOW"----------test-list----------\n"RESET);
 	test_quotes("hello", "hello");
 	test_quotes("\"hello\"", "hello");
@@ -145,7 +147,7 @@ int	test_lexer_expander()
 	test_quotes("\"\"$USER\"\"", "ada");
 	test_quotes("''$USER''", "ada");
 	printf(YELLOW"----------test-expander----------\n"RESET);
-	test_expander("\"$USER\"", "ada");
+	test_expander("\"$USER\"", user);
 	test_expander("'$USER'", "$USER");
 	test_expander("\"'$USER'\"", "'ada'");
 	test_expander("'\"$USER\"'", "\"$USER\"");
