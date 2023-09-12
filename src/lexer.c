@@ -27,10 +27,12 @@ t_lexer	*create_list(t_data *data, char **datainput)
 	t_word	*word;
 
 	input = *datainput;
-	data->word = ft_calloc(sizeof(t_word), 1); // TODO: init with 0
+	data->word = ft_calloc(sizeof(t_word), 1);
+	data->word->quoted = false;
 	word = data->word;
 	while (input[word->i])
 	{
+		// printf(GREEN"input[word->i]: %c\n"RESET, input[word->i]);
 		skip_space(input, &word->i);
 		word->type = check_type(input, &(word->i));
 		if (word->type == STOP)
@@ -38,6 +40,7 @@ t_lexer	*create_list(t_data *data, char **datainput)
 		skip_space(input, &(word->i));
 		get_word(data, input, word);
 		add_node(data, word->str, word);
+		// printf("node: %s\n", word->str);
 		word->str = free_null(word->str);
 		if (word->type == PIPE)
 			word->i++;
@@ -50,8 +53,9 @@ int	lexer(t_data *data)
 {
 	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
+	expander(data, data->input);
 	create_list(data, &data->input);
 	count_lexlst(data->lex);
-	// print_lexlst(data);
+	print_lexlst(data);
 	return (0);
 }
