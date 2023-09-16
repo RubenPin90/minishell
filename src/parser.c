@@ -95,6 +95,10 @@ int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 	if (!arr)
 		return (FAIL);
 	current_cmd->cmd = arr;
+	current_cmd->fd_in = -1;
+	current_cmd->fd_out = -1;
+	current_cmd->fd_pipes[0] = -1;
+	current_cmd->fd_pipes[1] = -1;
 	return (SUCCESS);
 }
 
@@ -145,5 +149,6 @@ int	parser(t_data *data, t_lexer *lst)
 	}
 	while(lst && lst->prev)
 		lst = lst->prev;
+	data->lex = lst;
 	return (SUCCESS);
 }

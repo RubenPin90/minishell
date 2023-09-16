@@ -54,8 +54,8 @@ t_parse *free_parser(t_parse *cmd_line)
 			cmd_line->infile = free_null(cmd_line->infile);
 		if (cmd_line->outfile)
 			cmd_line->outfile = free_null(cmd_line->outfile);
-		// if (cmd_line->heredoc)
-		// 	cmd_line->heredoc = free_null(cmd_line->heredoc);
+		if (cmd_line->redir)
+			free_lexer(&cmd_line->redir);
 		cmd_line++;
 	}
 	free(start);

@@ -28,6 +28,7 @@ SRC_F = sys_init.c \
 		cmdfinder.c \
 		executor.c \
 		exec_fds.c \
+		exec_fd_utils.c \
 		exec_heredoc.c \
 		builtins.c \
 		builtin_cd.c \

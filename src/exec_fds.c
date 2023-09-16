@@ -4,79 +4,75 @@ int	handle_fds(t_data *data, t_parse *cmd)
 {
 	while (cmd->id != 0)
 	{
-		if(cmd->redir)
-		{
-			handle_infile(data, cmd, cmd->redir);
-			handle_outfile(data, cmd, cmd->redir);
-		}
+		if(cmd->redir && tkn_counter(cmd->redir, INPUT, STOP))
+			if (handle_infile(data, cmd, cmd->redir))
+				return (AGAIN);
+		if (cmd->redir && tkn_counter(cmd->redir, OUTPUT, STOP))
+			if (handle_outfile(data, cmd, cmd->redir))
+				return (AGAIN);
 		cmd++;
 	}
 	return (SUCCESS);
 }
 
-
 int	handle_infile(t_data *data, t_parse *cmd, t_lexer *redir)
 {
 	int fd;
-	bool update_fd;
+	char *tmp;
+	bool update;
 
 	fd = -1;
-	update_fd = false;
-	(void)data;
+	tmp = NULL;
+	update = false;
 	while (redir)
 	{
 		if (redir->token == HEREDOC)
-			update_fd = false;
-		if (redir->token == INPUT)
+			update = false;
+		else if (redir->token == INPUT)
 		{
-			if (fd != -1)
-				close(fd);
-			fd = open(redir->word, O_RDONLY);
+			update = true;
+			cleanup_fd(&fd, &tmp);
+			fd = ft_open(redir->word, redir->token);
 			if (fd == -1)
-				return (error_msg(redir->word, strerror(errno)));
-			update_fd = true;
+				return (AGAIN);
+			tmp = ft_strdup(redir->word);
+			if (!tmp)
+			{
+				close(fd);
+				ft_error(MALLOC_ERR, data);
+			}
 		}
 		redir = redir->next;
 	}
-	if (update_fd && cmd->fd_in)
-	{
-		close(cmd->fd_in);
-		//unlink old file and free str.
-		cmd->fd_in = fd;
-	}
-	else if (update_fd && !cmd->fd_in )
-		cmd->fd_in = fd;
-	else
-		close(fd);
+	update_fd(update, cmd, &tmp, fd);
 	return (SUCCESS);
 }
 
 int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 {
 	int fd;
+	char *tmp;
 
 	fd = -1;
-	(void)data;
+	tmp = NULL;
 	while (redir)
 	{
-		if (redir->token == APPEND)
+		cleanup_fd(&fd, &tmp);
+		if (redir->token == APPEND || redir->token == OUTPUT)
 		{
-			if (fd != -1)
-				close(fd);
-			fd = open(redir->word, O_RDWR | O_APPEND | O_CREAT, 0644);
+			fd = ft_open(redir->word, redir->token);
 			if (fd == -1)
-				return (error_msg(redir->word, FD_ACCESS_ERR));
-		}
-		if (redir->token == OUTPUT)
-		{
-			if (fd != -1)
-				close(fd);
-			fd = open(redir->word, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			if (fd == -1)
-				return (error_msg(redir->word, FD_ACCESS_ERR));
+				return (AGAIN);
+			tmp = ft_strdup(redir->word);
+			if (!tmp)
+			{
+				cleanup_fd(&fd, &tmp);
+				ft_error(MALLOC_ERR, data);
+			}
 		}
 		redir = redir->next;
 	}
 	cmd->fd_out = fd;
+	cmd->outfile = tmp;
 	return (SUCCESS);
 }
