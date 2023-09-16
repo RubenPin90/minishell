@@ -17,6 +17,7 @@ void	ft_cleanup(t_data *data, bool check);
 void	*free_null(void *ptr);
 void	lstenv_clear(t_lstenv **head);
 char	**free_arr(char **arr);
+t_word *free_word(t_word *word);
 
 /*error_utils*/
 int 	error_msg(char *cmd, char *msg);

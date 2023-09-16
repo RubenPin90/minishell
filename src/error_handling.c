@@ -25,6 +25,8 @@ void	ft_cleanup(t_data *data, bool check)
 		free_lexer(&data->lex);
 	if (data->cmd_line)
 		data->cmd_line = free_parser(data->cmd_line);
+	if (data->word)
+		data->word = free_word(data->word);
 }
 
 void	*free_null(void *ptr)
@@ -63,11 +65,20 @@ char **free_arr(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		free(arr[i]);
-		arr[i] = NULL;
+		arr[i] = free_null(arr[i]);
 		i++;
 	}
-	free(arr);
-	arr = NULL;
+	arr = free_null(arr);
 	return (arr);
+}
+
+t_word *free_word(t_word *word)
+{
+	if (word)
+	{
+		if (word->str)
+			word->str = free_null(word->str);
+		word = free_null(word);
+	}
+	return (word);
 }

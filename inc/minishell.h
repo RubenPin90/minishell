@@ -53,4 +53,8 @@ char	*ft_strjoin_wrapper(char *str1, char* str2, char *str3);
 char	**arr_expand(char **arr, char *str);
 int		ft_arrlen(char **arr);
 
+/*sys_cleanup*/
+
+
+
 #endif

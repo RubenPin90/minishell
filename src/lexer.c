@@ -56,6 +56,6 @@ int	lexer(t_data *data)
 	expander(data, data->input);
 	create_list(data, &data->input);
 	count_lexlst(data->lex);
-	print_lexlst(data);
+	// print_lexlst(data);
 	return (0);
 }
