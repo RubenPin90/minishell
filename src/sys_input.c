@@ -4,7 +4,7 @@ int	handle_input(t_data *data)
 {
 	data->input = readline("> ");
 	if (!data->input)
-		ft_error("test", NULL);
+		ft_error("test", data);
 	if (!ft_strlen(data->input))
 		return (AGAIN);
 	add_history(data->input);

@@ -18,7 +18,7 @@ int update_fd(t_parse *cmd, char **file)
 		unlink(cmd->heredoc);
 		cmd->heredoc = free_null(cmd->heredoc);
 	}
-	else
+	else if (!*file && cmd->heredoc)
 		cmd->infile = ft_strdup(cmd->heredoc);
 	return (SUCCESS);
 }
