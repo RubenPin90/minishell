@@ -40,7 +40,7 @@ typedef struct s_word
 	int		len;
 	int		type;
 	int		i;
-	// bool	quoted;
+	bool	quoted;
 }	t_word;
 
 /**

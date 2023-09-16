@@ -1,36 +1,32 @@
 #include "../inc/lexer.h"
 
-// int	find_dsign(char *input)
-// {
-// 	int	i;
-
-// 	while (input[i] && input[i] != '$')
-// 		i++;
-// 	return (i);
-// }
-
-char	*expand_input(char *input, char *new, char *value, int var_len)
+char	*expand_input(char *input, int index, char *value, int var_len)
 {
-	int	i;
-	int	j;
-	int	k;
+	char	*new;
+	int		str_len;
+	int		i;
+	int		j;
+	int		k;
 
+	str_len = ft_strlen(input) - var_len + ft_strlen(value);
+	// printf("str_len: %d\n", str_len);
+	new = (char *)ft_calloc(str_len + 1, sizeof(char));
+	if (!new)
+		return (NULL);
 	i = 0;
-	while (input[i] != '$')
+	while (i != index)
 	{
 		new[i] = input[i];
 		i++;
 	}
-	// printf("new: %s, input[i]: %c, i: %d\n", new, input[i], i);
+	// printf("new: %s\n", new);
 	j = 0;
 	while (value[j])
 	{
 		new[i + j] = value[j];
 		j++;
 	}
-	// printf("new: %s, new index: %d, value[j]: %c\n", new, i+j, value[j]);
-	// printf("input[var_len]: '%c', \n", input[var_len]);
-	// printf("var_len: %d\n", var_len);
+	// printf("new: %s\n", new);
 	k = i + var_len;
 	while (input[k])
 	{
@@ -38,49 +34,96 @@ char	*expand_input(char *input, char *new, char *value, int var_len)
 		i++;
 		k++;
 	}
-	// printf("new: %s, j: %d\n", new, i + j);
-	// printf("new: %ld\n", ft_strlen(new));
-	return (new);
-}
-
-char	*expander(char *input, int *i)
-{
-	char 	value[] = "aapostol";
-	char 	*new;
-	int		var_len;
-	int		str_len;
-	int		j;
-
-	j = *i; // i is the index of $
-	// j = find_dsign(input);
-	if (!ft_isalpha(input[j + 1]))
-		return (input);
-	j++;
-	while (ft_isalnum(input[j]))
-		j++;
-	var_len = j - *i; // j is one index after the variable
-	str_len = ft_strlen(input) - var_len + ft_strlen(value);
-	new = (char *)ft_calloc(str_len + 1, sizeof(char));
-	if (!new)
-		return ("Error\n");
-	// printf("input: %s, value: %s, var_len: %d\n", input, value, var_len);
-	new = expand_input(input, new, value, var_len);
 	// printf("new: %s\n", new);
 	return (new);
 }
 
-// int	main(void)
-// {
-// 	char *input = "ca$bbb | bla << $EOF";
-// 	char *value = "t -e > file1";
-// 	char *output = "cat -e > file1 | bla";
-// 	int	i;
+int	get_var_len(char *input, int i)
+{
+	int	len;
 
-// 	i = 2;
-// 	printf("input: %ld\n", ft_strlen(input));
-// 	printf("value: %ld\n", ft_strlen(value));
-// 	printf("output: %s = %ld\n", output, ft_strlen(output));
-// 	output = expander(input, value, &i);
-// 	free(output);
-// 	return (0);
-// }
+	len = 0;
+	while (input[i] && !soft_cut(input[i]))
+	{
+		i++;
+		len++;
+	}
+	return (len);
+}
+
+char	*get_value(t_data *data, char *input, int start, int len)
+{
+	char	*var;
+	char	*val;
+
+	var = ft_substr(input, start, len);
+	if (!var)
+		ft_error(MALLOC_ERR, data);
+	val = find_envkey(data->env, var);
+	var = free_null(var);
+	if (!val)
+		return (ft_strdup(""));
+	return (val);
+}
+
+void	expander(t_data *data, char *input)
+{
+	char 	*value;
+	char 	*new;
+	int		var_len;
+	int		i;
+	char	*tmp;
+	bool	expand;
+	bool 	quoted;
+
+	i = 0;
+	expand = true;
+	quoted = false;
+	while (input[i])
+	{
+		// printf("input[i]: %c\n", input[i]);
+		if (input[i] == '"') // || input[i] == '\'')
+		{
+			if (quoted == false)
+				quoted = true;
+			else
+				quoted = false;
+		}
+		if (input[i] == '\'' && quoted == false)
+		{
+			if (expand == true)
+				expand = false;
+			else
+				expand = true;
+		}
+		// printf("input[i]: %c quoted: %d\n", input[i], quoted);
+		// if (input[i] == '$' && input[i + 1] && (input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
+		// 	;
+		if (input[i] == '$' && expand == true && input[i + 1] && !(input[i + 1] == ' ' || (quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))))
+		{
+			// if (input[i + 1] && (input[i + 1] == ' ' || input[i + 1] == '"' || 
+			// input[i + 1] == '\'') && quoted == false)
+			// 	i++;
+			// else
+			// {
+				// printf("i: %d\n", i);
+				var_len = get_var_len(input, i);
+				value = get_value(data, input, i + 1, var_len - 1);
+				if (!value)
+					ft_error(MALLOC_ERR, data);
+				new = expand_input(input, i, value, var_len);
+				if (!new)
+					ft_error(MALLOC_ERR, data);
+				if (quoted == true)
+					quoted = false;
+				// printf("new: %s=%p, %ld\n", new, new, ft_strlen(new));
+				tmp = input;
+				input = new;
+				tmp = free_null(tmp);
+				data->input = input;
+			// }
+		}
+		if (input[i])
+			i++;
+	}
+}

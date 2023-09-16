@@ -42,9 +42,9 @@ char *find_envkey(t_lstenv *env, char *var)
 	len = ft_strlen(var);
 	while (env)
 	{
-		if (!ft_strncmp(env->key, var, len))
-			break ;
+		if (ft_strncmp(env->key, var, len + 1) == 0)
+			return (env->value);
 		env = env->next;
 	}
-	return (env->value);
+	return (NULL);
 }
