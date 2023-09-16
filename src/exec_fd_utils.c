@@ -11,28 +11,19 @@ int	cleanup_fd(int *fd)
 	return (SUCCESS);
 }
 
-int update_fd(bool update, t_parse *cmd, char **name, int fd)
+int update_fd(t_parse *cmd, char **file)
 {
-	if (update == true)
+	if (*file && cmd->heredoc)
 	{
-		if (cmd->infile)
-		{
-			unlink(cmd->infile);
-			cleanup_fd(&cmd->fd_in);
-			cmd->infile = free_null(cmd->infile);
-		}
-		cmd->fd_in = fd;
-		cmd->infile = *name;
+		unlink(cmd->heredoc);
+		cmd->heredoc = free_null(cmd->heredoc);
 	}
 	else
-	{
-		cleanup_fd(&fd);
-		*name = free_null(*name);
-	}
+		cmd->infile = ft_strdup(cmd->heredoc);
 	return (SUCCESS);
 }
 
-int	ft_open(char *file, t_type token)
+int	ft_open(char *file, t_type token, char *herefile)
 {
 	int fd;
 
@@ -42,6 +33,8 @@ int	ft_open(char *file, t_type token)
 		fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	else if (token == INPUT)
 		fd = open(file, O_RDONLY);
+	else if (token == HEREDOC)
+		fd = open(herefile, O_RDONLY);
 	if (fd == -1)
 		error_msg(file, strerror(errno));
 	return (fd);

@@ -22,8 +22,8 @@ int		handle_outfile(t_data *data, t_parse *cmd_line, t_lexer *redir);
 
 /*exec_fd_utils*/
 int		cleanup_fd(int *fd);
-int		update_fd(bool check, t_parse *cmd, char **name, int fd);
-int		ft_open(char *file, t_type token);
+int		update_fd(t_parse *cmd, char **name);
+int		ft_open(char *file, t_type token, char *heredoc);
 int		close_all_fds(t_parse *cmd_line);
 
 #endif

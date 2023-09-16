@@ -5,7 +5,7 @@ int	heredocfun(t_parse *cmd, char *delim)
 	int fd;
 	char *str;
 
-	fd = open(cmd->infile, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		return (error_msg("heredoc", strerror(errno)));
 	while (1)
@@ -22,8 +22,7 @@ int	heredocfun(t_parse *cmd, char *delim)
 		str = free_null(str);
 	}
 	str = free_null(str);
-	cleanup_fd(&cmd->fd_in);
-	cmd->fd_in = fd;
+	cleanup_fd(&fd);
 	return (SUCCESS);
 }
 
@@ -34,9 +33,9 @@ void	heredoc_name(t_data *data, t_parse *cmd)
 	id = ft_itoa(cmd->id);
 	if (!id)
 		ft_error(MALLOC_ERR, data);
-	cmd->infile = ft_strjoin(".herefile_cmd", id);
+	cmd->heredoc = ft_strjoin(".herefile_cmd", id);
 	id = free_null(id);
-	if (!cmd->infile)
+	if (!cmd->heredoc)
 		ft_error(MALLOC_ERR, data);
 }
 
@@ -66,7 +65,6 @@ void	handle_heredoc(t_data *data, t_parse *cmd_line)
 		{
 			heredoc_name(data, cmd_line);
 			find_heredoc(data, cmd_line, cmd_line->redir);
-			cmd_line->heredoc = true;
 		}
 		cmd_line++;
 	}

@@ -23,7 +23,7 @@ void cmd_printer(t_data *data)
 		printf("\n");
 		lexer_printer(tmp->redir, false);
 		printf(YELLOW"infile:"RESET" %s\n", tmp->infile);
-		printf(YELLOW"heredoc:"RESET" %s\n", (tmp->heredoc == 1) ? "true" : "false");
+		printf(YELLOW"heredoc:"RESET" %s\n", tmp->heredoc);
 		printf(YELLOW"outfile:"RESET" %s\n", tmp->outfile);
 		printf(YELLOW"fd_in:"RESET" %d "YELLOW"fd_out:"RESET" %d\n", tmp->fd_in, tmp->fd_out);
 		printf(YELLOW"fd_pipes[0]:"RESET" %d "YELLOW"fd_pipes[1]:"RESET" %d\n", tmp->fd_pipes[0], tmp->fd_pipes[1]);
@@ -40,10 +40,10 @@ void cmd_printer(t_data *data)
         // 	printf(YELLOW"tmp->fd_pipes[1]"RESET" [%d] %ld\n", tmp->fd_pipes[1], file_stat.st_ino);
 		// }
     	if (isatty(fileno(stdin)) == 0) {
-        	printf(BLUE"stdin is a file"RESET" [%d]\n", STDIN_FILENO);
+        	printf(BLUE"stdin is a file"RESET" [%d]%s\n", STDIN_FILENO, ttyname(STDIN_FILENO));
 		}
     	if (isatty(fileno(stdout)) == 0) {
-        	printf(BLUE"stdout is a file"RESET" [%d]\n", STDOUT_FILENO);
+        	printf(BLUE"stdout is a file"RESET" [%d]%s\n", STDOUT_FILENO, ttyname(STDOUT_FILENO));
 		}
 		tmp++;
 	}

@@ -109,11 +109,11 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	int		status;
 
-	cmd_printer(data);
 	if (cmd->func)
 		exec_builtin(data, cmd, parent);
 	else
 		exec_child(data, cmd, cmd->cmd_path);
+	// cmd_printer(data);
 	cleanup_fd(&cmd->fd_in);
 	cleanup_fd(&cmd->fd_out);
 	waitpid(cmd->pid, &status, 0);
@@ -127,7 +127,6 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 
 	tmp = cmd_line;
 	create_pipes(data->cmd_line, cmds);
-	// cmd_printer(data);
 	while (cmd_line->id != 0)
 	{
 		if (cmd_line->func)
@@ -136,6 +135,7 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 			exec_child(data, cmd_line, cmd_line->cmd_path);
 		cmd_line++;
 	}
+	// cmd_printer(data);
 	close_all_fds(data->cmd_line);
 	while (tmp->id != 0)
 	{
