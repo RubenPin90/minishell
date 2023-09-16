@@ -20,10 +20,8 @@ int	create_pipes(t_parse *cmd_line, int cmds)
 
 int	ft_dup2(int fdin, int fdout)
 {
-	// printf("switching fdin: %d with %d\n", fdin, STDIN_FILENO);
 	if (dup2(fdin, STDIN_FILENO) < 0)
 		return (error_msg("Infile", strerror(errno)));
-	// printf("switching fdout: %d with %d\n", fdout, STDOUT_FILENO);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
 		return (error_msg("Outfile", strerror(errno)));
 	return (SUCCESS);
@@ -72,13 +70,12 @@ void	replace_fd(t_data *data, t_parse *cmd)
 	}
 	else
 		replace_fdmulti(data, cmd);
-	close_all_fds(cmd);
+	close_all_fds(data->cmd_line);
 }
 
 int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 {
 	cmd->pid = fork();
-	// printf("cmd->pid: %d\n", cmd->pid);
 	if (cmd->pid == -1)
 		return (error_msg("fork", strerror(errno)));
 	if (cmd->pid == 0)
@@ -112,13 +109,12 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	int		status;
 
+	cmd_printer(data);
 	if (cmd->func)
 		exec_builtin(data, cmd, parent);
 	else
 		exec_child(data, cmd, cmd->cmd_path);
-	// printf("cmd->fd_in: %d\n", cmd->fd_in);
 	cleanup_fd(&cmd->fd_in);
-	// printf("cmd->fd_out: %d\n", cmd->fd_out);
 	cleanup_fd(&cmd->fd_out);
 	waitpid(cmd->pid, &status, 0);
 	return (SUCCESS);
@@ -131,18 +127,16 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 
 	tmp = cmd_line;
 	create_pipes(data->cmd_line, cmds);
+	// cmd_printer(data);
 	while (cmd_line->id != 0)
 	{
 		if (cmd_line->func)
 			exec_builtin(data, cmd_line, false);
 		else
 			exec_child(data, cmd_line, cmd_line->cmd_path);
-		// printf("tmp->pid: %d\n", cmd_line->pid);
 		cmd_line++;
 	}
-	cmd_line = tmp;
-
-	tmp = cmd_line;
+	close_all_fds(data->cmd_line);
 	while (tmp->id != 0)
 	{
 		waitpid(tmp->pid, &status, 0);
@@ -162,8 +156,6 @@ int executor(t_data *data)
 		return(AGAIN);
 	if (handle_fds(data, data->cmd_line))
 		return(AGAIN);
-	// cmd_printer(data);
-	// printf("\n_______EXECUTOR:\n\n");
 	if (data->cmds == 1)
 		err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else

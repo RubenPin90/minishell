@@ -23,6 +23,8 @@ int check_binary(t_data *data, char **cmdpath, char *cmdname)
 	path_line = find_envkey(data->env, "PATH");
 	if (!path_line)
 		return (FAIL);
+	if (data->paths)
+		data->paths = free_arr(data->paths);
 	data->paths = ft_split(path_line, ':');
 	if (!data->paths)
 		ft_error(MALLOC_ERR, data);

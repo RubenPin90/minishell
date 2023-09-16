@@ -13,7 +13,7 @@ int	heredocfun(t_parse *cmd, char *delim)
 		str = readline("");
 		if (!str)
 		{
-			close(fd);
+			cleanup_fd(&fd);
 			return (FAIL);
 		}
 		if (ft_strncmp(str, delim, ft_strlen(delim) + 1) == 0)
@@ -66,6 +66,7 @@ void	handle_heredoc(t_data *data, t_parse *cmd_line)
 		{
 			heredoc_name(data, cmd_line);
 			find_heredoc(data, cmd_line, cmd_line->redir);
+			cmd_line->heredoc = true;
 		}
 		cmd_line++;
 	}

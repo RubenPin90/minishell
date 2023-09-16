@@ -1,25 +1,51 @@
 #include "minishell.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 void cmd_printer(t_data *data)
 {
 	t_parse *tmp;
+	// struct stat file_stat;
 
 	tmp = data->cmd_line;
-	printf(YELLOW"_______CMD_PRINTER_______\n\n"RESET);
-	printf("input: %s\n", data->input);
-	printf("cmds: %d\n", data->cmds);
+	printf(YELLOW"PID%d_______CMD_PRINTER_______\n\n"RESET, tmp->pid);
+	printf(YELLOW"input:"RESET" %s\n", data->input);
+	printf(YELLOW"cmds:"RESET" %d\n", data->cmds);
 	while (tmp->id != 0)
 	{
-		printf("cmd_path: %s\n", tmp->cmd_path);
-		printf("cmd[%d]:", tmp->id);
+		if (tmp->id > 1)
+			printf(RED"|---------------------------|\n"RESET);
+		printf(YELLOW"cmd_path:"RESET" %s\n", tmp->cmd_path);
+		printf(YELLOW"cmd[%d]:"RESET, tmp->id);
 		for (int i = 0; tmp->cmd[i]; i++)
 			printf("%s ", tmp->cmd[i]);
 		printf("\n");
-		printf("infile: %s\n", tmp->infile);
-		printf("outfile: %s\n", tmp->outfile);
 		lexer_printer(tmp->redir, false);
-		printf("fd_in: %d, fd_out: %d\n", tmp->fd_in, tmp->fd_out);
-		tmp++;	
+		printf(YELLOW"infile:"RESET" %s\n", tmp->infile);
+		printf(YELLOW"heredoc:"RESET" %s\n", (tmp->heredoc == 1) ? "true" : "false");
+		printf(YELLOW"outfile:"RESET" %s\n", tmp->outfile);
+		printf(YELLOW"fd_in:"RESET" %d "YELLOW"fd_out:"RESET" %d\n", tmp->fd_in, tmp->fd_out);
+		printf(YELLOW"fd_pipes[0]:"RESET" %d "YELLOW"fd_pipes[1]:"RESET" %d\n", tmp->fd_pipes[0], tmp->fd_pipes[1]);
+    	// if (fstat(tmp->fd_in, &file_stat) == 0) {
+        // 	printf(YELLOW"tmp->fd_in"RESET" [%d] %ld\n", tmp->fd_in, file_stat.st_ino);
+		// }
+    	// if (fstat(tmp->fd_out, &file_stat) == 0) {
+        // 	printf(YELLOW"tmp->fd_out"RESET" [%d] %ld\n", tmp->fd_out, file_stat.st_ino);
+		// }
+    	// if (fstat(tmp->fd_pipes[0], &file_stat) == 0) {
+        // 	printf(YELLOW"tmp->fd_pipes[0]"RESET" [%d] %ld\n", tmp->fd_pipes[0], file_stat.st_ino);
+		// }
+    	// if (fstat(tmp->fd_pipes[1], &file_stat) == 0) {
+        // 	printf(YELLOW"tmp->fd_pipes[1]"RESET" [%d] %ld\n", tmp->fd_pipes[1], file_stat.st_ino);
+		// }
+    	if (isatty(fileno(stdin)) == 0) {
+        	printf(BLUE"stdin is a file"RESET" [%d]\n", STDIN_FILENO);
+		}
+    	if (isatty(fileno(stdout)) == 0) {
+        	printf(BLUE"stdout is a file"RESET" [%d]\n", STDOUT_FILENO);
+		}
+		tmp++;
 	}
 }
 
@@ -29,11 +55,23 @@ void	lexer_printer(t_lexer *lex, int check)
 
 	tmp = lex;
 	if (check)
-		printf(YELLOW"_______LEX_PRINTER_______\n\n"RESET);
-	while (tmp)
 	{
-		printf("lex[%d]: %s=%d\n", tmp->i, tmp->word, tmp->token);
-		tmp = tmp->next;
+		printf(YELLOW"_______LEX_PRINTER_______\n\n"RESET);
+		while (tmp)
+		{
+			printf("lex[%d]: %s=%d\n", tmp->i, tmp->word, tmp->token);
+			tmp = tmp->next;
+		}
+	}
+	else
+	{
+		printf(YELLOW"redir: "RESET);
+		while (tmp)
+		{
+			printf("[%d]%s ", tmp->token, tmp->word);
+			tmp = tmp->next;
+		}
+		printf("\n");
 	}
 }
 
