@@ -31,14 +31,15 @@ int	handle_infile(t_data *data, t_parse *cmd, t_lexer *redir)
 		else if (redir->token == INPUT)
 		{
 			update = true;
-			cleanup_fd(&fd, &tmp);
+			cleanup_fd(&fd);
+			tmp = free_null(tmp);
 			fd = ft_open(redir->word, redir->token);
 			if (fd == -1)
 				return (AGAIN);
-			tmp = ft_strdup(redir->word);
+			tmp = NULL; //ft_strdup(redir->word);
 			if (!tmp)
 			{
-				close(fd);
+				cleanup_fd(&fd);
 				ft_error(MALLOC_ERR, data);
 			}
 		}
@@ -57,7 +58,8 @@ int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 	tmp = NULL;
 	while (redir)
 	{
-		cleanup_fd(&fd, &tmp);
+		cleanup_fd(&fd);
+		tmp = free_null(tmp);
 		if (redir->token == APPEND || redir->token == OUTPUT)
 		{
 			fd = ft_open(redir->word, redir->token);
@@ -66,7 +68,7 @@ int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 			tmp = ft_strdup(redir->word);
 			if (!tmp)
 			{
-				cleanup_fd(&fd, &tmp);
+				cleanup_fd(&fd);
 				ft_error(MALLOC_ERR, data);
 			}
 		}

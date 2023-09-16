@@ -56,6 +56,7 @@ typedef struct s_parse
 	bool			parent;
 	t_lexer			*redir;
 	char			*infile;
+	bool			heredoc;
 	char			*outfile;
 	int				fd_in;
 	int				fd_out;

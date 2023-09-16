@@ -1,6 +1,5 @@
 
 #include "executor.h"
-#include <sys/wait.h>
 
 int	create_pipes(t_parse *cmd_line, int cmds)
 {
@@ -58,16 +57,6 @@ void	replace_fdmulti(t_data *data, t_parse *cmd)
 		else
 			ft_dup2(tmp_fdin, tmp_fdout);
 	}
-	while (data->cmd_line->id != 0)
-	{
-		cleanup_fd(&data->cmd_line->fd_in, &data->cmd_line->infile);
-		cleanup_fd(&data->cmd_line->fd_out, &data->cmd_line->outfile);
-		close(data->cmd_line->fd_pipes[0]);
-		data->cmd_line->fd_pipes[0] = -1;
-		close(data->cmd_line->fd_pipes[1]);
-		data->cmd_line->fd_pipes[1] = -1;
-		data->cmd_line++;
-	}
 }
 
 void	replace_fd(t_data *data, t_parse *cmd)
@@ -83,11 +72,8 @@ void	replace_fd(t_data *data, t_parse *cmd)
 	}
 	else
 		replace_fdmulti(data, cmd);
-	// cleanup_fd(&cmd->fd_in, &cmd->infile);
-	// cleanup_fd(&cmd->fd_out, &cmd->outfile);
+	close_all_fds(cmd);
 }
-
-
 
 int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 {
@@ -131,9 +117,9 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 	else
 		exec_child(data, cmd, cmd->cmd_path);
 	// printf("cmd->fd_in: %d\n", cmd->fd_in);
-	cleanup_fd(&cmd->fd_in, &cmd->infile);
+	cleanup_fd(&cmd->fd_in);
 	// printf("cmd->fd_out: %d\n", cmd->fd_out);
-	cleanup_fd(&cmd->fd_out, &cmd->outfile);
+	cleanup_fd(&cmd->fd_out);
 	waitpid(cmd->pid, &status, 0);
 	return (SUCCESS);
 }
@@ -155,16 +141,7 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 		cmd_line++;
 	}
 	cmd_line = tmp;
-	while (tmp->id != 0)
-	{
-		cleanup_fd(&tmp->fd_in, &tmp->infile);
-		cleanup_fd(&tmp->fd_out, &tmp->outfile);
-		close(tmp->fd_pipes[0]);
-		tmp->fd_pipes[0] = -1;
-		close(tmp->fd_pipes[1]);
-		tmp->fd_pipes[1] = -1;
-		tmp++;
-	}
+
 	tmp = cmd_line;
 	while (tmp->id != 0)
 	{

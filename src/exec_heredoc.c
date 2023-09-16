@@ -22,8 +22,7 @@ int	heredocfun(t_parse *cmd, char *delim)
 		str = free_null(str);
 	}
 	str = free_null(str);
-	if (cmd->fd_in)
-		close(cmd->fd_in); //add security.
+	cleanup_fd(&cmd->fd_in);
 	cmd->fd_in = fd;
 	return (SUCCESS);
 }

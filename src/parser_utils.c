@@ -50,6 +50,8 @@ t_parse *free_parser(t_parse *cmd_line)
 	{
 		if (cmd_line->cmd)
 			cmd_line->cmd = free_arr(cmd_line->cmd);
+		if (cmd_line->cmd_path)
+			cmd_line->cmd_path = free_null(cmd_line->cmd_path);
 		if (cmd_line->infile)
 			cmd_line->infile = free_null(cmd_line->infile);
 		if (cmd_line->outfile)
@@ -58,7 +60,6 @@ t_parse *free_parser(t_parse *cmd_line)
 			free_lexer(&cmd_line->redir);
 		cmd_line++;
 	}
-	free(start);
-	start = NULL;
+	start = free_null(start);
 	return (start);
 }
