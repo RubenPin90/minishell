@@ -54,12 +54,10 @@ typedef struct s_parse
 	char			**cmd;
 	bltn			func;
 	bool			parent;
-	char			*infile;
 	t_lexer			*redir;
-	char			**heredoc;
-	int				fd_in;
+	char			*infile;
 	char			*outfile;
-	bool			append;
+	int				fd_in;
 	int				fd_out;
 	pid_t			pid;
 	int				fd_pipes[2];

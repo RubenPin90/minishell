@@ -5,15 +5,13 @@ int	handle_input(t_data *data)
 	data->input = readline("> ");
 	printf(PINK"%s\n"RESET, data->input);
 	if (!data->input)
-		ft_error(MALLOC_ERR, NULL);
+		ft_error("test", NULL);
 	if (!ft_strlen(data->input))
 		return (AGAIN);
 	add_history(data->input);
 	lexer(data);
-	// if (parser(data, data->lex))
-	// 	return (AGAIN);
-	// if (cmdfinder(data, data->cmd_line))
-	// 	return(FAIL);
+	if (parser(data, data->lex))
+		return (AGAIN);
 	return (SUCCESS);
 }
 

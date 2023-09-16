@@ -15,6 +15,8 @@ void	ft_cleanup(t_data *data, bool check)
 {
 	if (data->env && check)
 		lstenv_clear(&data->env);
+	if (data->env_arr)
+		data->env_arr = free_arr(data->env_arr);
 	if (data->paths)
 		data->paths = free_arr(data->paths);
 	if (data->input)

@@ -26,7 +26,10 @@ SRC_F = sys_init.c \
 		parser.c \
 		parser_utils.c \
 		cmdfinder.c \
-		executer.c \
+		executor.c \
+		exec_fds.c \
+		exec_fd_utils.c \
+		exec_heredoc.c \
 		builtins.c \
 		builtin_cd.c \
 		builtin_echo.c \

@@ -29,113 +29,7 @@ int tkn_counter(t_lexer *lex, t_type tkn, t_type end)
 	return (count);
 }
 
-// void	del_node(t_lexer **n_prev, t_lexer **node, t_lexer **n_next)
-// {
-// 	t_lexer *tmp;
 
-// 	tmp = *node;
-// 	if (*n_prev && *n_next)
-// 	{
-// 		(*n_prev)->next = *n_next;
-// 		(*n_next)->prev = *n_prev;
-// 		*node = *n_next;
-// 	}
-// 	else if (*n_prev && !*n_next)
-// 	{
-// 		*node = *n_prev;
-// 		(*n_prev)->next = NULL;
-// 		*node = (*n_prev)->next;
-// 	}
-// 	else if (!*n_prev)
-// 	{
-// 		 if (*n_next)
-//             (*n_next)->prev = NULL;
-//         *node = *n_next;
-// 	}
-// 	free(tmp);
-// 	tmp = NULL;
-// }
-
-/**
- * @brief Input-token is checked and copied into current cmd_line.
- * 
- * Checks input-token by opening it with read permissions only. If it can't
- * be opened, error message is printed and returned. If there is no error with
- * opening, fd is closed again. If there are more than 1 infiles in one command
- * old string is freed and new string will replace it.
- * @param cmd_line Struct of current command.
- * @param file Word at current node.
- * @return int 1 for error, 0 for SUCCESS.
- */
-int	handle_infile(t_parse *cmd_line, char *file, int type)
-{
-	if (type == HEREDOC)
-		if (handle_heredoc(cmd_line, file))
-			return (FAIL);
-	if (type == INPUT)
-	{
-		if (access(file, F_OK | R_OK) == -1)
-			return (error_msg(file, strerror(errno)));
-		if (cmd_line->infile)
-			free(cmd_line->infile);
-		cmd_line->infile = ft_strdup(file);
-		if (!cmd_line->infile)
-			return (FAIL);
-	}
-	return (SUCCESS);
-}
-
-/**
- * @brief Heredoc-token is checked and copied into current cmd_line.
- * 
- * @param cmd_line Struct of current command.
- * @param file Word at current node.
- * @return int 1 for error, 0 for SUCCESS.
- */
-int	handle_heredoc(t_parse *cmd_line, char *delim)
-{
-	cmd_line->heredoc = arr_expand(cmd_line->heredoc, delim);
-	if (!cmd_line->heredoc)
-		return (FAIL);
-	return (SUCCESS);
-}
-
-/**
- * @brief Output-token is checked and copied into current cmd_line.
- * 
- * Checks output-token by opening it with read and write permissions. if it doesn't 
- * exist, file will be created with 777 permissions. If it can't be opened, error message 
- * is printed and returned. If there is no error with opening, fd is closed again. 
- * If there are more than 1 outfiles in one command, old string is freed and new string will replace it.
- * If type is APPEND, append bool is set to true.
- * @param cmd_line Struct of current command.
- * @param file Word at current node.
- * @return int 1 for error, 0 for SUCCESS.
- */
-int	handle_outfile(t_parse *cmd_line, char *file, int type)
-{
-	int fd;
-
-	if (type == APPEND)
-	{
-		cmd_line->append = true;
-		fd = open(file, O_RDWR | O_APPEND | O_CREAT, 0644);
-	}
-	else 
-	{
-		cmd_line->append = false;
-		fd = open(file, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	}
-	if (!fd)
-		return (error_msg(file, FD_ACCESS_ERR));
-	close(fd);
-	if (cmd_line->outfile)
-		free(cmd_line->outfile);
-	cmd_line->outfile = ft_strdup(file);
-	if (!cmd_line->outfile)
-		return (FAIL);
-	return (SUCCESS);
-}
 
 /**
  * @brief Destroy function of t_parse array. 
@@ -160,8 +54,8 @@ t_parse *free_parser(t_parse *cmd_line)
 			cmd_line->infile = free_null(cmd_line->infile);
 		if (cmd_line->outfile)
 			cmd_line->outfile = free_null(cmd_line->outfile);
-		if (cmd_line->heredoc)
-			cmd_line->heredoc = free_null(cmd_line->heredoc);
+		if (cmd_line->redir)
+			free_lexer(&cmd_line->redir);
 		cmd_line++;
 	}
 	free(start);
