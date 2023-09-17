@@ -90,7 +90,7 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 {
 	if (parent == true)
 	{
-		if(cmd->func(data))
+		if(cmd->func(data, cmd))
 			return (FAIL);
 	}
 	else
@@ -98,7 +98,7 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
-			cmd->func(data);
+			cmd->func(data, cmd);
 			exit(0);
 		}
 	}

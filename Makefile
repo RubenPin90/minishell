@@ -31,7 +31,7 @@ SRC_F = sys_init.c \
 		exec_cmdfinder.c \
 		exec_fds.c \
 		exec_fd_utils.c \
-		builtins.c \
+		builtin.c \
 		builtin_cd.c \
 		builtin_echo.c \
 		builtin_exit.c \

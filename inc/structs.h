@@ -3,7 +3,8 @@
 # include "minishell.h"
 
 typedef struct s_data t_data;
-typedef int (*bltn)(t_data *data);
+typedef struct s_parse t_parse;
+typedef int (*bltn)(t_data *data, t_parse *cmd);
 
 typedef enum s_type
 {
@@ -71,7 +72,7 @@ typedef struct s_data
 	char			*input;
 	int				cmds;
 	char			**paths;
-	struct s_parse	*cmd_line;
+	t_parse			*cmd_line;
 	struct s_lexer	*lex;
 	struct s_word	*word;
 }	t_data;

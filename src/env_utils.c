@@ -1,10 +1,11 @@
 #include "env.h"
 
-int	print_env(t_data *data)
+int	print_env(t_data *data, t_parse *cmd)
 {
 	t_lstenv *lst;
 
 	lst = data->env;
+	(void)cmd;
 	while (lst)
 	{
 		printf("%s=%s\n", lst->key, lst->value);

@@ -1,11 +1,12 @@
-#include "builtins.h"
+#include "builtin.h"
 
-int	ft_pwd(t_data *data)
+int	ft_pwd(t_data *data, t_parse *cmd)
 {
 	char	buf[8000];
 	int		size;
 
 	(void)data;
+	(void)cmd;
 	size = 4000;
 	while (size < 8001)
 	{
