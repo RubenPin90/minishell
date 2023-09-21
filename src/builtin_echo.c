@@ -6,7 +6,7 @@ int	write_args(char **args, int i, int size)
 	while(args[i])
 	{
 		ft_putstr_fd(args[i], 1);
-		if (i < size)
+		if (i < size - 1)
 			ft_putstr_fd(" ", 1);
 		i++;
 	}

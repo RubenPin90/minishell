@@ -1,23 +1,42 @@
 #include "builtin.h"
 
-int	ft_pwd(t_data *data, t_parse *cmd)
+char *get_pwd(void)
 {
-	char	buf[8000];
+	char	*buf;
 	int		size;
+	char	*ret;
 
-	(void)data;
-	(void)cmd;
 	size = 4000;
 	while (size < 8001)
 	{
-		if (!getcwd(buf, size) && errno == ERANGE)
+		buf = ft_calloc(sizeof(char), size);
+		if (!buf)
+			return (NULL);
+		ret = getcwd(buf, size);
+		if (!ret)
+		{
 			size *= 2;
+			buf = free_null(buf);
+		}
 		else 
 			break ;
 	}
-	if (getcwd(buf, size) == NULL)
-		return(error_msg("pwd", strerror(errno)));
-	else
-		ft_printf("%s\n", buf);
+	if (!ret)
+		error_msg("pwd", strerror(errno));
+	return (ret);
+}
+
+int	ft_pwd(t_data *data, t_parse *cmd)
+{
+	char *buf;
+
+	(void)data;
+	(void)cmd;
+	buf = get_pwd();
+	if (!buf)
+		return (AGAIN);
+	ft_putstr_fd(buf, 1);
+	ft_putstr_fd("\n", 1);
+	buf = free_null(buf);
 	return (SUCCESS);
 }

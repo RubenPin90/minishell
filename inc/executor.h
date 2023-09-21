@@ -3,7 +3,7 @@
 # include "minishell.h"
 
 /*executor*/
-int executor(t_data *data);
+int		executor(t_data *data);
 
 /*exec_heredoc*/
 void	handle_heredoc(t_data *data, t_parse *cmd_line);
@@ -11,6 +11,7 @@ int		find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir);
 int		heredocfun(t_parse *cmd, char *delim);
 
 /*exec_cmdfinder*/
+int		check_access(t_data *data, char *cmdname, char **cmdpath);
 int		check_binary(t_data *data, char **cmdpath, char *cmdname);
 int		cmdfinder(t_data *data, t_parse *cmd_line);
 int		find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths);

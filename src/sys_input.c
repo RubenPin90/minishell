@@ -9,6 +9,7 @@ int	handle_input(t_data *data)
 		return (AGAIN);
 	add_history(data->input);
 	lexer(data);
+	export_check(data, data->lex);
 	if (parser(data, data->lex))
 		return (AGAIN);
 	return (SUCCESS);

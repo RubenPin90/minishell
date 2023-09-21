@@ -109,11 +109,12 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	int		status;
 
+	if (cmd->execute == false)
+		return (SUCCESS);
 	if (cmd->func)
 		exec_builtin(data, cmd, parent);
 	else
 		exec_child(data, cmd, cmd->cmd_path);
-	// cmd_printer(data);
 	cleanup_fd(&cmd->fd_in);
 	cleanup_fd(&cmd->fd_out);
 	waitpid(cmd->pid, &status, 0);
@@ -129,9 +130,9 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 	create_pipes(data->cmd_line, cmds);
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->func)
+		if (cmd_line->execute && cmd_line->func)
 			exec_builtin(data, cmd_line, false);
-		else
+		else if (cmd_line->execute)
 			exec_child(data, cmd_line, cmd_line->cmd_path);
 		cmd_line++;
 	}
@@ -151,6 +152,7 @@ int executor(t_data *data)
 
 	err = 0;
 	data->env_arr = list_to_arr(data, data->env);
+	// cmd_printer(data);
 	handle_heredoc(data, data->cmd_line);
 	if (cmdfinder(data, data->cmd_line))
 		return(AGAIN);

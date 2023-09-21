@@ -6,21 +6,31 @@
 void cmd_printer(t_data *data)
 {
 	t_parse *tmp;
+	t_lexer *tmp2;
 	// struct stat file_stat;
 
 	tmp = data->cmd_line;
+	tmp2 = data->exp_lst;
 	printf(YELLOW"PID%d_______CMD_PRINTER_______\n\n"RESET, tmp->pid);
 	printf(YELLOW"input:"RESET" %s\n", data->input);
 	printf(YELLOW"cmds:"RESET" %d\n", data->cmds);
+	while (tmp2)
+	{
+		printf(YELLOW"exp_lst:"RESET" %s\n", tmp2->word);
+		tmp2 = tmp2->next;
+	}
 	while (tmp->id != 0)
 	{
 		if (tmp->id > 1)
 			printf(RED"|---------------------------|\n"RESET);
 		printf(YELLOW"cmd_path:"RESET" %s\n", tmp->cmd_path);
 		printf(YELLOW"cmd[%d]:"RESET, tmp->id);
-		for (int i = 0; tmp->cmd[i]; i++)
-			printf("%s ", tmp->cmd[i]);
-		printf("\n");
+		if (tmp->cmd)
+		{
+			for (int i = 0; tmp->cmd[i]; i++)
+				printf("%s ", tmp->cmd[i]);
+			printf("\n");
+		}
 		lexer_printer(tmp->redir, false);
 		printf(YELLOW"infile:"RESET" %s\n", tmp->infile);
 		printf(YELLOW"heredoc:"RESET" %s\n", tmp->heredoc);
@@ -73,19 +83,6 @@ void	lexer_printer(t_lexer *lex, int check)
 		}
 		printf("\n");
 	}
-}
-
-int	lex_len(t_lstenv *lst)
-{
-	int i;
-
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
 }
 
 char *ft_strjoin_wrapper(char *str1, char*str2, char *str3)

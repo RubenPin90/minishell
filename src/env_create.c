@@ -11,13 +11,13 @@ t_lstenv	*copy_envp(char **env_org)
 	if (env_org == NULL)
 		ft_error(NOENV_ERR, NULL);
 	while (env_org[++i])
-		env_extract(&env_list, lstenv_new(env_org[i]));
+		env_addback(&env_list, lstenv_create(env_org[i]));
 	if (env_list == NULL)
 		ft_error(ENV_ALLOC_ERR, NULL);
 	return (env_list);
 }
 
-void	env_extract(t_lstenv **lst, t_lstenv *new)
+void	env_addback(t_lstenv **lst, t_lstenv *new)
 {
 	t_lstenv	*tmp;
 
@@ -32,30 +32,39 @@ void	env_extract(t_lstenv **lst, t_lstenv *new)
 	}
 }
 
-t_lstenv	*lstenv_new(char *cont)
+t_lstenv	*lstenv_create(char *cont)
 {
 	char		*delimiter;
+	char		*key;
+	char		*value;
 	t_lstenv	*new;
 
+	new = NULL;
 	delimiter = ft_strchr(cont, '=');
 	if (!delimiter)
 		return (NULL);
+	key = ft_substr(cont, 0, delimiter - cont);
+	if (!key)
+		return (NULL);
+	value = ft_strdup(delimiter + 1);
+	if (!value)
+	{
+		key = free_null(key);
+		return (NULL);
+	}
+	new = lstenv_new(key, value);
+	return (new);
+}
+
+t_lstenv	*lstenv_new(char *key, char *value)
+{
+	t_lstenv	*new;
+
 	new = (t_lstenv *)malloc(sizeof(t_lstenv));
 	if (!new)
 		return (NULL);
-	new->key = ft_substr(cont, 0, delimiter - cont);
-	if (!new->key)
-	{
-		free_null((void *)new);
-		return (NULL);
-	}
-	new->value = ft_strdup(delimiter + 1);
-	if (!new->value)
-	{
-		free_null((void *)new->key);
-		free_null((void *)new);
-		return (NULL);
-	}
+	new->key = key;
+	new->value = value;
 	new->next = NULL;
 	return (new);
 }

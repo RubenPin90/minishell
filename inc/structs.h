@@ -51,6 +51,7 @@ typedef struct s_word
 typedef struct s_parse
 {
 	int				id;
+	bool			execute;
 	char			*cmd_path;
 	char			**cmd;
 	bltn			func;
@@ -72,6 +73,7 @@ typedef struct s_data
 	char			*input;
 	int				cmds;
 	char			**paths;
+	struct s_lexer	*exp_lst;
 	t_parse			*cmd_line;
 	struct s_lexer	*lex;
 	struct s_word	*word;
