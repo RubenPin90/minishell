@@ -1,9 +1,48 @@
 
-#include "builtins.h"
+#include "builtin.h"
 
-int	ft_unset(t_data *data)
+void	ft_find_n_del(t_lstenv **env, char *arg)
 {
-	(void)data;
-	printf("unset");
+	t_lstenv	*current;
+	t_lstenv	*tmp;
+	t_lstenv	*prev;
+
+	current = *env;
+	prev = NULL;
+	while(current)
+	{
+		if (!ft_strncmp(arg, current->key, ft_strlen(current->key) + 1))
+		{
+			tmp = current->next;
+			current->next = NULL;
+			lstenv_clear(&current);
+			if (!prev)
+				*env = tmp;
+			else
+				prev->next = tmp;
+			current = tmp;
+		}
+		else
+		{
+			prev = current;
+			current = current->next;
+		}
+	}
+}
+
+int	ft_unset(t_data *data, t_parse *cmd)
+{
+	int		num_args;
+	int		i;
+
+	num_args = ft_arrlen(cmd->cmd);
+	if (num_args == 1)
+		return (AGAIN);
+	i = 1;
+	while(cmd->cmd[i])
+	{
+		ft_find_n_del(&data->env, cmd->cmd[i]);
+		i++;
+	}
 	return (SUCCESS);
 }

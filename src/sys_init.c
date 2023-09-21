@@ -9,4 +9,5 @@ void	init_data(t_data *data)
 	data->env = NULL;
 	data->env_arr = NULL;
 	data->input = NULL;
+	data->exp_lst = NULL;
 }

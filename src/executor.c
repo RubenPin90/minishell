@@ -1,6 +1,5 @@
 
 #include "executor.h"
-#include <sys/wait.h>
 
 int	create_pipes(t_parse *cmd_line, int cmds)
 {
@@ -21,10 +20,8 @@ int	create_pipes(t_parse *cmd_line, int cmds)
 
 int	ft_dup2(int fdin, int fdout)
 {
-	// printf("switching fdin: %d with %d\n", fdin, STDIN_FILENO);
 	if (dup2(fdin, STDIN_FILENO) < 0)
 		return (error_msg("Infile", strerror(errno)));
-	// printf("switching fdout: %d with %d\n", fdout, STDOUT_FILENO);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
 		return (error_msg("Outfile", strerror(errno)));
 	return (SUCCESS);
@@ -58,16 +55,6 @@ void	replace_fdmulti(t_data *data, t_parse *cmd)
 		else
 			ft_dup2(tmp_fdin, tmp_fdout);
 	}
-	while (data->cmd_line->id != 0)
-	{
-		cleanup_fd(&data->cmd_line->fd_in, &data->cmd_line->infile);
-		cleanup_fd(&data->cmd_line->fd_out, &data->cmd_line->outfile);
-		close(data->cmd_line->fd_pipes[0]);
-		data->cmd_line->fd_pipes[0] = -1;
-		close(data->cmd_line->fd_pipes[1]);
-		data->cmd_line->fd_pipes[1] = -1;
-		data->cmd_line++;
-	}
 }
 
 void	replace_fd(t_data *data, t_parse *cmd)
@@ -83,16 +70,12 @@ void	replace_fd(t_data *data, t_parse *cmd)
 	}
 	else
 		replace_fdmulti(data, cmd);
-	// cleanup_fd(&cmd->fd_in, &cmd->infile);
-	// cleanup_fd(&cmd->fd_out, &cmd->outfile);
+	close_all_fds(data->cmd_line);
 }
-
-
 
 int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 {
 	cmd->pid = fork();
-	// printf("cmd->pid: %d\n", cmd->pid);
 	if (cmd->pid == -1)
 		return (error_msg("fork", strerror(errno)));
 	if (cmd->pid == 0)
@@ -107,7 +90,7 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 {
 	if (parent == true)
 	{
-		if(cmd->func(data))
+		if(cmd->func(data, cmd))
 			return (FAIL);
 	}
 	else
@@ -115,7 +98,7 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
-			cmd->func(data);
+			cmd->func(data, cmd);
 			exit(0);
 		}
 	}
@@ -126,14 +109,14 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	int		status;
 
+	if (cmd->execute == false)
+		return (SUCCESS);
 	if (cmd->func)
 		exec_builtin(data, cmd, parent);
 	else
 		exec_child(data, cmd, cmd->cmd_path);
-	// printf("cmd->fd_in: %d\n", cmd->fd_in);
-	cleanup_fd(&cmd->fd_in, &cmd->infile);
-	// printf("cmd->fd_out: %d\n", cmd->fd_out);
-	cleanup_fd(&cmd->fd_out, &cmd->outfile);
+	cleanup_fd(&cmd->fd_in);
+	cleanup_fd(&cmd->fd_out);
 	waitpid(cmd->pid, &status, 0);
 	return (SUCCESS);
 }
@@ -147,25 +130,14 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 	create_pipes(data->cmd_line, cmds);
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->func)
+		if (cmd_line->execute && cmd_line->func)
 			exec_builtin(data, cmd_line, false);
-		else
+		else if (cmd_line->execute)
 			exec_child(data, cmd_line, cmd_line->cmd_path);
-		// printf("tmp->pid: %d\n", cmd_line->pid);
 		cmd_line++;
 	}
-	cmd_line = tmp;
-	while (tmp->id != 0)
-	{
-		cleanup_fd(&tmp->fd_in, &tmp->infile);
-		cleanup_fd(&tmp->fd_out, &tmp->outfile);
-		close(tmp->fd_pipes[0]);
-		tmp->fd_pipes[0] = -1;
-		close(tmp->fd_pipes[1]);
-		tmp->fd_pipes[1] = -1;
-		tmp++;
-	}
-	tmp = cmd_line;
+	// cmd_printer(data);
+	close_all_fds(data->cmd_line);
 	while (tmp->id != 0)
 	{
 		waitpid(tmp->pid, &status, 0);
@@ -180,13 +152,12 @@ int executor(t_data *data)
 
 	err = 0;
 	data->env_arr = list_to_arr(data, data->env);
+	// cmd_printer(data);
 	handle_heredoc(data, data->cmd_line);
 	if (cmdfinder(data, data->cmd_line))
 		return(AGAIN);
 	if (handle_fds(data, data->cmd_line))
 		return(AGAIN);
-	// cmd_printer(data);
-	// printf("\n_______EXECUTOR:\n\n");
 	if (data->cmds == 1)
 		err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else

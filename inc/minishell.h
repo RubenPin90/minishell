@@ -9,15 +9,15 @@
 # include <libft.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <sys/wait.h>
 
 # include "structs.h"
-# include "lexer.h"
-# include "builtins.h"
 # include "env.h"
-# include "error_handling.h"
+# include "lexer.h"
 # include "parser.h"
-# include "cmdfinder.h"
 # include "executor.h"
+# include "builtin.h"
+# include "error_handling.h"
 # include "tester.h"
 
 /*colors*/
@@ -52,5 +52,12 @@ int		lex_len(t_lstenv *lst);
 char	*ft_strjoin_wrapper(char *str1, char* str2, char *str3);
 char	**arr_expand(char **arr, char *str);
 int		ft_arrlen(char **arr);
+
+/*sys_cleanup*/
+void	ft_cleanup(t_data *data, bool check);
+void	*free_null(void *ptr);
+void	lstenv_clear(t_lstenv **head);
+char	**free_arr(char **arr);
+t_word *free_word(t_word *word);
 
 #endif

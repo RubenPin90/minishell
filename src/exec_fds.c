@@ -4,10 +4,12 @@ int	handle_fds(t_data *data, t_parse *cmd)
 {
 	while (cmd->id != 0)
 	{
-		if(cmd->redir && tkn_counter(cmd->redir, INPUT, STOP))
+		if(cmd->redir && (tkn_counter(cmd->redir, INPUT, STOP) || \
+							tkn_counter(cmd->redir, HEREDOC, STOP)))
 			if (handle_infile(data, cmd, cmd->redir))
 				return (AGAIN);
-		if (cmd->redir && tkn_counter(cmd->redir, OUTPUT, STOP))
+		if (cmd->redir && (tkn_counter(cmd->redir, OUTPUT, STOP) || \
+							tkn_counter(cmd->redir, APPEND, STOP)))
 			if (handle_outfile(data, cmd, cmd->redir))
 				return (AGAIN);
 		cmd++;
@@ -17,62 +19,46 @@ int	handle_fds(t_data *data, t_parse *cmd)
 
 int	handle_infile(t_data *data, t_parse *cmd, t_lexer *redir)
 {
-	int fd;
-	char *tmp;
-	bool update;
-
-	fd = -1;
-	tmp = NULL;
-	update = false;
+	(void)data;
 	while (redir)
 	{
-		if (redir->token == HEREDOC)
-			update = false;
-		else if (redir->token == INPUT)
+		if (redir->token == INPUT || redir->token == HEREDOC)
 		{
-			update = true;
-			cleanup_fd(&fd, &tmp);
-			fd = ft_open(redir->word, redir->token);
-			if (fd == -1)
+			cleanup_fd(&cmd->fd_in);
+			cmd->infile = free_null(cmd->infile);
+			cmd->fd_in = ft_open(redir->word, redir->token, cmd->heredoc);
+			if (cmd->fd_in == -1)
 				return (AGAIN);
-			tmp = ft_strdup(redir->word);
-			if (!tmp)
+			if (redir->token == INPUT)
 			{
-				close(fd);
-				ft_error(MALLOC_ERR, data);
+				cmd->infile = ft_strdup(redir->word);
+				if (!cmd->infile)
+					cleanup_fd(&cmd->fd_in); // doesnt have to be protected. If NULL it solves itself
 			}
 		}
 		redir = redir->next;
 	}
-	update_fd(update, cmd, &tmp, fd);
+	update_fd(cmd, &cmd->infile);
 	return (SUCCESS);
 }
 
 int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 {
-	int fd;
-	char *tmp;
-
-	fd = -1;
-	tmp = NULL;
+	(void)data;
 	while (redir)
 	{
-		cleanup_fd(&fd, &tmp);
 		if (redir->token == APPEND || redir->token == OUTPUT)
 		{
-			fd = ft_open(redir->word, redir->token);
-			if (fd == -1)
+			cleanup_fd(&cmd->fd_out);
+			cmd->outfile = free_null(cmd->outfile);
+			cmd->fd_out = ft_open(redir->word, redir->token, NULL);
+			if (cmd->fd_out == -1)
 				return (AGAIN);
-			tmp = ft_strdup(redir->word);
-			if (!tmp)
-			{
-				cleanup_fd(&fd, &tmp);
-				ft_error(MALLOC_ERR, data);
-			}
+			cmd->outfile = ft_strdup(redir->word);
+			if (!cmd->outfile)
+				cleanup_fd(&cmd->fd_out);
 		}
 		redir = redir->next;
 	}
-	cmd->fd_out = fd;
-	cmd->outfile = tmp;
 	return (SUCCESS);
 }

@@ -15,6 +15,7 @@ SRCDIR := src
 SRC_F = sys_init.c \
 		sys_input.c \
 		sys_utils.c \
+		sys_cleanup.c \
 		signals.c \
 		env_create.c \
 		env_utils.c \
@@ -25,20 +26,20 @@ SRC_F = sys_init.c \
 		expander.c \
 		parser.c \
 		parser_utils.c \
-		cmdfinder.c \
 		executor.c \
+		exec_heredoc.c \
+		exec_cmdfinder.c \
 		exec_fds.c \
 		exec_fd_utils.c \
-		exec_heredoc.c \
-		builtins.c \
+		builtin.c \
 		builtin_cd.c \
 		builtin_echo.c \
 		builtin_exit.c \
 		builtin_export.c \
 		builtin_pwd.c \
 		builtin_unset.c \
-		error_handling.c \
-		error_utils.c
+		error_handling.c
+
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}
 OBJ_M = ${OBJDIR}/main.o
