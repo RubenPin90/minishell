@@ -96,8 +96,11 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 	else
 	{
 		cmd->pid = fork();
+		if (cmd->pid == -1)
+			return (error_msg("fork", strerror(errno)));
 		if (cmd->pid == 0)
 		{
+			replace_fd(data, cmd);
 			cmd->func(data, cmd);
 			exit(0);
 		}
