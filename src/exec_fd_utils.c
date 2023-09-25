@@ -27,6 +27,7 @@ int	ft_open(char *file, t_type token, char *herefile)
 {
 	int fd;
 
+	fd = -1;
 	if (token == APPEND)
 		fd = open(file, O_RDWR | O_APPEND | O_CREAT, 0644);
 	else if (token == OUTPUT)

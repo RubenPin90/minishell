@@ -32,8 +32,4 @@ void	lexer_addback(t_lexer **lst, t_lexer *new);
 void	count_lexlst(t_lexer *lex);
 void	free_lexer(t_lexer **lex);
 
-
-// expander.c
-void	expander(t_data *data, char *input);
-
 #endif

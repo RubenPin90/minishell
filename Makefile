@@ -1,6 +1,6 @@
 #SETUP
 NAME := minishell	
-CFLAGS := -Werror -Wall -Wextra -g
+CFLAGS := -Werror -Wall -Wextra -g -fPIE
 CC := cc
 
 #COLORS
@@ -24,6 +24,7 @@ SRC_F = sys_init.c \
 		lexer_checks.c \
 		lexer_list_utils.c \
 		expander.c \
+		expander_utils.c \
 		parser.c \
 		parser_utils.c \
 		executor.c \
@@ -73,7 +74,7 @@ all: ${LIB} ${NAME}
 
 ${NAME}: ${OBJ} ${OBJ_M}
 	@echo "${YELLOW}Compiling...${RESET}"
-	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_M} ${LIBS} -o $@
+	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_M} ${LIBS} -o $@ 
 	@echo "${GREEN}Code ready to run${RESET}"
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c

@@ -13,6 +13,7 @@
 
 # include "structs.h"
 # include "env.h"
+# include "expander.h"
 # include "lexer.h"
 # include "parser.h"
 # include "executor.h"
