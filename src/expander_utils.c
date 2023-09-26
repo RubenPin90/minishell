@@ -5,7 +5,8 @@ int	get_var_len(char *input, int i)
 	int	len;
 
 	len = 0;
-	while (input[i] && !soft_cut(input[i]))
+	while (input[i] && !hard_cut(input[i]) && \
+			input[i] != '"' && input[i] != '\'')
 	{
 		i++;
 		len++;

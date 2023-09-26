@@ -136,7 +136,7 @@ int	test_lexer_expander()
 	printf(YELLOW"----------test-quotes----------\n"RESET);
 	test_quotes("\"$USER\"", user);
 	test_quotes("'$USER'", "$USER");
-	test_quotes("\"'$USER'\"", "'ada'");
+	test_quotes("\"'$USER'\"", "'aapostol'");
 	test_quotes("'\"$USER\"'", "\"$USER\"");
 	test_quotes("$\"USER\"", "USER");
 	test_quotes("$'USER'", "USER");
@@ -144,12 +144,12 @@ int	test_lexer_expander()
 	test_quotes("'$\"USER\"'", "$\"USER\"");
 	test_quotes("\"$\"USER\"\"", "$USER");
 	test_quotes("'$'USER''", "$USER");
-	test_quotes("\"\"$USER\"\"", "ada");
-	test_quotes("''$USER''", "ada");
+	test_quotes("\"\"$USER\"\"", "aapostol");
+	test_quotes("''$USER''", "aapostol");
 	printf(YELLOW"----------test-expander----------\n"RESET);
 	test_expander("\"$USER\"", user);
 	test_expander("'$USER'", "$USER");
-	test_expander("\"'$USER'\"", "'ada'");
+	test_expander("\"'$USER'\"", "'aapostol'");
 	test_expander("'\"$USER\"'", "\"$USER\"");
 	test_expander("$\"USER\"", "USER");
 	test_expander("$'USER'", "USER");
@@ -157,7 +157,7 @@ int	test_lexer_expander()
 	test_expander("'$\"USER\"'", "$\"USER\"");
 	test_expander("\"$\"USER\"\"", "$USER");
 	test_expander("'$'USER''", "$USER");
-	test_expander("\"\"$USER\"\"", "ada");
+	test_expander("\"\"$USER\"\"", "aapostol");
 	test_expander("''$USER''", user);
 	test_expander("$USER", user);
 	test_expander("\"$\"USER", "$USER");
@@ -165,7 +165,7 @@ int	test_lexer_expander()
 	test_expander("'$USER'", "$USER");
 	test_expander("\"$USER\"", user);
 	test_expander("$USERR", "");
-	test_expander("'$A'\"$USER'ada'\"", "$Aada'ada'");
+	test_expander("'$A'\"$USER'ada'\"", "$Aaapostol'ada'");
 	test_expander("\"   $    USER\"", "   $    USER");
 	test_expander("   $    USER", "$ USER");
 	test_expander("$\"$USER\"", user);
@@ -176,7 +176,7 @@ int	test_lexer_expander()
 	test_expander("$\"abc\"", "abc");
 	test_expander("\"$USER\"", user);
 	test_expander("'$USER'", "$USER");
-	test_expander("\"'$USER'\"", "'ada'");
+	test_expander("\"'$USER'\"", "'aapostol'");
 	test_expander("'\"$USER\"'", "\"$USER\"");
 	test_expander("$\"USER\"", "USER");
 	test_expander("$'USER'", "USER");

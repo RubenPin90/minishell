@@ -48,14 +48,6 @@ void	skip_space(char *input, int *i)
 		(*i)++;
 }
 
-// int	soft_cut(char c)
-// {
-// 	if (!c || c == '<' || c == '>' || c == '|' || c == ' ' || \
-// 		c == '"' || c == '\'')
-// 		return (1);
-// 	return (0);
-// }
-
 int	hard_cut(char c)
 {
 	if (!c || c == '<' || c == '>' || c == '|' || c == ' ')

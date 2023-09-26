@@ -12,34 +12,34 @@ RESET := \033[0m
 
 #FILES
 SRCDIR := src
-SRC_F = sys_init.c \
-		sys_input.c \
-		sys_utils.c \
-		sys_cleanup.c \
-		signals.c \
-		env_create.c \
-		env_utils.c \
-		lexer.c \
-		lexer_utils.c \
-		lexer_checks.c \
-		lexer_list_utils.c \
-		expander.c \
-		expander_utils.c \
-		parser.c \
-		parser_utils.c \
-		executor.c \
-		exec_heredoc.c \
-		exec_cmdfinder.c \
-		exec_fds.c \
-		exec_fd_utils.c \
-		builtin.c \
+SRC_F = builtin.c \
 		builtin_cd.c \
 		builtin_echo.c \
 		builtin_exit.c \
 		builtin_export.c \
 		builtin_pwd.c \
 		builtin_unset.c \
+		env_create.c \
+		env_utils.c \
 		error_handling.c
+		executor.c \
+		exec_cmdfinder.c \
+		exec_fds.c \
+		exec_fd_utils.c \
+		exec_heredoc.c \
+		expander.c \
+		expander_utils.c \
+		lexer.c \
+		lexer_checks.c \
+		lexer_list_utils.c \
+		lexer_utils.c \
+		signals.c \
+		sys_cleanup.c \
+		sys_init.c \
+		sys_input.c \
+		sys_utils.c \
+		parser.c \
+		parser_utils.c \
 
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}

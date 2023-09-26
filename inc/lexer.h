@@ -5,18 +5,15 @@
 // lexer.c
 int		lexer(t_data *data);
 t_lexer	*create_list(t_data *data, char **datainput);
-
+char	*get_word(t_data *data, char *input, t_word *word);
+void	fill_word(char *new, t_word *word);
 
 // lexer_utils.c
-char	*get_word(t_data *data, char *input, t_word *word);
-char	*handle_unquoted(t_data *data, char *input, int i);
-char	*handle_quoted(t_data *data, char *input, t_word *word, char quote);
 int		get_len(t_data *data, char *input, int *i, char quote);
 int		unquoted_len(char *input, int *i);
 int		quoted_len(char *input, int *i, char quote);
 void	skip_space(char *input, int *i);
 int		hard_cut(char c);
-int		soft_cut(char c);
 
 // lexer_checks.c
 int		check_quotes(char *str);
