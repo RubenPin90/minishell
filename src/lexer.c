@@ -48,7 +48,7 @@ char	*get_word(t_data *data, char *input, t_word *word)
 		ft_error(MALLOC_ERR, data);
 	fill_word(new, word);
 	new = free_null(new);
-	if (input[i + 1] && word->quoted == true && \
+	if (input[i] && input[i + 1] && word->quoted == true && \
 		(input[i] == '"' || input[i] == '\''))
 	{
 		word->quoted = false;
@@ -92,7 +92,7 @@ int	lexer(t_data *data)
 {
 	if (check_quotes(data->input) || check_token(data->input))
 		return (1);
-	expander(data, data->input);
+	data->input = expander(data, data->input);
 	create_list(data, &data->input);
 	count_lexlst(data->lex);
 	print_lexlst(data);

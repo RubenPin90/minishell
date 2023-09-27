@@ -3,7 +3,7 @@
 # include "minishell.h"
 
 // expander.c
-void	expander(t_data *data, char *input);
+char	*expander(t_data *data, char *input);
 char	*expander_time(t_data *data, char *input, int i);
 char	*expand_input(char *input, int index, char *value, int var_len);
 

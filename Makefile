@@ -21,7 +21,7 @@ SRC_F = builtin.c \
 		builtin_unset.c \
 		env_create.c \
 		env_utils.c \
-		error_handling.c
+		error_handling.c \
 		executor.c \
 		exec_cmdfinder.c \
 		exec_fds.c \

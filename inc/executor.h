@@ -8,7 +8,7 @@ int		executor(t_data *data);
 /*exec_heredoc*/
 void	handle_heredoc(t_data *data, t_parse *cmd_line);
 int		find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir);
-int		heredocfun(t_parse *cmd, char *delim);
+int		heredocfun(t_data *data, t_parse *cmd, char *delim);
 
 /*exec_cmdfinder*/
 int		check_access(t_data *data, char *cmdname, char **cmdpath);
