@@ -3,6 +3,10 @@
 # define BUILTIN_H
 # include "minishell.h"
 
+# define CD_ARG_ERR "too many arguments\n"
+# define CD_HOME_ERR "HOME not set\n"
+# define CD_OLDPWD_ERR "OLDPWD not set\n"
+
 /*builtins*/
 int		check_builtin(t_parse *cmd_line, char *cmd);
 int		builtin_parent(t_parse *cmd_line, char *cmd, int len);

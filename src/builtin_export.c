@@ -70,13 +70,13 @@ int	ft_export(t_data *data, t_parse *cmd)
 	bool		equal;
 	int			i;
 
-	equal = false;
 	num_args = ft_arrlen(cmd->cmd);
 	if (num_args == 1)
 		ft_bubsort(data->env_arr, data->env);
 	i = 1;
 	while (cmd->cmd[i])	
 	{
+		equal = false;
 		if (check_valid(cmd->cmd[i], &equal))
 			return (error_msg("export", "not a valid identifier"));
 		if (equal == true)

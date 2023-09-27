@@ -15,7 +15,7 @@ int	update_path(t_lstenv *env, char *pathname, char *key)
 			env->value = free_null(env->value);
 			env->value = ft_strdup(pathname);
 			if (!env->value)
-				return (AGAIN);
+				return (FAIL);
 			break ;
 		}
 		env = env->next;
@@ -39,9 +39,9 @@ int	redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key)
 	if (!keyvalue)
 	{
 		if (ft_strncmp(key, "HOME", ft_strlen(key)))
-			return (error_msg("cd", "HOME not set"));
+			return (error_msg("cd", CD_HOME_ERR));
 		else
-			return (error_msg("cd", "OLDPWD not set"));
+			return (error_msg("cd", CD_OLDPWD_ERR));
 	}
 	if (changedir(data, env, curpwd, keyvalue))
 		return (AGAIN);
@@ -79,10 +79,8 @@ int	ft_cd(t_data *data, t_parse *cmd)
 	curpwd = NULL;
 	num_args = ft_arrlen(cmd->cmd);
 	if (num_args > 2)
-		return (AGAIN);
+		return (error_msg("cd", CD_ARG_ERR));
 	curpwd = find_envkey(data->env, "PWD");
-	if (!curpwd)
-		return (error_msg("cd", "Current path not found."));
 	if (num_args == 1 || !ft_strncmp(cmd->cmd[1], "~", 2) || \
 						 !ft_strncmp(cmd->cmd[1], "--", 3))
 		ret = redir_pwd(data, data->env, curpwd, "HOME");
