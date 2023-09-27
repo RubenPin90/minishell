@@ -14,7 +14,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (handle_input(&data))
 			ft_cleanup(&data, false);
-		else 
+		else
 			if (executor(&data))
 				ft_cleanup(&data, false);
 		ft_cleanup(&data, false);

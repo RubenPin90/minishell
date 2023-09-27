@@ -147,7 +147,7 @@ int	parser(t_data *data, t_lexer *lst)
 			break ;
 		lst = lst->next;
 	}
-	while(lst && lst->prev)
+	while (lst && lst->prev)
 		lst = lst->prev;
 	data->lex = lst;
 	return (SUCCESS);

@@ -77,6 +77,8 @@ typedef struct s_data
 	t_parse			*cmd_line;
 	struct s_lexer	*lex;
 	struct s_word	*word;
+	bool			quoted;
+	bool			expand;
 }	t_data;
 
 #endif
