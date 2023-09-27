@@ -9,7 +9,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_error(ARGC_ERR, NULL);
 	init_data(&data);
 	data.env = copy_envp(envp);
-	//handle_signals();
+	handle_signals();
 	while (1)
 	{
 		if (handle_input(&data))

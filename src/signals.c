@@ -1,26 +1,21 @@
-
 #include "minishell.h"
 
-void	handle_signals()
+void	ignore_signal(int sig)
 {
-	struct sigaction	sigact;
-
-	sigact.sa_sigaction = receive_signal;
-	sigemptyset(&sigact.sa_mask);
-	sigaddset(&sigact.sa_mask, SIGQUIT);
-	sigaction(SIGINT, &sigact, NULL);
-	sigaction(SIGQUIT, &sigact, NULL);
+	(void)sig;
+	return ;
 }
 
-/*SIGINT needs to interupt programs with \n.
-*/
-void	receive_signal(int signum, siginfo_t *info, void *context)
+// SIGINT needs to interupt programs with \n.
+void	receive_signal(int sig)
 {
-	(void)context;
-	(void)info;
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		exit (0);
-	}
+	(void)sig;
+	printf("You pressed CTRL + C\n");
+	exit (0);
+}
+
+void	handle_signals(void)
+{
+	signal(SIGINT, receive_signal);
+	signal(SIGABRT, ignore_signal);
 }

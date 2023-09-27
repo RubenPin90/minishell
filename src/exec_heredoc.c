@@ -1,6 +1,6 @@
 #include "executor.h"
 
-int	heredocfun(t_parse *cmd, char *delim)
+int	heredocfun(t_data *data, t_parse *cmd, char *delim)
 {
 	int fd;
 	char *str;
@@ -16,6 +16,9 @@ int	heredocfun(t_parse *cmd, char *delim)
 			cleanup_fd(&fd);
 			return (FAIL);
 		}
+		data->quoted = true;
+		str = expander(data, str);
+		printf("str: %s\n", str);
 		if (ft_strncmp(str, delim, ft_strlen(delim) + 1) == 0)
 			break;
 		ft_putendl_fd(str, fd);
@@ -48,7 +51,7 @@ int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 	{
 		if (redir->token == HEREDOC)
 		{
-			ret = heredocfun(cmd, redir->word);
+			ret = heredocfun(data, cmd, redir->word);
 			if (ret == FAIL)
 				ft_error(MALLOC_ERR, data);
 		}

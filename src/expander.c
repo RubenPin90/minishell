@@ -31,7 +31,7 @@ char	*expander_time(t_data *data, char *input, int i)
 	return (new);
 }
 
-void	expander(t_data *data, char *input)
+char	*expander(t_data *data, char *input)
 {
 	int		i;
 	char 	*new;
@@ -52,9 +52,9 @@ void	expander(t_data *data, char *input)
 			tmp = input;
 			input = new;
 			tmp = free_null(tmp);
-			data->input = input;
 		}
 		if (input[i])
 			i++;
 	}
+	return (input);
 }
