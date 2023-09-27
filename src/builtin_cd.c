@@ -15,7 +15,7 @@ int	update_path(t_lstenv *env, char *pathname, char *key)
 			env->value = free_null(env->value);
 			env->value = ft_strdup(pathname);
 			if (!env->value)
-				return (AGAIN);
+				return (FAIL);
 			break ;
 		}
 		env = env->next;

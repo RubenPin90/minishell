@@ -139,7 +139,6 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 			exec_child(data, cmd_line, cmd_line->cmd_path);
 		cmd_line++;
 	}
-	// cmd_printer(data);
 	close_all_fds(data->cmd_line);
 	while (tmp->id != 0)
 	{
@@ -151,21 +150,15 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 
 int executor(t_data *data)
 {
-	int	err;
-
-	err = 0;
 	data->env_arr = list_to_arr(data, data->env);
-	// cmd_printer(data);
 	handle_heredoc(data, data->cmd_line);
 	if (cmdfinder(data, data->cmd_line))
 		return(AGAIN);
 	if (handle_fds(data, data->cmd_line))
 		return(AGAIN);
 	if (data->cmds == 1)
-		err = exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
+		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else
-		err = exec_multi_cmds(data->cmd_line, data->cmds, data);
-	if (err != 0)
-		ft_error("ERROR\n", data);
+		exec_multi_cmds(data->cmd_line, data->cmds, data);
 	return (SUCCESS);	
 }
