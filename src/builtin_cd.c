@@ -79,7 +79,7 @@ int	ft_cd(t_data *data, t_parse *cmd)
 	curpwd = NULL;
 	num_args = ft_arrlen(cmd->cmd);
 	if (num_args > 2)
-		return (error_msg("cd", CD_ARG_ERR));
+		return (error_msg("cd", ARG_ERR));
 	curpwd = find_envkey(data->env, "PWD");
 	if (num_args == 1 || !ft_strncmp(cmd->cmd[1], "~", 2) || \
 						 !ft_strncmp(cmd->cmd[1], "--", 3))
