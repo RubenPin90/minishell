@@ -7,7 +7,7 @@ int	heredocfun(t_data *data, t_parse *cmd, char *delim)
 
 	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		return (error_msg("heredoc", strerror(errno)));
+		return (error_msg("heredoc", NULL, strerror(errno)));
 	while (1)
 	{
 		str = readline("");

@@ -39,9 +39,9 @@ int	redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key)
 	if (!keyvalue)
 	{
 		if (ft_strncmp(key, "HOME", ft_strlen(key)))
-			return (error_msg("cd", CD_HOME_ERR));
+			return (error_msg("cd", NULL, CD_HOME_ERR));
 		else
-			return (error_msg("cd", CD_OLDPWD_ERR));
+			return (error_msg("cd", NULL, CD_OLDPWD_ERR));
 	}
 	if (changedir(data, env, curpwd, keyvalue))
 		return (AGAIN);
@@ -55,12 +55,12 @@ int	changedir(t_data *data, t_lstenv *env, char *curpwd, char *arg)
 	int		ret;
 
 	if (chdir(arg) == -1)
-		return (error_msg("cd", strerror(errno)));
+		return (error_msg("cd", arg, strerror(errno)));
 	tmp = get_pwd();
 	if (tmp)
 		cwd = ft_strdup(tmp);
 	if (!tmp || !cwd)
-		return (error_msg("cd", "something went wrong."));
+		return (error_msg("cd", NULL, "something went wrong."));
 	tmp = free_null(tmp);
 	ret = update_path(env, curpwd, "OLDPWD");
 	ret = update_path(env, cwd, "PWD");
@@ -79,7 +79,7 @@ int	ft_cd(t_data *data, t_parse *cmd)
 	curpwd = NULL;
 	num_args = ft_arrlen(cmd->cmd);
 	if (num_args > 2)
-		return (error_msg("cd", ARG_ERR));
+		return (error_msg("cd", NULL, ARG_ERR));
 	curpwd = find_envkey(data->env, "PWD");
 	if (num_args == 1 || !ft_strncmp(cmd->cmd[1], "~", 2) || \
 						 !ft_strncmp(cmd->cmd[1], "--", 3))

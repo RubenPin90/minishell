@@ -12,4 +12,5 @@ void	init_data(t_data *data)
 	data->exp_lst = NULL;
 	data->quoted = false;
 	data->expand = true;
+	data->word = NULL;
 }

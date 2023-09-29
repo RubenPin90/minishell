@@ -37,7 +37,7 @@ int	ft_open(char *file, t_type token, char *herefile)
 	else if (token == HEREDOC)
 		fd = open(herefile, O_RDONLY);
 	if (fd == -1)
-		error_msg(file, strerror(errno));
+		error_msg(file, NULL, strerror(errno));
 	return (fd);
 }
 

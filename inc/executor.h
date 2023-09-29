@@ -3,7 +3,18 @@
 # include "minishell.h"
 
 /*executor*/
+int		exec_child(t_data *data, t_parse *cmd, char *cmdpath);
+int		exec_builtin(t_data *data, t_parse *cmd, bool parent);
+int		exec_single_cmd(t_parse *cmd, bool parent, t_data *data);
+int		exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data);
 int		executor(t_data *data);
+
+/*exec_utils*/
+int		create_pipes(t_parse *cmd_line, int cmds);
+int		ft_dup2(int fdin, int fdout);
+void	fdmulti_redef(t_parse *cmd, int *tmp_fdout, int *tmp_fdin, int cmds);
+void	replace_fdmulti(t_data *data, t_parse *cmd);
+void	replace_fd(t_data *data, t_parse *cmd);
 
 /*exec_heredoc*/
 void	handle_heredoc(t_data *data, t_parse *cmd_line);

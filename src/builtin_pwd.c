@@ -22,7 +22,7 @@ char *get_pwd(void)
 			break ;
 	}
 	if (!ret)
-		error_msg("pwd", strerror(errno));
+		error_msg("pwd", NULL, strerror(errno));
 	return (ret);
 }
 

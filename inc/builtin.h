@@ -4,6 +4,7 @@
 # include "minishell.h"
 
 # define ARG_ERR "too many arguments\n"
+# define NUM_ERR "numeric argument required\n"
 # define CD_HOME_ERR "HOME not set\n"
 # define CD_OLDPWD_ERR "OLDPWD not set\n"
 

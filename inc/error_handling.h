@@ -16,6 +16,6 @@ int		ft_error(char *msg, t_data *data);
 
 
 /*error_utils*/
-int 	error_msg(char *cmd, char *msg);
+int 	error_msg(char *cmd, char *arg, char *msg);
 
 #endif
