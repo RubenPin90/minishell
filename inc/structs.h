@@ -79,6 +79,7 @@ typedef struct s_data
 	struct s_word	*word;
 	bool			quoted;
 	bool			expand;
+	int				excode;
 }	t_data;
 
 #endif

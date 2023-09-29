@@ -28,6 +28,7 @@ SRC_F = builtin.c \
 		exec_fd_utils.c \
 		exec_heredoc.c \
 		exec_utils.c \
+		exec_exstatus.c \
 		expander.c \
 		expander_utils.c \
 		lexer.c \

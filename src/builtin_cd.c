@@ -57,11 +57,10 @@ int	changedir(t_data *data, t_lstenv *env, char *curpwd, char *arg)
 	if (chdir(arg) == -1)
 		return (error_msg("cd", arg, strerror(errno)));
 	tmp = get_pwd();
-	if (tmp)
-		cwd = ft_strdup(tmp);
-	if (!tmp || !cwd)
-		return (error_msg("cd", NULL, "something went wrong."));
+	cwd = ft_strdup(tmp);
 	tmp = free_null(tmp);
+	if (!cwd)
+		ft_error(MALLOC_ERR, data);
 	ret = update_path(env, curpwd, "OLDPWD");
 	ret = update_path(env, cwd, "PWD");
 	cwd = free_null(cwd);
@@ -89,6 +88,6 @@ int	ft_cd(t_data *data, t_parse *cmd)
 	else
 		ret = changedir(data, data->env, curpwd, cmd->cmd[1]);
 	if (ret)
-		return (AGAIN);
+		return (FAIL);
 	return (SUCCESS);
 }

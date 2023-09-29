@@ -3,10 +3,10 @@
 # define BUILTIN_H
 # include "minishell.h"
 
-# define ARG_ERR "too many arguments\n"
-# define NUM_ERR "numeric argument required\n"
-# define CD_HOME_ERR "HOME not set\n"
-# define CD_OLDPWD_ERR "OLDPWD not set\n"
+# define ARG_ERR "too many arguments"
+# define NUM_ERR "numeric argument required"
+# define CD_HOME_ERR "HOME not set"
+# define CD_OLDPWD_ERR "OLDPWD not set"
 
 /*builtins*/
 int		check_builtin(t_parse *cmd_line, char *cmd);

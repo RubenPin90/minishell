@@ -17,10 +17,7 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 {
 	if (parent == true)
-	{
-		if(cmd->func(data, cmd))
-			return (FAIL);
-	}
+		data->excode = cmd->func(data, cmd);
 	else
 	{
 		cmd->pid = fork();
@@ -29,8 +26,8 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 		if (cmd->pid == 0)
 		{
 			replace_fd(data, cmd);
-			cmd->func(data, cmd);
-			exit(0);
+			data->excode = cmd->func(data, cmd);
+			ft_cleanup(data, true);
 		}
 	}
 	return(SUCCESS);
@@ -38,8 +35,6 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 
 int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
-	int		status;
-
 	if (cmd->execute == false)
 		return (SUCCESS);
 	if (cmd->func)
@@ -48,16 +43,12 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 		exec_child(data, cmd, cmd->cmd_path);
 	cleanup_fd(&cmd->fd_in);
 	cleanup_fd(&cmd->fd_out);
-	waitpid(cmd->pid, &status, 0);
+	ft_waitpid(data, cmd);
 	return (SUCCESS);
 }
 
 int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 {
-	t_parse *tmp;
-	int status;
-
-	tmp = cmd_line;
 	create_pipes(data->cmd_line, cmds);
 	while (cmd_line->id != 0)
 	{
@@ -68,11 +59,7 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 		cmd_line++;
 	}
 	close_all_fds(data->cmd_line);
-	while (tmp->id != 0)
-	{
-		waitpid(tmp->pid, &status, 0);
-		tmp++;
-	}
+	ft_waitpid(data, data->cmd_line);
 	return (SUCCESS);
 }
 
