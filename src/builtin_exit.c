@@ -16,8 +16,8 @@ int	ft_exit(t_data *data, t_parse *cmd)
 			error_msg("exit", ARG_ERR);
 			ex_code = 1;
 		}
-		if (num_args == 2)
-			define_ex_code(&ex_code);
+		// if (num_args == 2)
+			// define_ex_code(&ex_code);
 	}
 	ft_cleanup(data, true);
 	exit(ex_code);

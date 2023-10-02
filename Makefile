@@ -1,6 +1,6 @@
 #SETUP
 NAME := minishell	
-CFLAGS := -Werror -Wall -Wextra -g -fPIE
+CFLAGS := -Werror -Wall -Wextra -g
 CC := cc
 
 #COLORS

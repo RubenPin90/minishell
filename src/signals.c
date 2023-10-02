@@ -1,21 +1,20 @@
 #include "minishell.h"
 
-void	ignore_signal(int sig)
-{
-	(void)sig;
-	return ;
-}
+int		g_signum = 0;
 
-// SIGINT needs to interupt programs with \n.
 void	receive_signal(int sig)
 {
-	(void)sig;
-	printf("You pressed CTRL + C\n");
-	exit (0);
+	g_signum = sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	return ;
 }
 
 void	handle_signals(void)
 {
+	// if (status == HEREDOC)
 	signal(SIGINT, receive_signal);
-	signal(SIGABRT, ignore_signal);
+	signal(SIGQUIT, SIG_IGN);
 }
