@@ -2,13 +2,14 @@
 
 int	heredocfun(t_data *data, t_parse *cmd, char *delim)
 {
-	int fd;
-	char *str;
+	int		fd;
+	char	*str;
+	int		g_signum = 0;
 
 	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		return (error_msg("heredoc", NULL, strerror(errno)));
-	while (1)
+	while (g_signum != 130)
 	{
 		str = readline("");
 		if (!str)
@@ -20,7 +21,7 @@ int	heredocfun(t_data *data, t_parse *cmd, char *delim)
 		str = expander(data, str);
 		printf("str: %s\n", str);
 		if (ft_strncmp(str, delim, ft_strlen(delim) + 1) == 0)
-			break;
+			break ;
 		ft_putendl_fd(str, fd);
 		str = free_null(str);
 	}

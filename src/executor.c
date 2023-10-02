@@ -8,6 +8,7 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 		return (error_msg("fork", NULL, strerror(errno)));
 	if (cmd->pid == 0)
 	{
+		// signal(SIGINT, receive_signal);
 		replace_fd(data, cmd);
 		execve(cmdpath, cmd->cmd, data->env_arr);
 	}

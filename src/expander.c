@@ -23,8 +23,17 @@ char	*expander_time(t_data *data, char *input, int i)
 	char 	*value;
 	int		var_len;
 
-	var_len = get_var_len(input, i);
-	value = get_value(data, input, i + 1, var_len - 1);
+	data->excode = 42;
+	if (input[i] == '$' && input[i + 1] == '?')
+	{
+		var_len = 2;
+		value = ft_itoa(data->excode);
+	}
+	else
+	{
+		var_len = get_var_len(input, i);
+		value = get_value(data, input, i + 1, var_len - 1);
+	}
 	new = expand_input(input, i, value, var_len);
 	if (!new)
 		ft_error(MALLOC_ERR, data);
