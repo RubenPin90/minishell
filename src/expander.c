@@ -23,7 +23,6 @@ char	*expander_time(t_data *data, char *input, int i)
 	char 	*value;
 	int		var_len;
 
-	data->excode = 42;
 	if (input[i] == '$' && input[i + 1] == '?')
 	{
 		var_len = 2;
