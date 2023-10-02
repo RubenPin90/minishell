@@ -28,6 +28,8 @@ char	*expander_time(t_data *data, char *input, int i)
 	{
 		var_len = 2;
 		value = ft_itoa(data->excode);
+		if (!value)
+			ft_error(MALLOC_ERR, data);
 	}
 	else
 	{
@@ -35,6 +37,7 @@ char	*expander_time(t_data *data, char *input, int i)
 		value = get_value(data, input, i + 1, var_len - 1);
 	}
 	new = expand_input(input, i, value, var_len);
+	value = free_null(value);
 	if (!new)
 		ft_error(MALLOC_ERR, data);
 	return (new);
