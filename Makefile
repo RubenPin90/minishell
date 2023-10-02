@@ -1,6 +1,6 @@
 #SETUP
 NAME := minishell	
-CFLAGS := -Werror -Wall -Wextra -g -fPIE
+CFLAGS := -Werror -Wall -Wextra -g
 CC := cc
 
 #COLORS
@@ -27,6 +27,8 @@ SRC_F = builtin.c \
 		exec_fds.c \
 		exec_fd_utils.c \
 		exec_heredoc.c \
+		exec_utils.c \
+		exec_exstatus.c \
 		expander.c \
 		expander_utils.c \
 		lexer.c \
@@ -39,7 +41,7 @@ SRC_F = builtin.c \
 		sys_input.c \
 		sys_utils.c \
 		parser.c \
-		parser_utils.c \
+		parser_utils.c
 
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}

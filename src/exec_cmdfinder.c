@@ -9,7 +9,7 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 		{
 			data->paths = free_arr(data->paths);
 			cmd_line->execute = false;
-			error_msg(cmd_line->cmd[0], NOTFOUND_ERR);
+			error_msg(cmd_line->cmd[0], NULL, NOTFOUND_ERR);
 		}
 		else if (!cmd_line->cmd)
 			cmd_line->execute = false;

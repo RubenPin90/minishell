@@ -2,14 +2,6 @@
 
 void	ft_cleanup(t_data *data, bool check)
 {
-	if (check)
-	{
-		if (data->env)
-			lstenv_clear(&data->env);
-		if (data->exp_lst)
-			free_lexer(&data->exp_lst);
-		rl_clear_history();
-	}
 	if (data->env_arr)
 		data->env_arr = free_arr(data->env_arr);
 	if (data->paths)
@@ -22,6 +14,15 @@ void	ft_cleanup(t_data *data, bool check)
 		data->cmd_line = free_parser(data->cmd_line);
 	if (data->word)
 		data->word = free_word(data->word);
+	if (check)
+	{
+		if (data->env)
+			lstenv_clear(&data->env);
+		if (data->exp_lst)
+			free_lexer(&data->exp_lst);
+		rl_clear_history();
+		exit(data->excode);
+	}
 }
 
 void	*free_null(void *ptr)

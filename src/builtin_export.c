@@ -78,14 +78,14 @@ int	ft_export(t_data *data, t_parse *cmd)
 	{
 		equal = false;
 		if (check_valid(cmd->cmd[i], &equal))
-			return (error_msg("export", "not a valid identifier"));
+			return (error_msg("export", cmd->cmd[i], "not a valid identifier"));
 		if (equal == true)
 			if (update_env(data->env, cmd->cmd[i]))
 				ft_error(MALLOC_ERR, data);
 		if (equal == false)
 		{
 			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i]))
-				ft_error(MALLOC_ERR, data);	
+				ft_error(MALLOC_ERR, data);
 		}
 		i++;
 	}
