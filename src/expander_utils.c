@@ -23,8 +23,13 @@ char	*get_value(t_data *data, char *input, int start, int len)
 	if (!var)
 		ft_error(MALLOC_ERR, data);
 	val = find_envkey(data->env, var);
+	var = free_null(var);
+	if (val)
+		val = ft_strdup(val);
+	else
+		val = ft_strdup("");
 	if (!val)
-		return (ft_strdup(""));
+		ft_error(MALLOC_ERR, data);
 	return (val);
 }
 

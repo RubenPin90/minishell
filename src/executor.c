@@ -75,12 +75,12 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 int	executor(t_data *data)
 {
 	g_signum = 0;
-	// cmd_printer(data);
 	data->env_arr = list_to_arr(data, data->env);
 	if (handle_heredoc(data, data->cmd_line))
 		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
 		return (AGAIN);
+	cmd_printer(data);
 	if (handle_fds(data, data->cmd_line))
 		return (AGAIN);
 	if (data->cmds == 1)

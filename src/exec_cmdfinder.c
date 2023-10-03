@@ -4,14 +4,14 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 {
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->cmd[0] && check_builtin(cmd_line, cmd_line->cmd[0]) && \
+		if (cmd_line->cmd && check_builtin(cmd_line, cmd_line->cmd[0]) && \
 		check_binary(data, &cmd_line->cmd_path, cmd_line->cmd[0]))
 		{
 			data->paths = free_arr(data->paths);
 			cmd_line->execute = false;
 			error_msg(cmd_line->cmd[0], NULL, NOTFOUND_ERR);
 		}
-		else if (!cmd_line->cmd[0])
+		else if (!cmd_line->cmd)
 			cmd_line->execute = false;
 		else
 			cmd_line->execute = true;
@@ -25,8 +25,14 @@ int	check_binary(t_data *data, char **cmdpath, char *cmdname)
 {
 	char	*path_line;
 
-	if (check_access(data, cmdname, cmdpath) == 0)
-		return (SUCCESS);
+	if (ft_strchr(cmdname, '/'))
+	{
+		printf("test23\n");
+		if (check_access(data, cmdname, cmdpath) == 0)
+			return (SUCCESS);
+		else
+			return (FAIL);
+	}
 	if (cmdname[0] == '\0')
 		return (FAIL);
 	path_line = find_envkey(data->env, "PATH");
