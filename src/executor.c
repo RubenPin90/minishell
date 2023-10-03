@@ -6,9 +6,11 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 		return (error_msg("fork", NULL, strerror(errno)));
+	if (cmd->pid > 1)
+		signal(SIGINT, SIG_IGN);
 	if (cmd->pid == 0)
 	{
-		// signal(SIGINT, receive_signal);
+		handle_signals(false);
 		replace_fd(data, cmd);
 		execve(cmdpath, cmd->cmd, data->env_arr);
 	}
@@ -31,17 +33,21 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 			ft_cleanup(data, true);
 		}
 	}
-	return(SUCCESS);
+	return (SUCCESS);
 }
 
 int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	if (cmd->execute == false)
+	{
+		data->excode = 127;
 		return (SUCCESS);
+	}
 	if (cmd->func)
 		exec_builtin(data, cmd, parent);
 	else
 		exec_child(data, cmd, cmd->cmd_path);
+	// signal(SIGINT, SIG_IGN);
 	cleanup_fd(&cmd->fd_in);
 	cleanup_fd(&cmd->fd_out);
 	ft_waitpid(data, cmd);
@@ -57,6 +63,8 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 			exec_builtin(data, cmd_line, false);
 		else if (cmd_line->execute)
 			exec_child(data, cmd_line, cmd_line->cmd_path);
+		else
+			data->excode = 127;
 		cmd_line++;
 	}
 	close_all_fds(data->cmd_line);
@@ -64,19 +72,20 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 	return (SUCCESS);
 }
 
-int executor(t_data *data)
+int	executor(t_data *data)
 {
 	g_signum = 0;
+	// cmd_printer(data);
 	data->env_arr = list_to_arr(data, data->env);
 	if (handle_heredoc(data, data->cmd_line))
 		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
-		return(AGAIN);
+		return (AGAIN);
 	if (handle_fds(data, data->cmd_line))
-		return(AGAIN);
+		return (AGAIN);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else
 		exec_multi_cmds(data->cmd_line, data->cmds, data);
-	return (SUCCESS);	
+	return (SUCCESS);
 }

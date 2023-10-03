@@ -4,7 +4,7 @@ int	handle_fds(t_data *data, t_parse *cmd)
 {
 	while (cmd->id != 0)
 	{
-		if(cmd->redir && (tkn_counter(cmd->redir, INPUT, STOP) || \
+		if (cmd->redir && (tkn_counter(cmd->redir, INPUT, STOP) || \
 							tkn_counter(cmd->redir, HEREDOC, STOP)))
 			if (handle_infile(data, cmd, cmd->redir))
 				return (AGAIN);

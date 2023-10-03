@@ -9,9 +9,9 @@ int	main(int argc, char **argv, char **envp)
 		return (error_msg(NULL, NULL, ARGC_ERR));
 	init_data(&data);
 	data.env = copy_envp(envp);
-	handle_signals(false);
 	while (1)
 	{
+		handle_signals(false);
 		if (handle_input(&data))
 			ft_cleanup(&data, false);
 		else

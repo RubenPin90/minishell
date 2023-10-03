@@ -1,17 +1,17 @@
-#include "executor.h" 
+#include "executor.h"
 
 int	cmdfinder(t_data *data, t_parse *cmd_line)
 {
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->cmd && check_builtin(cmd_line, cmd_line->cmd[0]) && \
+		if (cmd_line->cmd[0] && check_builtin(cmd_line, cmd_line->cmd[0]) && \
 		check_binary(data, &cmd_line->cmd_path, cmd_line->cmd[0]))
 		{
 			data->paths = free_arr(data->paths);
 			cmd_line->execute = false;
 			error_msg(cmd_line->cmd[0], NULL, NOTFOUND_ERR);
 		}
-		else if (!cmd_line->cmd)
+		else if (!cmd_line->cmd[0])
 			cmd_line->execute = false;
 		else
 			cmd_line->execute = true;
@@ -21,12 +21,14 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 	return (SUCCESS);
 }
 
-int check_binary(t_data *data, char **cmdpath, char *cmdname)
+int	check_binary(t_data *data, char **cmdpath, char *cmdname)
 {
-	char *path_line;
+	char	*path_line;
 
 	if (check_access(data, cmdname, cmdpath) == 0)
 		return (SUCCESS);
+	if (cmdname[0] == '\0')
+		return (FAIL);
 	path_line = find_envkey(data->env, "PATH");
 	if (!path_line)
 		return (FAIL);
@@ -50,14 +52,13 @@ int	check_access(t_data *data, char *cmdname, char **cmdpath)
 	return (SUCCESS);
 }
 
-
 int	find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths)
 {
 	int		i;
 
 	i = -1;
 	while (paths[++i])
-	{	
+	{
 		*cmdpath = ft_strjoin_wrapper(paths[i], "/", cmdname);
 		if (!*cmdpath)
 			ft_error(MALLOC_ERR, data);

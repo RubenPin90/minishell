@@ -115,6 +115,7 @@ void set_ids(t_parse *cmd_line, int len)
 	}
 	cmd_line->id = 0;
 }
+
 /**
  * @brief Convertes lexer list to each command. 
  * 
