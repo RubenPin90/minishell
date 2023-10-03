@@ -10,6 +10,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/wait.h>
+#include <sys/ioctl.h>
 
 # include "structs.h"
 # include "env.h"
@@ -36,7 +37,7 @@
 # define AGAIN 2
 
 /*signals*/
-void	handle_signals();
+void	handle_signals(bool heredoc);
 void	receive_signal(int signum);
 
 /*sys_input*/

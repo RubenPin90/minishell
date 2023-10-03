@@ -5,13 +5,13 @@ int	check_valid(char *arg, bool *equal)
 	int		i;
 
 	i = 0;
-	if (arg && ft_isalpha(arg[i]))
+	if (arg[i] && ft_isalpha(arg[i]))
 		i++;
 	else
 		return (FAIL);
-	while (arg && ft_isalnum(arg[i]))
+	while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
 		i++;
-	if (arg && arg[i] == '=')
+	if (arg[i] && arg[i] == '=')
 		*equal = true;
 	return (SUCCESS);
 }

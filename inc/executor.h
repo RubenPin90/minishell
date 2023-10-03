@@ -2,6 +2,8 @@
 # define EXECUTOR_H
 # include "minishell.h"
 
+extern int	g_signum;
+
 /*executor*/
 int		exec_child(t_data *data, t_parse *cmd, char *cmdpath);
 int		exec_builtin(t_data *data, t_parse *cmd, bool parent);
@@ -17,7 +19,7 @@ void	replace_fdmulti(t_data *data, t_parse *cmd);
 void	replace_fd(t_data *data, t_parse *cmd);
 
 /*exec_heredoc*/
-void	handle_heredoc(t_data *data, t_parse *cmd_line);
+int		handle_heredoc(t_data *data, t_parse *cmd_line);
 int		find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir);
 int		heredocfun(t_data *data, t_parse *cmd, char *delim);
 

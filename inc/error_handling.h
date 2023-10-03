@@ -10,6 +10,7 @@ Minishell doesn't need any args"
 # define NOTFOUND_ERR "command not found"
 # define FD_ACCESS_ERR "Permission denied"
 # define FD_NONEX_ERR "No such file or directory"
+# define HERE_STOP_ERR "here-document delimited by end-of-file, wanted"
 
 
 int		ft_error(char *msg, t_data *data);
