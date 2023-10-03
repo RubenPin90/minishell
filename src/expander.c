@@ -20,11 +20,12 @@ char	*expand_input(char *input, int index, char *value, int var_len)
 char	*expander_time(t_data *data, char *input, int i)
 {
 	char	*new;
-	char 	*value;
+	char	*value;
 	int		var_len;
 
 	if (input[i] == '$' && input[i + 1] == '?')
 	{
+		printf("exit code\n");
 		var_len = 2;
 		value = ft_itoa(data->excode);
 		if (!value)
