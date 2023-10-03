@@ -12,11 +12,7 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 	{
 		handle_signals(false);
 		replace_fd(data, cmd);
-		if (execve(cmdpath, cmd->cmd, data->env_arr) == -1)
-		{
-			data->excode = 127;
-			ft_cleanup(data, true);
-		}
+		execve(cmdpath, cmd->cmd, data->env_arr);
 	}
 	return (SUCCESS);
 }
