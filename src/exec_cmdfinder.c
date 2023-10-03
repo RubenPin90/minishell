@@ -25,8 +25,14 @@ int	check_binary(t_data *data, char **cmdpath, char *cmdname)
 {
 	char	*path_line;
 
-	if (check_access(data, cmdname, cmdpath) == 0)
-		return (SUCCESS);
+	if (ft_strchr(cmdname, '/'))
+	{
+		printf("test23\n");
+		if (check_access(data, cmdname, cmdpath) == 0)
+			return (SUCCESS);
+		else
+			return (FAIL);
+	}
 	if (cmdname[0] == '\0')
 		return (FAIL);
 	path_line = find_envkey(data->env, "PATH");
