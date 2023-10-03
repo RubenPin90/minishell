@@ -10,7 +10,7 @@
 
 /*builtins*/
 int		check_builtin(t_parse *cmd_line, char *cmd);
-int		builtin_parent(t_parse *cmd_line, char *cmd, int len);
+int		builtin_parent(t_parse *cmd_line, char *cmd);
 
 /*builtin_cd*/
 int		update_path(t_lstenv *env, char *pathname, char *key);

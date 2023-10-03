@@ -20,8 +20,10 @@ void	replace_fd(t_data *data, t_parse *cmd);
 
 /*exec_heredoc*/
 int		handle_heredoc(t_data *data, t_parse *cmd_line);
+void	heredoc_name(t_data *data, t_parse *cmd);
 int		find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir);
 int		heredocfun(t_data *data, t_parse *cmd, char *delim);
+int		cleanup_herefun(char **str, int *fd, int ret);
 
 /*exec_cmdfinder*/
 int		check_access(t_data *data, char *cmdname, char **cmdpath);
@@ -41,7 +43,7 @@ int		ft_open(char *file, t_type token, char *heredoc);
 int		close_all_fds(t_parse *cmd_line);
 
 /*exec_exstatus*/
-void ft_waitpid(t_data *data, t_parse *cmd);
-void check_status(int status, int *excode);
+void	ft_waitpid(t_data *data, t_parse *cmd);
+void	check_status(int status, int *excode);
 
 #endif
