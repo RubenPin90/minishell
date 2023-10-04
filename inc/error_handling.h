@@ -11,6 +11,7 @@ Minishell doesn't need any args"
 # define FD_ACCESS_ERR "Permission denied"
 # define FD_NONEX_ERR "No such file or directory"
 # define HERE_STOP_ERR "here-document delimited by end-of-file, wanted"
+# define TOKEN_ERR "syntax error near unexpected token"
 
 /*error_handling*/
 int 	error_msg(char *cmd, char *arg, char *msg);

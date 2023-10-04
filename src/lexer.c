@@ -8,16 +8,22 @@
 // #include "expander.h"
 
 // NOTE: delete this function
-void	print_lexlst(t_data *data)
-{
-	t_lexer	*tmp = data->lex;
+// void	print_lexlst(t_data *data)
+// {
+// 	t_lexer	*tmp = data->lex;
 
-	tmp = data->lex;
-	while (tmp)
-	{
-		printf("lex[%d]: %s\n", tmp->i, tmp->word);
-		tmp = tmp->next;
-	}
+// 	tmp = data->lex;
+// 	while (tmp)
+// 	{
+// 		printf("lex[%d]: %s\n", tmp->i, tmp->word);
+// 		tmp = tmp->next;
+// 	}
+// }
+
+void	skip_space(char *input, int *i)
+{
+	while (input[*i] == ' ' || (input[*i] >= 9 && input[*i] <= 13))
+		(*i)++;
 }
 
 void	fill_word(char *new, t_word *word)
@@ -91,7 +97,10 @@ t_lexer	*create_list(t_data *data, char **datainput)
 int	lexer(t_data *data)
 {
 	if (check_quotes(data->input) || check_token(data->input))
-		return (1);
+	{
+		data->excode = 2;
+		return (AGAIN);
+	}
 	data->input = expander(data, data->input);
 	create_list(data, &data->input);
 	count_lexlst(data->lex);

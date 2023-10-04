@@ -42,16 +42,18 @@ int	quoted_len(char *input, int *i, char quote)
 	return (len);
 }
 
-void	skip_space(char *input, int *i)
-{
-	while (input[*i] == ' ' || (input[*i] >= 9 && input[*i] <= 13))
-		(*i)++;
-}
-
 int	hard_cut(char c)
 {
 	if (!c || c == '<' || c == '>' || c == '|' || c == ' ' || \
 		(c >= 9 && c <= 13))
 		return (1);
 	return (0);
+}
+
+void	toggle_quotes(bool *ian, bool *other)
+{
+	if (*ian == false && *other == false)
+		*ian = true;
+	else
+		*ian = false;
 }
