@@ -68,13 +68,15 @@ char	*get_word(t_data *data, char *input, t_word *word)
 }
 
 // reads through input string and copies every word/token into a node
-t_lexer	*create_list(t_data *data, char **datainput)
+int	create_list(t_data *data, char **datainput)
 {
 	char	*input;
 	t_word	*word;
 
 	input = *datainput;
 	data->word = ft_calloc(sizeof(t_word), 1);
+	if (!data->word)
+		return (ft_error(MALLOC_ERR, data));
 	data->word->quoted = false;
 	word = data->word;
 	while (input[word->i])
@@ -91,7 +93,7 @@ t_lexer	*create_list(t_data *data, char **datainput)
 			word->i++;
 	}
 	*datainput = input;
-	return (data->lex);
+	return (SUCCESS);
 }
 
 int	lexer(t_data *data)
@@ -102,7 +104,8 @@ int	lexer(t_data *data)
 		return (AGAIN);
 	}
 	data->input = expander(data, data->input);
-	create_list(data, &data->input);
+	if (create_list(data, &data->input))
+		return (AGAIN);
 	count_lexlst(data->lex);
 	// print_lexlst(data);
 	return (0);

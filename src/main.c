@@ -12,11 +12,8 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		handle_signals(false);
-		if (handle_input(&data))
-			ft_cleanup(&data, false);
-		else
-			if (executor(&data))
-				ft_cleanup(&data, false);
+		if (handle_input(&data) == SUCCESS)
+			executor(&data);
 		ft_cleanup(&data, false);
 	}
 	return (0);
