@@ -6,7 +6,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argv;
 	if (argc != 1)
-		return (error_msg(NULL, NULL, ARGC_ERR));
+		return (error_msg(NULL, NULL, ARGC_ERR, FAIL));
 	init_data(&data);
 	data.env = copy_envp(envp);
 	while (1)

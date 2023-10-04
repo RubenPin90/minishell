@@ -32,10 +32,7 @@ int	ft_pwd(t_data *data, t_parse *cmd)
 	(void)cmd;
 	buf = get_pwd();
 	if (!buf)
-	{
-		error_msg("pwd", NULL, strerror(errno));
-		return (FAIL);
-	}
+		return (error_msg("pwd", NULL, strerror(errno), E_ERROR));
 	ft_putstr_fd(buf, 1);
 	ft_putstr_fd("\n", 1);
 	buf = free_null(buf);

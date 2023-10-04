@@ -1,39 +1,5 @@
 #include "executor.h"
 
-// int	heredocfun(t_data *data, t_parse *cmd, char *delim)
-// {
-// 	int		fd;
-// 	char	*str;
-
-// 	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-// 	if (fd == -1)
-// 		return (error_msg("heredoc", NULL, strerror(errno)));
-// 	while (1)
-// 	{
-// 		str = readline("");
-// 		if (!str)
-// 		{
-// 			cleanup_fd(&fd);
-// 			return (FAIL);
-// 		}
-// 		if (g_signum == SIGINT)
-// 		{
-// 			str = free_null(str);
-// 			cleanup_fd(&fd);
-// 			return (AGAIN);
-// 		}
-// 		data->quoted = true;
-// 		str = expander(data, str);
-// 		if (ft_strncmp(str, delim, ft_strlen(delim) + 1) == 0)
-// 			break ;
-// 		ft_putendl_fd(str, fd);
-// 		str = free_null(str);
-// 	}
-// 	str = free_null(str);
-// 	cleanup_fd(&fd);
-// 	return (SUCCESS);
-// }
-
 int	heredocfun(t_data *data, t_parse *cmd, char *delim)
 {
 	int		fd;
@@ -41,7 +7,7 @@ int	heredocfun(t_data *data, t_parse *cmd, char *delim)
 
 	fd = open(cmd->heredoc, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		return (error_msg("heredoc", NULL, strerror(errno)));
+		return (error_msg("heredoc", NULL, strerror(errno), AGAIN));
 	while (1)
 	{
 		str = readline("");
@@ -91,11 +57,11 @@ int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 		{
 			handle_signals(true);
 			ret = heredocfun(data, cmd, redir->word);
+			handle_signals(false);
 			if (ret == FAIL)
-				return (error_msg("warning", HERE_STOP_ERR, redir->word));
+				return (error_msg("warning", HERE_STOP_ERR, redir->word, AGAIN));
 			else if (ret == AGAIN)
 				return (AGAIN);
-			handle_signals(false);
 		}
 		redir = redir->next;
 	}

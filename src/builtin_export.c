@@ -16,7 +16,7 @@ int	check_valid(char *arg, bool *equal)
 	return (SUCCESS);
 }
 
-int	update_env(t_lstenv *env, char *arg)
+int	update_env(t_lstenv *env, char *arg, t_data *data)
 {
 	t_lstenv	*exp_arg;
 	int			ret;
@@ -25,7 +25,7 @@ int	update_env(t_lstenv *env, char *arg)
 	exp_arg = lstenv_create(arg);
 	if (!exp_arg)
 		return (FAIL);
-	ret = update_path(env, exp_arg->value, exp_arg->key);
+	ret = update_path(data, env, exp_arg->value, exp_arg->key);
 	lstenv_clear(&exp_arg);
 	if (ret == FAIL)
 		return (FAIL);
@@ -42,7 +42,7 @@ int ft_keylen(char *str)
 	return (i);
 }
 
-int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg)
+int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data)
 {
 	int len;
 
@@ -55,7 +55,7 @@ int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg)
 		len = ft_keylen(exp_lst->word);
 		if (!ft_strncmp(arg, exp_lst->word, len))
 		{
-			if (update_env(env, exp_lst->word) == FAIL)
+			if (update_env(env, exp_lst->word, data) == FAIL)
 				return (FAIL);
 			break ;
 		}
@@ -78,13 +78,13 @@ int	ft_export(t_data *data, t_parse *cmd)
 	{
 		equal = false;
 		if (check_valid(cmd->cmd[i], &equal))
-			return (error_msg("export", cmd->cmd[i], "not a valid identifier"));
+			return (error_msg("export", cmd->cmd[i], EXPORT_ERR, E_ERROR));
 		if (equal == true)
-			if (update_env(data->env, cmd->cmd[i]))
+			if (update_env(data->env, cmd->cmd[i], data))
 				ft_error(MALLOC_ERR, data);
 		if (equal == false)
 		{
-			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i]))
+			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i], data))
 				ft_error(MALLOC_ERR, data);
 		}
 		i++;

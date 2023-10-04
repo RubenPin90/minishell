@@ -11,7 +11,7 @@ int	create_pipes(t_parse *cmd_line, int cmds)
 		if (++i < cmds)
 		{
 			if (pipe(cmd_line->fd_pipes) == -1)
-				return (error_msg("pipe", NULL, strerror(errno)));
+				return (error_msg("pipe", NULL, strerror(errno), AGAIN));
 		}
 		cmd_line++;
 	}
@@ -21,9 +21,9 @@ int	create_pipes(t_parse *cmd_line, int cmds)
 int	ft_dup2(int fdin, int fdout)
 {
 	if (dup2(fdin, STDIN_FILENO) < 0)
-		return (error_msg("Infile", NULL, strerror(errno)));
+		return (error_msg("Infile", NULL, strerror(errno), AGAIN));
 	if (dup2(fdout, STDOUT_FILENO) < 0)
-		return (error_msg("Outfile", NULL, strerror(errno)));
+		return (error_msg("Outfile", NULL, strerror(errno), AGAIN));
 	return (SUCCESS);
 }
 

@@ -1,6 +1,6 @@
 #include "error_handling.h"
 
-int	error_msg(char *cmd, char *arg, char *msg)
+int error_msg(char *cmd, char *arg, char *msg, int ret)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (cmd)
@@ -16,7 +16,7 @@ int	error_msg(char *cmd, char *arg, char *msg)
 	}
 	else
 		ft_putendl_fd(msg, 2);
-	return (AGAIN);
+	return (ret);
 }
 
 int	ft_error(char *msg, t_data *data)

@@ -32,9 +32,9 @@ int		cmdfinder(t_data *data, t_parse *cmd_line);
 int		find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths);
 
 /*exec_fds*/
-int		handle_fds(t_data *data, t_parse *cmd);
-int		handle_infile(t_data *data, t_parse *cmd, t_lexer *redir);
-int		handle_outfile(t_data *data, t_parse *cmd_line, t_lexer *redir);
+void	handle_fds(t_parse *cmd);
+void	handle_infile(t_parse *cmd, t_lexer *redir);
+void	handle_outfile(t_parse *cmd_line, t_lexer *redir);
 
 /*exec_fd_utils*/
 int		cleanup_fd(int *fd);
