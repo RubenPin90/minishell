@@ -6,15 +6,10 @@ void check_status(int status, int *excode)
 	int sig_num;
 
 	if (WIFEXITED(status))
-	{
-		printf("before: %d\n", *excode);
 		*excode = WEXITSTATUS(status);
-		printf("after: %d\n", *excode);
-	}
 	else if (WIFSIGNALED(status))
 	{
 		sig_num = WTERMSIG(status);
-		printf("sig_num: %d\n", sig_num);
 		*excode = 128 + sig_num;
 		if (__WCOREDUMP(status))
 			ft_putstr_fd("Quit (core dumped)\n", 2);
@@ -23,9 +18,9 @@ void check_status(int status, int *excode)
 	}
 }
 
-void ft_waitpid(t_data *data, t_parse *cmd)
+void	ft_waitpid(t_data *data, t_parse *cmd)
 {
-	int status;
+	int	status;
 
 	while (cmd->id != 0)
 	{

@@ -12,11 +12,9 @@ Minishell doesn't need any args"
 # define FD_NONEX_ERR "No such file or directory"
 # define HERE_STOP_ERR "here-document delimited by end-of-file, wanted"
 
-
-int		ft_error(char *msg, t_data *data);
-
-
-/*error_utils*/
+/*error_handling*/
 int 	error_msg(char *cmd, char *arg, char *msg);
+int		ft_error(char *msg, t_data *data);
+void	switch_cmd_status(t_parse *cmd_line, bool *execute, t_status status);
 
 #endif

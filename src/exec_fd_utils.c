@@ -25,7 +25,7 @@ int update_fd(t_parse *cmd, char **file)
 
 int	ft_open(char *file, t_type token, char *herefile)
 {
-	int fd;
+	int	fd;
 
 	fd = -1;
 	if (token == APPEND)

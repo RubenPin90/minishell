@@ -28,7 +28,10 @@ int	handle_infile(t_data *data, t_parse *cmd, t_lexer *redir)
 			cmd->infile = free_null(cmd->infile);
 			cmd->fd_in = ft_open(redir->word, redir->token, cmd->heredoc);
 			if (cmd->fd_in == -1)
+			{
+				switch_cmd_status(cmd, &cmd->execute, E_ERROR);
 				return (AGAIN);
+			}
 			if (redir->token == INPUT)
 			{
 				cmd->infile = ft_strdup(redir->word);
@@ -53,7 +56,10 @@ int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 			cmd->outfile = free_null(cmd->outfile);
 			cmd->fd_out = ft_open(redir->word, redir->token, NULL);
 			if (cmd->fd_out == -1)
+			{
+				switch_cmd_status(cmd, &cmd->execute, E_ERROR);
 				return (AGAIN);
+			}
 			cmd->outfile = ft_strdup(redir->word);
 			if (!cmd->outfile)
 				cleanup_fd(&cmd->fd_out);
