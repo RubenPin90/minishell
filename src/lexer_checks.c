@@ -1,33 +1,24 @@
 #include "../inc/lexer.h"
 
-int	check_quotes(t_data *data, char *str)
+int	check_quotes(char *str)
 {
 	int		i;
+	bool	doubles;
+	bool	singles;
 
 	i = 0;
+	doubles = false;
+	singles = false;
 	while (str[i])
 	{
 		if (str[i] == '"')
-		{
-			if (data->doubles == false && data->singles == false)
-				data->doubles = true;
-			else
-				data->doubles = false;
-		}
+			toggle_quotes(&doubles, &singles);
 		if (str[i] == '\'')
-		{
-			if (data->singles == false && data->doubles == false)
-				data->singles = true;
-			else
-				data->singles = false;
-		}
+			toggle_quotes(&singles, &doubles);
 		i++;
 	}
-	if (data->doubles == true || data->singles == true)
-	{
-		data->excode = 2;
+	if (doubles == true || singles == true)
 		return (1);
-	}
 	return (0);
 }
 
@@ -57,19 +48,18 @@ int	check_redir(char *input)
 		if (redir >= 2)
 		{
 			redir = 0;
-			return (ft_error("Third token found! KO\n", NULL));
+			return (error_msg(NULL, NULL, TOKEN_ERR));
 		}
-		// printf("HEREDOC/APPEND found! OK\n");
 		return (0);
 	}
 	redir = 0;
 	while (*input == ' ')
 		input++;
-	if (!*input)
-		return (ft_error("Token at end of line! KO\n", NULL));
+	// if (!*input)
+	// 	return (error_msg(NULL, NULL, TOKEN_ERR));
 	if (*input != '<' && *input != '>' && *input != '|')
 		return (0);
-	return (ft_error("Consecutive token found! KO\n", NULL));
+	return (error_msg(NULL, NULL, TOKEN_ERR));
 }
 
 int	check_pipe(char *input)

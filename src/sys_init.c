@@ -14,6 +14,4 @@ void	init_data(t_data *data)
 	data->expand = true;
 	data->word = NULL;
 	data->excode = 0;
-	data->doubles = false;
-	data->singles = false;
 }
