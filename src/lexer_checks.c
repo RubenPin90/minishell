@@ -55,8 +55,8 @@ int	check_redir(char *input)
 	redir = 0;
 	while (*input == ' ')
 		input++;
-	// if (!*input)
-	// 	return (error_msg(NULL, NULL, TOKEN_ERR));
+	if (!*input)
+		return (error_msg(NULL, NULL, TOKEN_ERR));
 	if (*input != '<' && *input != '>' && *input != '|')
 		return (0);
 	return (error_msg(NULL, NULL, TOKEN_ERR));
@@ -68,10 +68,10 @@ int	check_pipe(char *input)
 	while (*input == ' ')
 		input++;
 	if (!*input)
-		return (ft_error("Token at end of line! KO\n", NULL));
+		return (error_msg(NULL, NULL, TOKEN_ERR));
 	if (*input != '|')
 		return (0);
-	return (ft_error("Consecutive pipe found! KO\n", NULL));
+	return (error_msg(NULL, NULL, TOKEN_ERR));
 }
 
 int	check_type(char *input, int *i)
