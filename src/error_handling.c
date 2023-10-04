@@ -2,9 +2,9 @@
 
 int error_msg(char *cmd, char *arg, char *msg, int ret)
 {
+	ft_putstr_fd("minishell: ", 2);
 	if (cmd)
 	{
-		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": ", 2);
 		if (arg)
