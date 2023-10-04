@@ -5,7 +5,7 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 {
 	cmd->pid = fork();
 	if (cmd->pid == -1)
-		return (error_msg("fork", NULL, strerror(errno)));
+		return (error_msg("fork", NULL, strerror(errno), E_ERROR));
 	if (cmd->pid > 1)
 		signal(SIGINT, SIG_IGN);
 	if (cmd->pid == 0)
@@ -25,7 +25,7 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 	{
 		cmd->pid = fork();
 		if (cmd->pid == -1)
-			return (error_msg("fork", NULL, strerror(errno)));
+			return (error_msg("fork", NULL, strerror(errno), E_ERROR));
 		if (cmd->pid == 0)
 		{
 			replace_fd(data, cmd);
@@ -80,9 +80,8 @@ int	executor(t_data *data)
 		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
 		return (AGAIN);
-	cmd_printer(data);
-	if (handle_fds(data, data->cmd_line))
-		return (AGAIN);
+	// cmd_printer(data);
+	handle_fds(data->cmd_line);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else

@@ -25,7 +25,6 @@ char	*expander_time(t_data *data, char *input, int i)
 
 	if (input[i] == '$' && input[i + 1] == '?')
 	{
-		printf("exit code\n");
 		var_len = 2;
 		value = ft_itoa(data->excode);
 		if (!value)

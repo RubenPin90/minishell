@@ -13,7 +13,7 @@ Minishell doesn't need any args"
 # define HERE_STOP_ERR "here-document delimited by end-of-file, wanted"
 
 /*error_handling*/
-int 	error_msg(char *cmd, char *arg, char *msg);
+int 	error_msg(char *cmd, char *arg, char *msg, int ret);
 int		ft_error(char *msg, t_data *data);
 void	switch_cmd_status(t_parse *cmd_line, bool *execute, t_status status);
 

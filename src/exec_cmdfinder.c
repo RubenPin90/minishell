@@ -10,7 +10,7 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 		{
 			data->paths = free_arr(data->paths);
 			switch_cmd_status(cmd_line, &cmd_line->execute, E_NOCMD);
-			error_msg(cmd_line->cmd[0], NULL, NOTFOUND_ERR);
+			error_msg(cmd_line->cmd[0], NULL, NOTFOUND_ERR, E_ERROR);
 		}
 		else if (!cmd_line->cmd || cmd_line->cmd[0] == NULL)
 			switch_cmd_status(cmd_line, &cmd_line->execute, E_NOCMD);

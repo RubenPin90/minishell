@@ -1,25 +1,21 @@
 #include "executor.h"
 
-int	handle_fds(t_data *data, t_parse *cmd)
+void	handle_fds(t_parse *cmd)
 {
 	while (cmd->id != 0)
 	{
 		if (cmd->redir && (tkn_counter(cmd->redir, INPUT, STOP) || \
 							tkn_counter(cmd->redir, HEREDOC, STOP)))
-			if (handle_infile(data, cmd, cmd->redir))
-				return (AGAIN);
+			handle_infile(cmd, cmd->redir);
 		if (cmd->redir && (tkn_counter(cmd->redir, OUTPUT, STOP) || \
 							tkn_counter(cmd->redir, APPEND, STOP)))
-			if (handle_outfile(data, cmd, cmd->redir))
-				return (AGAIN);
+			handle_outfile(cmd, cmd->redir);
 		cmd++;
 	}
-	return (SUCCESS);
 }
 
-int	handle_infile(t_data *data, t_parse *cmd, t_lexer *redir)
+void	handle_infile(t_parse *cmd, t_lexer *redir)
 {
-	(void)data;
 	while (redir)
 	{
 		if (redir->token == INPUT || redir->token == HEREDOC)
@@ -30,24 +26,22 @@ int	handle_infile(t_data *data, t_parse *cmd, t_lexer *redir)
 			if (cmd->fd_in == -1)
 			{
 				switch_cmd_status(cmd, &cmd->execute, E_ERROR);
-				return (AGAIN);
+				return ;
 			}
 			if (redir->token == INPUT)
 			{
 				cmd->infile = ft_strdup(redir->word);
 				if (!cmd->infile)
-					cleanup_fd(&cmd->fd_in); // doesnt have to be protected. If NULL it solves itself
+					cleanup_fd(&cmd->fd_in); 
 			}
 		}
 		redir = redir->next;
 	}
 	update_fd(cmd, &cmd->infile);
-	return (SUCCESS);
 }
 
-int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
+void	handle_outfile(t_parse *cmd, t_lexer *redir)
 {
-	(void)data;
 	while (redir)
 	{
 		if (redir->token == APPEND || redir->token == OUTPUT)
@@ -58,7 +52,7 @@ int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 			if (cmd->fd_out == -1)
 			{
 				switch_cmd_status(cmd, &cmd->execute, E_ERROR);
-				return (AGAIN);
+				return ;
 			}
 			cmd->outfile = ft_strdup(redir->word);
 			if (!cmd->outfile)
@@ -66,5 +60,4 @@ int	handle_outfile(t_data *data, t_parse *cmd, t_lexer *redir)
 		}
 		redir = redir->next;
 	}
-	return (SUCCESS);
 }
