@@ -48,7 +48,7 @@ int	check_redir(char *input)
 		if (redir >= 2)
 		{
 			redir = 0;
-			return (error_msg(NULL, NULL, TOKEN_ERR));
+			return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
 		}
 		return (0);
 	}
@@ -56,10 +56,10 @@ int	check_redir(char *input)
 	while (*input == ' ')
 		input++;
 	if (!*input)
-		return (error_msg(NULL, NULL, TOKEN_ERR));
+		return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
 	if (*input != '<' && *input != '>' && *input != '|')
 		return (0);
-	return (error_msg(NULL, NULL, TOKEN_ERR));
+	return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
 }
 
 int	check_pipe(char *input)
@@ -68,10 +68,10 @@ int	check_pipe(char *input)
 	while (*input == ' ')
 		input++;
 	if (!*input)
-		return (error_msg(NULL, NULL, TOKEN_ERR));
+		return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
 	if (*input != '|')
 		return (0);
-	return (error_msg(NULL, NULL, TOKEN_ERR));
+	return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
 }
 
 int	check_type(char *input, int *i)
