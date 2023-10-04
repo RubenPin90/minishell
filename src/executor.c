@@ -40,7 +40,7 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	if (cmd->execute == false)
 	{
-		data->excode = 127;
+		data->excode = cmd->exstatus;
 		return (SUCCESS);
 	}
 	if (cmd->func)
@@ -64,7 +64,7 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 		else if (cmd_line->execute)
 			exec_child(data, cmd_line, cmd_line->cmd_path);
 		else
-			data->excode = 127;
+			data->excode = cmd_line->exstatus;
 		cmd_line++;
 	}
 	close_all_fds(data->cmd_line);

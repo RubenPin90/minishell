@@ -6,6 +6,14 @@ typedef struct s_data t_data;
 typedef struct s_parse t_parse;
 typedef int (*bltn)(t_data *data, t_parse *cmd);
 
+typedef	enum	e_status
+{
+	E_SUCCESS,
+	E_ERROR,
+	E_SYNERR,
+	E_NOCMD = 127
+}	t_status;
+
 typedef enum s_type
 {
 	WORD,
@@ -52,6 +60,7 @@ typedef struct s_parse
 {
 	int				id;
 	bool			execute;
+	t_status		exstatus;
 	char			*cmd_path;
 	char			**cmd;
 	bltn			func;

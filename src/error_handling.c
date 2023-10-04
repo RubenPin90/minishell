@@ -26,3 +26,9 @@ int	ft_error(char *msg, t_data *data)
 		ft_cleanup(data, true);
 	return (1);
 }
+
+void	switch_cmd_status(t_parse *cmd_line, bool *execute, t_status status)
+{
+	*execute = false;
+	cmd_line->exstatus = status; 
+}

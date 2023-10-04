@@ -18,9 +18,9 @@ void check_status(int status, int *excode)
 	}
 }
 
-void ft_waitpid(t_data *data, t_parse *cmd)
+void	ft_waitpid(t_data *data, t_parse *cmd)
 {
-	int status;
+	int	status;
 
 	while (cmd->id != 0)
 	{

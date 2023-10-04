@@ -5,7 +5,7 @@
 
 #include "parser.h"
 
-bool	ft_push_redir(t_lexer **a, t_lexer **b, bool check)
+bool	ft_push_redir(t_lexer **a, t_lexer **b, bool first)
 {
 	t_lexer	*tmp;
 
@@ -25,12 +25,12 @@ bool	ft_push_redir(t_lexer **a, t_lexer **b, bool check)
 	{
 		(*a)->next->prev = NULL;
 		*a = (*a)->next;
-		check = true;
+		first = true;
 	}
 	else
 		*a = NULL;
 	lexer_addback(b, tmp);
-	return (check);
+	return (first);
 }
 
 /**
@@ -49,10 +49,10 @@ bool	ft_push_redir(t_lexer **a, t_lexer **b, bool check)
 int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 {
 	char **tmp;
-	bool check;
+	bool first;
 
 	tmp = cmd;
-	check = false;
+	first = false;
 	while (*lst && (*lst)->token == WORD)
 	{
 		*tmp = ft_strdup((*lst)->word);
@@ -65,10 +65,10 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
 	}
 	if ((*lst)->token == PIPE)
 		return (SUCCESS);
-	check = ft_push_redir(lst, &cmd_line->redir, check);
-	if (!*lst || (check == false && !(*lst)->next))
+	first = ft_push_redir(lst, &cmd_line->redir, first);
+	if (!*lst || (first == false && !(*lst)->next))
 		return (SUCCESS);
-	if (check == false)
+	if (first == false)
 		*lst = (*lst)->next;
 	extract_cmd(data, lst, cmd_line, tmp);
 	return (SUCCESS);
@@ -86,8 +86,8 @@ int	extract_cmd(t_data *data, t_lexer **lst, t_parse *cmd_line, char **cmd)
  */
 int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 {
-	char **arr;
-	int	count;
+	char	**arr;
+	int		count;
 
 	count = 0;
 	count = tkn_counter(cmd_list, WORD, PIPE);
