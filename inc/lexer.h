@@ -16,7 +16,7 @@ void	skip_space(char *input, int *i);
 int		hard_cut(char c);
 
 // lexer_checks.c
-int		check_quotes(char *str);
+int		check_quotes(t_data *data, char *str);
 int		check_token(char *input);
 int		check_redir(char *input);
 int		check_pipe(char *input);

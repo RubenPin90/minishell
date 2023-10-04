@@ -89,6 +89,8 @@ typedef struct s_data
 	bool			quoted;
 	bool			expand;
 	int				excode;
+	bool			doubles;
+	bool			singles;
 }	t_data;
 
 #endif

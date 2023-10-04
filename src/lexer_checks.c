@@ -1,40 +1,31 @@
 #include "../inc/lexer.h"
 
-int	check_quotes(char *str)
+int	check_quotes(t_data *data, char *str)
 {
 	int		i;
-	bool	open_doubles;
-	bool	open_singles;
 
 	i = 0;
-	open_doubles = false;
-	open_singles = false;
 	while (str[i])
 	{
-		if (str[i] == 34)
+		if (str[i] == '"')
 		{
-			if (open_doubles == false && open_singles == false)
-				open_doubles = true;
+			if (data->doubles == false && data->singles == false)
+				data->doubles = true;
 			else
-				open_doubles = false;
+				data->doubles = false;
 		}
-		if (str[i] == 39)
+		if (str[i] == '\'')
 		{
-			if (open_singles == false && open_doubles == false)
-				open_singles = true;
+			if (data->singles == false && data->doubles == false)
+				data->singles = true;
 			else
-				open_singles = false;
+				data->singles = false;
 		}
 		i++;
 	}
-	if (open_doubles == true)
+	if (data->doubles == true || data->singles == true)
 	{
-		printf("Open double quotes!\n");
-		return (1);
-	}
-	if (open_singles == true)
-	{
-		printf("Open single quotes!\n");
+		data->excode = 2;
 		return (1);
 	}
 	return (0);

@@ -90,7 +90,7 @@ t_lexer	*create_list(t_data *data, char **datainput)
 
 int	lexer(t_data *data)
 {
-	if (check_quotes(data->input) || check_token(data->input))
+	if (check_quotes(data, data->input) || check_token(data->input))
 		return (1);
 	data->input = expander(data, data->input);
 	create_list(data, &data->input);
