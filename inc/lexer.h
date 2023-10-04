@@ -4,7 +4,7 @@
 
 // lexer.c
 int		lexer(t_data *data);
-t_lexer	*create_list(t_data *data, char **datainput);
+int		create_list(t_data *data, char **datainput);
 char	*get_word(t_data *data, char *input, t_word *word);
 void	fill_word(char *new, t_word *word);
 void	skip_space(char *input, int *i);
