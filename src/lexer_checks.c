@@ -24,25 +24,30 @@ int	check_quotes(char *str)
 
 int	check_token(char *input)
 {
-	while (*input)
+	int	i;
+
+	i = 0;
+	while (input[i])
 	{
-		if (*input == '|')
-			if (check_pipe(input))
+		if (input[i] == '|')
+			if (check_pipe(input, i))
 				return (1);
-		if (*input == '<' || *input == '>')
-			if (check_redir(input))
+		if (input[i] == '<' || input[i] == '>')
+			if (check_redir(input, i))
 				return (1);
 		input++;
 	}
 	return (0);
 }
 
-int	check_redir(char *input)
+int	check_redir(char *input, int i)
 {
 	static int	redir;
 
-	input++;
-	if (*input == '<' || *input == '>')
+	if (input[i] == '>' && input[i + 1] == '|')
+		return (0);
+	i++;
+	if (input[i] == '<' || input[i] == '>')
 	{
 		redir++;
 		if (redir >= 2)
@@ -53,25 +58,21 @@ int	check_redir(char *input)
 		return (0);
 	}
 	redir = 0;
-	while (*input == ' ')
-		input++;
-	if (!*input)
+	while (input[i] == ' ' || (input[i] >= 9 && input[i] <= 13))
+		i++;
+	if (!input[i] || input[i] == '<' || input[i] == '>' || input[i] == '|')
 		return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
-	if (*input != '<' && *input != '>' && *input != '|')
-		return (0);
-	return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
+	return (0);
 }
 
-int	check_pipe(char *input)
+int	check_pipe(char *input, int i)
 {
-	input++;
-	while (*input == ' ')
-		input++;
-	if (!*input)
+	i++;
+	while (input[i] == ' ')
+		i++;
+	if (!input[i] || input[i] == '|')
 		return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
-	if (*input != '|')
-		return (0);
-	return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
+	return (0);
 }
 
 int	check_type(char *input, int *i)
@@ -94,6 +95,8 @@ int	check_type(char *input, int *i)
 			(*i)++;
 			return (APPEND);
 		}
+		if (input[*i] == '|')
+			(*i)++;
 		return (OUTPUT);
 	}
 	if (input[*i] == '|')

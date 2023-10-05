@@ -19,8 +19,8 @@ void	toggle_quotes(bool *ian, bool *other);
 // lexer_checks.c
 int		check_quotes(char *str);
 int		check_token(char *input);
-int		check_redir(char *input);
-int		check_pipe(char *input);
+int		check_redir(char *input, int i);
+int		check_pipe(char *input, int i);
 int		check_type(char *input, int *i);
 
 // lexer_list_utils.c
