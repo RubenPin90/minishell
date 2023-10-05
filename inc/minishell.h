@@ -13,7 +13,6 @@
 #include <sys/ioctl.h>
 
 # include "structs.h"
-# include "env.h"
 # include "expander.h"
 # include "lexer.h"
 # include "parser.h"
@@ -60,5 +59,11 @@ void	*free_null(void *ptr);
 void	lstenv_clear(t_lstenv **head);
 char	**free_arr(char **arr);
 t_word	*free_word(t_word *word);
+
+/*sys_env_create*/
+t_lstenv	*copy_envp(char **env_org);
+void		env_addback(t_lstenv **lst, t_lstenv *new);
+t_lstenv	*lstenv_create(char *cont);
+t_lstenv	*lstenv_new(char *key, char *value);
 
 #endif

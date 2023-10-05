@@ -13,6 +13,13 @@
 int		check_builtin(t_parse *cmd_line, char *cmd);
 int		builtin_parent(t_parse *cmd_line, char *cmd);
 
+/*builtin_env*/
+int		print_env(t_data *data, t_parse *cmd);
+char	**list_to_arr(t_data *data, t_lstenv *lst);
+char	*find_envkey(t_lstenv *env, char *var);
+int		env_len(t_lstenv *lst);
+void	print_env_arr(char **ar);
+
 /*builtin_cd*/
 int		ft_cd(t_data *data, t_parse *cmd);
 int		redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key);

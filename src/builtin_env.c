@@ -1,4 +1,4 @@
-#include "env.h"
+#include "minishell.h"
 
 int	print_env(t_data *data, t_parse *cmd)
 {

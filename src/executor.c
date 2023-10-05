@@ -80,7 +80,7 @@ int	executor(t_data *data)
 		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
 		return (AGAIN);
-	// cmd_printer(data);
+	cmd_printer(data);
 	handle_fds(data->cmd_line);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
