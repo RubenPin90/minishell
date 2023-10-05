@@ -45,7 +45,7 @@ char	*expander_time(t_data *data, char *input, int i)
 char	*expander(t_data *data, char *input)
 {
 	int		i;
-	char 	*new;
+	char	*new;
 	char	*tmp;
 
 	i = 0;

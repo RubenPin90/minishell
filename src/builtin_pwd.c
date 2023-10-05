@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-char *get_pwd(void)
+char	*get_pwd(void)
 {
 	char	*buf;
 	int		size;
@@ -18,7 +18,7 @@ char *get_pwd(void)
 			size *= 2;
 			buf = free_null(buf);
 		}
-		else 
+		else
 			break ;
 	}
 	return (ret);
@@ -26,7 +26,7 @@ char *get_pwd(void)
 
 int	ft_pwd(t_data *data, t_parse *cmd)
 {
-	char *buf;
+	char	*buf;
 
 	(void)data;
 	(void)cmd;
