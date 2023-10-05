@@ -12,15 +12,15 @@ RESET := \033[0m
 
 #FILES
 SRCDIR := src
-SRC_F = builtin.c \
+SRC_F = builtins.c \
 		builtin_cd.c \
 		builtin_echo.c \
 		builtin_exit.c \
 		builtin_export.c \
 		builtin_pwd.c \
 		builtin_unset.c \
-		env_create.c \
-		env_utils.c \
+		builtin_env.c \
+		builtin_env_utils.c \
 		error_handling.c \
 		executor.c \
 		exec_cmdfinder.c \
@@ -37,6 +37,7 @@ SRC_F = builtin.c \
 		lexer_utils.c \
 		signals.c \
 		sys_cleanup.c \
+		sys_env_create.c \
 		sys_init.c \
 		sys_input.c \
 		sys_utils.c \

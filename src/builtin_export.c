@@ -1,45 +1,52 @@
 #include "builtin.h"
 
+int	ft_export(t_data *data, t_parse *cmd)
+{
+	int			num_args;
+	bool		equal;
+	int			i;
+	int			err;
+
+	num_args = ft_arrlen(cmd->cmd);
+	if (num_args == 1)
+		ft_bubsort(data->env_arr, data->env);
+	i = 0;
+	while (cmd->cmd[++i])	
+	{
+		equal = false;
+		err = check_valid(cmd->cmd[i], &equal);
+		if (err)
+			return (export_error(err, cmd->cmd[i]));
+		if (equal == true)
+			if (update_env(data->env, cmd->cmd[i], data))
+				ft_error(MALLOC_ERR, data);
+		if (equal == false)
+		{
+			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i], data))
+				ft_error(MALLOC_ERR, data);
+		}
+	}
+	return (SUCCESS);
+}
+
 int	check_valid(char *arg, bool *equal)
 {
 	int		i;
 
 	i = 0;
-	if (arg[i] && ft_isalpha(arg[i]))
+	if (arg[i] && (ft_isalpha(arg[i]) || arg[i] == '_'))
 		i++;
+	else if (arg[i] && arg[i] == '-')
+		return (AGAIN);
 	else
 		return (FAIL);
 	while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
 		i++;
 	if (arg[i] && arg[i] == '=')
 		*equal = true;
-	return (SUCCESS);
-}
-
-int	update_env(t_lstenv *env, char *arg, t_data *data)
-{
-	t_lstenv	*exp_arg;
-	int			ret;
-
-	ret = 0;
-	exp_arg = lstenv_create(arg);
-	if (!exp_arg)
-		return (FAIL);
-	ret = update_path(data, env, exp_arg->value, exp_arg->key);
-	lstenv_clear(&exp_arg);
-	if (ret == FAIL)
+	else if (arg[i] && !(ft_isalnum(arg[i]) || arg[i] == '_'))
 		return (FAIL);
 	return (SUCCESS);
-}
-
-int ft_keylen(char *str)
-{
-	int i;
-
-	i = 0;
-	while(str[i] && str[i] != '=')
-		i++;
-	return (i);
 }
 
 int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data)
@@ -63,59 +70,6 @@ int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data)
 	}
 	return (SUCCESS);
 }
-
-int	ft_export(t_data *data, t_parse *cmd)
-{
-	int			num_args;
-	bool		equal;
-	int			i;
-
-	num_args = ft_arrlen(cmd->cmd);
-	if (num_args == 1)
-		ft_bubsort(data->env_arr, data->env);
-	i = 1;
-	while (cmd->cmd[i])	
-	{
-		equal = false;
-		if (check_valid(cmd->cmd[i], &equal))
-			return (error_msg("export", cmd->cmd[i], EXPORT_ERR, E_ERROR));
-		if (equal == true)
-			if (update_env(data->env, cmd->cmd[i], data))
-				ft_error(MALLOC_ERR, data);
-		if (equal == false)
-		{
-			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i], data))
-				ft_error(MALLOC_ERR, data);
-		}
-		i++;
-	}
-	return (SUCCESS);
-}
-
-void	ft_bubsort(char **ar, t_lstenv *env)
-{
-	int		len;
-	int		i;
-	char	*tmp;
-
-	len = env_len(env);
-	while (len-- > 1)
-	{
-		i = 0;
-		while (ar[i] && ar[i + 1])
-		{
-			if (ft_strncmp(ar[i], ar[i + 1], ft_strlen(ar[i + 1])) > 0)
-			{
-				tmp = ar[i + 1];
-				ar[i + 1] = ar[i];
-				ar[i] = tmp;
-			}
-			i++;
-		}
-	}
-	print_env_arr(ar);
-}
-
 
 void	export_check(t_data *data, t_lexer *lex)
 {
@@ -143,4 +97,12 @@ void	export_check(t_data *data, t_lexer *lex)
 		else
 			lex = lex->next;
 	}
+}
+
+int	export_error(int err, char *cmd)
+{
+	if (err == 1)
+		return (error_msg("export", cmd, INV_IDENT_ERR, E_ERROR));
+	else
+		return (error_msg("export", "-", INV_OPT_ERR, E_SYNERR));
 }

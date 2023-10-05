@@ -28,15 +28,15 @@ int	ft_exit(t_data *data, t_parse *cmd)
 	if (cmd)
 	{
 		num_args = ft_arrlen(cmd->cmd);
-		if (num_args > 2)
-		{
-			error_msg("exit", NULL, ARG_ERR, E_ERROR);
-			data->excode = 1;
-		}
-		else if (check_exit(cmd->cmd[1]))
+		if (num_args > 1 && check_exit(cmd->cmd[1]))
 		{
 			error_msg("exit", cmd->cmd[1], NUM_ERR, E_SYNERR);
 			data->excode = 2;
+		}
+		else if (num_args > 2)
+		{
+			error_msg("exit", NULL, ARG_ERR, E_ERROR);
+			data->excode = 1;
 		}
 		else if (num_args == 2)
 			data->excode = ft_atoi(cmd->cmd[1]);

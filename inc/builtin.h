@@ -7,11 +7,24 @@
 # define NUM_ERR "numeric argument required"
 # define CD_HOME_ERR "HOME not set"
 # define CD_OLDPWD_ERR "OLDPWD not set"
-# define EXPORT_ERR "not valid identifier"
+# define INV_IDENT_ERR "not valid identifier"
+# define INV_OPT_ERR "invalid option"
 
-/*builtins*/
+/*builtins_utils*/
 int		check_builtin(t_parse *cmd_line, char *cmd);
 int		builtin_parent(t_parse *cmd_line, char *cmd);
+
+/*builtin_env*/
+int		print_env(t_data *data, t_parse *cmd);
+char	**list_to_arr(t_data *data, t_lstenv *lst);
+char	*find_envkey(t_lstenv *env, char *var);
+int		env_len(t_lstenv *lst);
+void	print_env_arr(char **ar);
+
+/*builtin_env_utils*/
+int		ft_keylen(char *str);
+void	ft_bubsort(char **ar, t_lstenv *env);
+int		update_env(t_lstenv *env, char *arg, t_data *data);
 
 /*builtin_cd*/
 int		ft_cd(t_data *data, t_parse *cmd);
@@ -30,11 +43,11 @@ int		ft_exit(t_data *data, t_parse *cmd);
 int		check_exit(char *arg);
 
 /*builtin_export*/
-void	ft_bubsort(char **ar, t_lstenv *env);
 int		ft_export(t_data *data, t_parse *cmd);
+int		check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data);
 void	export_check(t_data *data, t_lexer *lex);
 int		check_valid(char *arg, bool *equal);
-int		update_env(t_lstenv *env, char *arg, t_data *data);
+int		export_error(int err, char *cmd);
 
 /*builtin_pwd*/
 char	*get_pwd(void);

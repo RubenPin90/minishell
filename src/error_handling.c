@@ -9,7 +9,9 @@ int error_msg(char *cmd, char *arg, char *msg, int ret)
 		ft_putstr_fd(": ", 2);
 		if (arg)
 		{
+			ft_putstr_fd("`", 2);
 			ft_putstr_fd(arg, 2);
+			ft_putstr_fd("'", 2);
 			ft_putstr_fd(": ", 2);
 		}
 		ft_putendl_fd(msg, 2);
@@ -27,8 +29,9 @@ int	ft_error(char *msg, t_data *data)
 	return (1);
 }
 
-void	switch_cmd_status(t_parse *cmd_line, bool *execute, t_status status)
+int	switch_cmd_status(t_parse *cmd_line, bool *execute, t_status status)
 {
 	*execute = false;
-	cmd_line->exstatus = status; 
+	cmd_line->exstatus = status;
+	return (status);
 }

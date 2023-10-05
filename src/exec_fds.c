@@ -1,20 +1,23 @@
 #include "executor.h"
 
-void	handle_fds(t_parse *cmd)
+int	handle_fds(t_parse *cmd)
 {
 	while (cmd->id != 0)
 	{
 		if (cmd->redir && (tkn_counter(cmd->redir, INPUT, STOP) || \
 							tkn_counter(cmd->redir, HEREDOC, STOP)))
-			handle_infile(cmd, cmd->redir);
+			if (handle_infile(cmd, cmd->redir))
+				return (E_ERROR);
 		if (cmd->redir && (tkn_counter(cmd->redir, OUTPUT, STOP) || \
 							tkn_counter(cmd->redir, APPEND, STOP)))
-			handle_outfile(cmd, cmd->redir);
+			if (handle_outfile(cmd, cmd->redir))
+				return (E_ERROR);
 		cmd++;
 	}
+	return (SUCCESS);
 }
 
-void	handle_infile(t_parse *cmd, t_lexer *redir)
+int	handle_infile(t_parse *cmd, t_lexer *redir)
 {
 	while (redir)
 	{
@@ -24,10 +27,7 @@ void	handle_infile(t_parse *cmd, t_lexer *redir)
 			cmd->infile = free_null(cmd->infile);
 			cmd->fd_in = ft_open(redir->word, redir->token, cmd->heredoc);
 			if (cmd->fd_in == -1)
-			{
-				switch_cmd_status(cmd, &cmd->execute, E_ERROR);
-				return ;
-			}
+				return (switch_cmd_status(cmd, &cmd->execute, E_ERROR));
 			if (redir->token == INPUT)
 			{
 				cmd->infile = ft_strdup(redir->word);
@@ -38,9 +38,10 @@ void	handle_infile(t_parse *cmd, t_lexer *redir)
 		redir = redir->next;
 	}
 	update_fd(cmd, &cmd->infile);
+	return (SUCCESS);
 }
 
-void	handle_outfile(t_parse *cmd, t_lexer *redir)
+int	handle_outfile(t_parse *cmd, t_lexer *redir)
 {
 	while (redir)
 	{
@@ -50,14 +51,12 @@ void	handle_outfile(t_parse *cmd, t_lexer *redir)
 			cmd->outfile = free_null(cmd->outfile);
 			cmd->fd_out = ft_open(redir->word, redir->token, NULL);
 			if (cmd->fd_out == -1)
-			{
-				switch_cmd_status(cmd, &cmd->execute, E_ERROR);
-				return ;
-			}
+				return (switch_cmd_status(cmd, &cmd->execute, E_ERROR));
 			cmd->outfile = ft_strdup(redir->word);
 			if (!cmd->outfile)
 				cleanup_fd(&cmd->fd_out);
 		}
 		redir = redir->next;
 	}
+	return (SUCCESS);
 }
