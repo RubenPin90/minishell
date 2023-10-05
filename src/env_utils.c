@@ -2,13 +2,18 @@
 
 int	print_env(t_data *data, t_parse *cmd)
 {
-	t_lstenv *lst;
+	t_lstenv	*lst;
+	int			num_args;
 
 	lst = data->env;
-	(void)cmd;
+	num_args = ft_arrlen(cmd->cmd);
+	if (num_args > 1)
+		return (error_msg("env", NULL, FD_NONEX_ERR, E_NOCMD));
 	while (lst)
 	{
-		printf("%s=%s\n", lst->key, lst->value);
+		ft_putstr_fd(lst->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(lst->value, 1);
 		lst = lst->next;
 	}
 	return (SUCCESS);
