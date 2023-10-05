@@ -37,8 +37,10 @@ int	ft_unset(t_data *data, t_parse *cmd)
 
 	num_args = ft_arrlen(cmd->cmd);
 	if (num_args == 1)
-		return (AGAIN);
+		return (SUCCESS);
 	i = 1;
+	if (cmd->cmd[i][0] == '-')
+		return (error_msg("export", "-", INV_OPT_ERR, E_SYNERR));
 	while(cmd->cmd[i])
 	{
 		ft_find_n_del(&data->env, cmd->cmd[i]);

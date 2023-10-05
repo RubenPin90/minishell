@@ -12,7 +12,7 @@ RESET := \033[0m
 
 #FILES
 SRCDIR := src
-SRC_F = builtin.c \
+SRC_F = builtins.c \
 		builtin_cd.c \
 		builtin_echo.c \
 		builtin_exit.c \
@@ -20,6 +20,7 @@ SRC_F = builtin.c \
 		builtin_pwd.c \
 		builtin_unset.c \
 		builtin_env.c \
+		builtin_env_utils.c \
 		error_handling.c \
 		executor.c \
 		exec_cmdfinder.c \

@@ -28,7 +28,6 @@ int	check_binary(t_data *data, char **cmdpath, char *cmdname)
 
 	if (ft_strchr(cmdname, '/'))
 	{
-		printf("test23\n");
 		if (check_access(data, cmdname, cmdpath) == 0)
 			return (SUCCESS);
 		else

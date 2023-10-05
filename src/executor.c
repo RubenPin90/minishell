@@ -78,10 +78,11 @@ int	executor(t_data *data)
 	data->env_arr = list_to_arr(data, data->env);
 	if (handle_heredoc(data, data->cmd_line))
 		return (AGAIN);
+	if (handle_fds(data->cmd_line))
+		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
 		return (AGAIN);
-	cmd_printer(data);
-	handle_fds(data->cmd_line);
+	// cmd_printer(data);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else
