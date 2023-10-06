@@ -36,6 +36,9 @@ int	check_token(char *input)
 	i = 0;
 	while (input[i])
 	{
+		// skip_space(input, &i);
+		// if (input[i] == '|')
+		// 	return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
 		if (input[i] == '"' || input[i] == '\'')
 			skip_quote(input, input[i], &i);
 		if (input[i] == '|')

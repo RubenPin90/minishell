@@ -34,9 +34,9 @@ char	*get_value(t_data *data, char *input, int start, int len)
 	var = free_null(var);
 	if (val)
 	{
-		// token_count = check_for_tokens(val);
-		// if (token_count)
-		// 	val = add_quotes_to_tokens(val, token_count);
+		token_count = check_for_tokens(val);
+		if (token_count)
+			val = add_quotes_to_tokens(val, token_count);
 		val = ft_strdup(val);
 	}
 	else
