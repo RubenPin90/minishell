@@ -29,16 +29,22 @@ void	skip_quote(char *input, char quote, int *i)
 		(*i)++;
 }
 
+int	check_pipe_first(char *input, int *i)
+{
+	skip_space(input, i);
+	if (input[*i] == '|')
+		return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
+	return (SUCCESS);
+}
+
 int	check_token(char *input)
 {
 	int	i;
 
 	i = 0;
+	check_pipe_first(input, &i);
 	while (input[i])
 	{
-		// skip_space(input, &i);
-		// if (input[i] == '|')
-		// 	return (error_msg(NULL, NULL, TOKEN_ERR, AGAIN));
 		if (input[i] == '"' || input[i] == '\'')
 			skip_quote(input, input[i], &i);
 		if (input[i] == '|')
