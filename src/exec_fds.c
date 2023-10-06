@@ -6,12 +6,10 @@ int	handle_fds(t_parse *cmd)
 	{
 		if (cmd->redir && (tkn_counter(cmd->redir, INPUT, STOP) || \
 							tkn_counter(cmd->redir, HEREDOC, STOP)))
-			if (handle_infile(cmd, cmd->redir))
-				return (E_ERROR);
+			handle_infile(cmd, cmd->redir);
 		if (cmd->redir && (tkn_counter(cmd->redir, OUTPUT, STOP) || \
 							tkn_counter(cmd->redir, APPEND, STOP)))
-			if (handle_outfile(cmd, cmd->redir))
-				return (E_ERROR);
+			handle_outfile(cmd, cmd->redir);
 		cmd++;
 	}
 	return (SUCCESS);

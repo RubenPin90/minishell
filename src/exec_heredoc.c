@@ -76,7 +76,7 @@ int	handle_heredoc(t_data *data, t_parse *cmd_line)
 		{
 			heredoc_name(data, cmd_line);
 			if (find_heredoc(data, cmd_line, cmd_line->redir))
-				return (AGAIN);
+				return (switch_cmd_status(cmd_line, &cmd_line->execute, AGAIN));
 		}
 		cmd_line++;
 	}

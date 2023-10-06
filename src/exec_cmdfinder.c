@@ -4,7 +4,7 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 {
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->cmd && cmd_line->cmd[0] && \
+		if (!is_executable(cmd_line) && \
 			check_builtin(cmd_line, cmd_line->cmd[0]) && \
 			check_binary(data, &cmd_line->cmd_path, cmd_line->cmd[0]))
 		{
@@ -12,10 +12,10 @@ int	cmdfinder(t_data *data, t_parse *cmd_line)
 			switch_cmd_status(cmd_line, &cmd_line->execute, E_NOCMD);
 			error_msg(cmd_line->cmd[0], NULL, NOTFOUND_ERR, E_ERROR);
 		}
-		else if (!cmd_line->cmd || cmd_line->cmd[0] == NULL)
+		else if (is_executable(cmd_line))
 			switch_cmd_status(cmd_line, &cmd_line->execute, E_NOCMD);
-		else
-			cmd_line->execute = true;
+		// else
+		// 	cmd_line->execute = true;
 		cmd_line++;
 	}
 	data->paths = free_arr(data->paths);
@@ -73,4 +73,13 @@ int	find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths)
 		*cmdpath = free_null(*cmdpath);
 	}
 	return (FAIL);
+}
+
+int	is_executable(t_parse *cmdl)
+{
+	if (cmdl->execute == false)
+		return (FAIL);
+	if (!cmdl->cmd || !cmdl->cmd[0])
+		return (FAIL);
+	return (SUCCESS);
 }

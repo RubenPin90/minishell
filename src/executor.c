@@ -8,11 +8,16 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 		return (error_msg("fork", NULL, strerror(errno), E_ERROR));
 	if (cmd->pid > 1)
 		signal(SIGINT, SIG_IGN);
-	if (cmd->pid == 0)
+	if (cmd->pid == 0 && cmd->execute == true)
 	{
 		handle_signals(false);
 		replace_fd(data, cmd);
 		execve(cmdpath, cmd->cmd, data->env_arr);
+	}
+	else if (cmd->pid == 0)
+	{
+			data->excode = cmd->exstatus;
+			ft_cleanup(data, true);
 	}
 	return (SUCCESS);
 }
@@ -47,7 +52,6 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 		exec_builtin(data, cmd, parent);
 	else
 		exec_child(data, cmd, cmd->cmd_path);
-	// signal(SIGINT, SIG_IGN);
 	cleanup_fd(&cmd->fd_in);
 	cleanup_fd(&cmd->fd_out);
 	ft_waitpid(data, cmd);
@@ -76,12 +80,9 @@ int	executor(t_data *data)
 {
 	g_signum = 0;
 	data->env_arr = list_to_arr(data, data->env);
-	if (handle_heredoc(data, data->cmd_line))
-		return (AGAIN);
-	if (handle_fds(data->cmd_line))
-		return (AGAIN);
-	if (cmdfinder(data, data->cmd_line))
-		return (AGAIN);
+	handle_heredoc(data, data->cmd_line);
+	handle_fds(data->cmd_line);
+	cmdfinder(data, data->cmd_line);
 	// cmd_printer(data);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);

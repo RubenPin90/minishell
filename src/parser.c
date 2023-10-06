@@ -99,6 +99,7 @@ int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 	current_cmd->fd_out = -1;
 	current_cmd->fd_pipes[0] = -1;
 	current_cmd->fd_pipes[1] = -1;
+	current_cmd->execute = true;
 	return (SUCCESS);
 }
 

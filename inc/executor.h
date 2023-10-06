@@ -30,6 +30,8 @@ int		check_access(t_data *data, char *cmdname, char **cmdpath);
 int		check_binary(t_data *data, char **cmdpath, char *cmdname);
 int		cmdfinder(t_data *data, t_parse *cmd_line);
 int		find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths);
+int		is_executable(t_parse *cmdl);
+
 
 /*exec_fds*/
 int		handle_fds(t_parse *cmd);
