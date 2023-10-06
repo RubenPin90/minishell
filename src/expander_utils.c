@@ -6,10 +6,13 @@ int	get_var_len(char *input, int i)
 
 	len = 0;
 	if (input[i] == '$')
+	{
 		i++;
+		len++;
+	}
 	while (input[i] && !hard_cut(input[i]) && \
 			input[i] != '"' && input[i] != '\'' && \
-			input[i] != '$')
+			input[i] != '$' && input[i] != '/')
 	{
 		i++;
 		len++;
@@ -21,14 +24,21 @@ char	*get_value(t_data *data, char *input, int start, int len)
 {
 	char	*var;
 	char	*val;
+	int		token_count;
 
+	token_count = 0;
 	var = ft_substr(input, start, len);
 	if (!var)
 		ft_error(MALLOC_ERR, data);
 	val = find_envkey(data->env, var);
 	var = free_null(var);
 	if (val)
+	{
+		// token_count = check_for_tokens(val);
+		// if (token_count)
+		// 	val = add_quotes_to_tokens(val, token_count);
 		val = ft_strdup(val);
+	}
 	else
 		val = ft_strdup("");
 	if (!val)
