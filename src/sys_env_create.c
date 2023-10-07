@@ -1,19 +1,21 @@
 
 #include "minishell.h"
 
-t_lstenv	*copy_envp(char **env_org)
+t_lstenv	*copy_envp(t_data *data, char **env_org)
 {
 	int			i;
 	t_lstenv	*env_list;
 
 	env_list = NULL;
 	i = -1;
-	if (env_org == NULL)
-		ft_error(NOENV_ERR, NULL);
+	if (env_org == NULL || !env_org[0])
+	{
+		data->excode = FAIL;
+		ft_putendl_fd(NOENV_ERR, 2);
+		ft_cleanup(data, true);
+	}
 	while (env_org[++i])
 		env_addback(&env_list, lstenv_create(env_org[i]));
-	if (env_list == NULL)
-		ft_error(ENV_ALLOC_ERR, NULL);
 	return (env_list);
 }
 

@@ -23,7 +23,7 @@ int error_msg(char *cmd, char *arg, char *msg, int ret)
 
 int	ft_error(char *msg, t_data *data)
 {
-	ft_putstr_fd(msg, 2);
+	ft_putendl_fd(msg, 2);
 	if (data)
 		ft_cleanup(data, true);
 	return (1);

@@ -11,7 +11,7 @@
 # define INV_OPT_ERR "invalid option"
 
 /*builtins_utils*/
-int		check_builtin(t_parse *cmd_line, char *cmd);
+int		is_builtin(t_parse *cmd_line, char *cmd);
 int		builtin_parent(t_parse *cmd_line, char *cmd);
 
 /*builtin_env*/
