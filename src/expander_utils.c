@@ -46,6 +46,25 @@ char	*get_value(t_data *data, char *input, int start, int len)
 	return (val);
 }
 
+void	skip_delim(char *input, int *i)
+{
+	char	quote;
+
+	quote = '\0';
+	(*i) += 2;
+	skip_space(input, i);
+	while (!hard_cut(input[*i]))
+	{
+		if (input[*i] == '"' || input[*i] == '\'')
+		{
+			quote = input[*i];
+			while (input[*i] != quote)
+				(*i)++;
+		}
+		(*i)++;
+	}
+}
+
 int	is_quoted_dollarsign(t_data *data, char *input, int i)
 {
 	if (data->quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))
