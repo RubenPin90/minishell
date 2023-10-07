@@ -22,7 +22,7 @@ void	replace_fd(t_data *data, t_parse *cmd);
 int		handle_heredoc(t_data *data, t_parse *cmd_line);
 void	heredoc_name(t_data *data, t_parse *cmd);
 int		find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir);
-int		heredocfun(t_data *data, t_parse *cmd, char *delim);
+int		heredocfun(t_data *data, t_parse *cmd, char *delim, int type);
 int		cleanup_herefun(char **str, int *fd, int ret);
 
 /*exec_cmdfinder*/

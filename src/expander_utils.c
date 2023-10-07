@@ -10,9 +10,7 @@ int	get_var_len(char *input, int i)
 		i++;
 		len++;
 	}
-	while (input[i] && !hard_cut(input[i]) && \
-			input[i] != '"' && input[i] != '\'' && \
-			input[i] != '$' && input[i] != '/')
+	while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
 	{
 		i++;
 		len++;

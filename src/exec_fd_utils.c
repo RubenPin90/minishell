@@ -34,7 +34,7 @@ int	ft_open(char *file, t_type token, char *herefile)
 		fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	else if (token == INPUT)
 		fd = open(file, O_RDONLY);
-	else if (token == HEREDOC)
+	else if (token == HEREDOC || token == Q_HEREDOC)
 		fd = open(herefile, O_RDONLY);
 	if (fd == -1)
 		error_msg(file, NULL, strerror(errno), E_ERROR);

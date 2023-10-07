@@ -5,7 +5,8 @@ int	handle_fds(t_parse *cmd)
 	while (cmd->id != 0)
 	{
 		if (cmd->redir && (tkn_counter(cmd->redir, INPUT, STOP) || \
-							tkn_counter(cmd->redir, HEREDOC, STOP)))
+							tkn_counter(cmd->redir, HEREDOC, STOP) || \
+							tkn_counter(cmd->redir, Q_HEREDOC, STOP)))
 			if (handle_infile(cmd, cmd->redir))
 				return (E_ERROR);
 		if (cmd->redir && (tkn_counter(cmd->redir, OUTPUT, STOP) || \
@@ -21,7 +22,8 @@ int	handle_infile(t_parse *cmd, t_lexer *redir)
 {
 	while (redir)
 	{
-		if (redir->token == INPUT || redir->token == HEREDOC)
+		if (redir->token == INPUT || redir->token == HEREDOC || \
+			redir->token == Q_HEREDOC)
 		{
 			cleanup_fd(&cmd->fd_in);
 			cmd->infile = free_null(cmd->infile);
