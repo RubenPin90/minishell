@@ -30,6 +30,7 @@ SRC_F = builtins.c \
 		exec_utils.c \
 		exec_exstatus.c \
 		expander.c \
+		expander_env_var.c \
 		expander_utils.c \
 		lexer.c \
 		lexer_checks.c \
