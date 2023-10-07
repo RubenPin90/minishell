@@ -57,8 +57,6 @@ char	*get_word(t_data *data, char *input, t_word *word)
 	if (input[i] && input[i + 1] && word->quoted == true && \
 		(input[i] == '"' || input[i] == '\''))
 	{
-		if (word->type == HEREDOC)
-			word->type = Q_HEREDOC;
 		word->quoted = false;
 		i++;
 	}

@@ -76,13 +76,13 @@ int	executor(t_data *data)
 {
 	g_signum = 0;
 	data->env_arr = list_to_arr(data, data->env);
+	cmd_printer(data);
 	if (handle_heredoc(data, data->cmd_line))
 		return (AGAIN);
 	if (handle_fds(data->cmd_line))
 		return (AGAIN);
 	if (cmdfinder(data, data->cmd_line))
 		return (AGAIN);
-	// cmd_printer(data);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else
