@@ -6,12 +6,12 @@ int	cleanup_fd(int *fd)
 	{
 		if (close(*fd) == -1)
 			return (FAIL);
-		*fd = -1; 
+		*fd = -1;
 	}
 	return (SUCCESS);
 }
 
-int update_fd(t_parse *cmd, char **file)
+int	update_fd(t_parse *cmd, char **file)
 {
 	if (*file && cmd->heredoc)
 	{

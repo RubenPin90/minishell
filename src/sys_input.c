@@ -15,4 +15,3 @@ int	handle_input(t_data *data)
 		return (AGAIN);
 	return (SUCCESS);
 }
-

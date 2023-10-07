@@ -42,6 +42,16 @@ char	*expander_time(t_data *data, char *input, int i)
 	return (new);
 }
 
+void	expander_prep(t_data *data, char *input, int *i)
+{
+	if (input[*i] == '"')
+		data->quoted = toggle_bool(data->quoted);
+	if (input[*i] == '\'' && data->quoted == false)
+		data->expand = toggle_bool(data->expand);
+	if (input[*i] == '<' && input[*i + 1] == '<')
+		skip_delim(input, i);
+}
+
 char	*expander(t_data *data, char *input)
 {
 	int		i;
@@ -51,12 +61,7 @@ char	*expander(t_data *data, char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '"')
-			data->quoted = toggle_bool(data->quoted);
-		if (input[i] == '\'' && data->quoted == false)
-			data->expand = toggle_bool(data->expand);
-		if (input[i] == '<' && input[i + 1] == '<')
-			skip_delim(input, &i);
+		expander_prep(data, input, &i);
 		if (input[i] == '$' && data->expand == true && input[i + 1] && \
 			input[i + 1] != ' ' && !is_quoted_dollarsign(data, input, i))
 		{

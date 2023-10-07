@@ -1,9 +1,8 @@
-
 #include "executor.h"
 
-void check_status(int status, int *excode)
+void	check_status(int status, int *excode)
 {
-	int sig_num;
+	int	sig_num;
 
 	if (WIFEXITED(status))
 		*excode = WEXITSTATUS(status);

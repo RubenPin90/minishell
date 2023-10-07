@@ -1,4 +1,3 @@
-
 #include "executor.h"
 
 int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
@@ -47,7 +46,6 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 		exec_builtin(data, cmd, parent);
 	else
 		exec_child(data, cmd, cmd->cmd_path);
-	// signal(SIGINT, SIG_IGN);
 	cleanup_fd(&cmd->fd_in);
 	cleanup_fd(&cmd->fd_out);
 	ft_waitpid(data, cmd);

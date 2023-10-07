@@ -1,4 +1,3 @@
-
 #include "builtin.h"
 
 void	ft_find_n_del(t_lstenv **env, char *arg)
@@ -9,7 +8,7 @@ void	ft_find_n_del(t_lstenv **env, char *arg)
 
 	current = *env;
 	prev = NULL;
-	while(current)
+	while (current)
 	{
 		if (!ft_strncmp(arg, current->key, ft_strlen(current->key) + 1))
 		{
@@ -41,7 +40,7 @@ int	ft_unset(t_data *data, t_parse *cmd)
 	i = 1;
 	if (cmd->cmd[i][0] == '-')
 		return (error_msg("export", "-", INV_OPT_ERR, E_SYNERR));
-	while(cmd->cmd[i])
+	while (cmd->cmd[i])
 	{
 		ft_find_n_del(&data->env, cmd->cmd[i]);
 		i++;
