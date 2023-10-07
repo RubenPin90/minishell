@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-void cmd_printer(t_data *data)
+void	cmd_printer(t_data *data)
 {
 	t_parse *tmp;
 	t_lexer *tmp2;
@@ -50,7 +50,7 @@ void cmd_printer(t_data *data)
 
 void	lexer_printer(t_lexer *lex, int check)
 {
-	t_lexer *tmp;
+	t_lexer	*tmp;
 
 	tmp = lex;
 	if (check)
@@ -74,10 +74,10 @@ void	lexer_printer(t_lexer *lex, int check)
 	}
 }
 
-char *ft_strjoin_wrapper(char *str1, char*str2, char *str3)
+char	*ft_strjoin_wrapper(char *str1, char*str2, char *str3)
 {
-	char *tmp;
-	char *strnew;
+	char	*tmp;
+	char	*strnew;
 
 	strnew = ft_strjoin(str1, str2);
 	if (!strnew)
@@ -90,10 +90,10 @@ char *ft_strjoin_wrapper(char *str1, char*str2, char *str3)
 		return (NULL);
 	}
 	tmp = free_null(tmp);
-	return(strnew);
+	return (strnew);
 }
 
-char **arr_expand(char **arr, char *str)
+char	**arr_expand(char **arr, char *str)
 {
 	int		i;
 	int		arrlen;
@@ -104,11 +104,11 @@ char **arr_expand(char **arr, char *str)
 	arrlen = 0;
 	if (arr)
 		arrlen = ft_arrlen(arr);
-	new_arr =  ft_calloc(arrlen + 1, sizeof(char *));
+	new_arr = ft_calloc(arrlen + 1, sizeof(char *));
 	if (!new_arr)
 		return (NULL);
 	i = -1;
-	while(++i < arrlen)
+	while (++i < arrlen)
 		new_arr[i] = arr[i];
 	new_arr[i] = ft_strdup(str);
 	if (!new_arr[i])
@@ -119,10 +119,10 @@ char **arr_expand(char **arr, char *str)
 
 int	ft_arrlen(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(arr && arr[i])	
+	while (arr && arr[i])
 		i++;
 	return(i);
 }

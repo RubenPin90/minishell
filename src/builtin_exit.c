@@ -2,7 +2,7 @@
 
 int	check_exit(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!arg)
@@ -22,7 +22,7 @@ int	check_exit(char *arg)
 
 int	ft_exit(t_data *data, t_parse *cmd)
 {
-	int num_args;
+	int	num_args;
 
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (cmd)

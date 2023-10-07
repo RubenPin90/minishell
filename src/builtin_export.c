@@ -11,7 +11,7 @@ int	ft_export(t_data *data, t_parse *cmd)
 	if (num_args == 1)
 		ft_bubsort(data->env_arr, data->env);
 	i = 0;
-	while (cmd->cmd[++i])	
+	while (cmd->cmd[++i])
 	{
 		equal = false;
 		err = check_valid(cmd->cmd[i], &equal);
@@ -51,7 +51,7 @@ int	check_valid(char *arg, bool *equal)
 
 int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data)
 {
-	int len;
+	int	len;
 
 	if (!exp_lst)
 		return (SUCCESS);
@@ -77,7 +77,7 @@ void	export_check(t_data *data, t_lexer *lex)
 	bool	first;
 
 	equals = false;
-	while(lex)
+	while (lex)
 	{
 		first = false;
 		if (lex->token == WORD && ft_strchr(lex->word, '=') && \

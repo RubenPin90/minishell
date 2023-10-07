@@ -25,6 +25,7 @@ typedef enum s_type
 	OUTPUT,
 	APPEND,
 	HEREDOC,
+	Q_HEREDOC,
 	EMPTY
 }	t_type;
 

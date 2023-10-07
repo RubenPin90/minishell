@@ -1,6 +1,6 @@
 #include "executor.h"
 
-int	heredocfun(t_data *data, t_parse *cmd, char *delim)
+int	heredocfun(t_data *data, t_parse *cmd, char *delim, int type)
 {
 	int		fd;
 	char	*str;
@@ -16,9 +16,10 @@ int	heredocfun(t_data *data, t_parse *cmd, char *delim)
 		if (g_signum == SIGINT)
 			return (cleanup_herefun(&str, &fd, AGAIN));
 		data->quoted = true;
-		str = expander(data, str);
 		if (!ft_strncmp(str, delim, ft_strlen(delim) + 1))
 			break ;
+		if (type == HEREDOC)
+			str = expander(data, str);
 		ft_putendl_fd(str, fd);
 		str = free_null(str);
 	}
@@ -35,7 +36,7 @@ int	cleanup_herefun(char **str, int *fd, int ret)
 
 void	heredoc_name(t_data *data, t_parse *cmd)
 {
-	char *id;
+	char	*id;
 
 	id = ft_itoa(cmd->id);
 	if (!id)
@@ -53,13 +54,14 @@ int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 	ret = SUCCESS;
 	while (redir)
 	{
-		if (redir->token == HEREDOC)
+		if (redir->token == HEREDOC || redir->token == Q_HEREDOC)
 		{
 			handle_signals(true);
-			ret = heredocfun(data, cmd, redir->word);
+			ret = heredocfun(data, cmd, redir->word, redir->token);
 			handle_signals(false);
 			if (ret == FAIL)
-				return (error_msg("warning", HERE_STOP_ERR, redir->word, AGAIN));
+				return (error_msg("warning", HERE_STOP_ERR, \
+						redir->word, AGAIN));
 			else if (ret == AGAIN)
 				return (AGAIN);
 		}
@@ -72,7 +74,8 @@ int	handle_heredoc(t_data *data, t_parse *cmd_line)
 {
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->redir && tkn_counter(cmd_line->redir, HEREDOC, STOP))
+		if (cmd_line->redir && (tkn_counter(cmd_line->redir, HEREDOC, STOP) || \
+								tkn_counter(cmd_line->redir, Q_HEREDOC, STOP)))
 		{
 			heredoc_name(data, cmd_line);
 			if (find_heredoc(data, cmd_line, cmd_line->redir))

@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 t_lstenv	*copy_envp(t_data *data, char **env_org)

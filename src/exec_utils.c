@@ -1,12 +1,11 @@
-
 #include "executor.h"
 
 int	create_pipes(t_parse *cmd_line, int cmds)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(cmd_line->id != 0)
+	while (cmd_line->id != 0)
 	{
 		if (++i < cmds)
 		{
@@ -29,7 +28,7 @@ int	ft_dup2(int fdin, int fdout)
 
 void	fdmulti_redef(t_parse *cmd, int *tmp_fdout, int *tmp_fdin, int cmds)
 {
-	t_parse *prev_cmd;
+	t_parse	*prev_cmd;
 
 	if (cmd->id > 1)
 		prev_cmd = cmd - 1;
@@ -50,7 +49,7 @@ void	replace_fdmulti(t_data *data, t_parse *cmd)
 {
 	int		tmp_fdout;
 	int		tmp_fdin;
-	
+
 	fdmulti_redef(cmd, &tmp_fdout, &tmp_fdin, data->cmds);
 	if (cmd->id >= 1)
 	{

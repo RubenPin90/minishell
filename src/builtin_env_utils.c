@@ -1,11 +1,11 @@
 #include "builtin.h"
 
-int ft_keylen(char *str)
+int	ft_keylen(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i] && str[i] != '=')
+	while (str[i] && str[i] != '=')
 		i++;
 	return (i);
 }

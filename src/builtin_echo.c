@@ -1,9 +1,8 @@
-
 #include "builtin.h"
 
 int	write_args(char **args, int i, int size)
 {
-	while(args[i])
+	while (args[i])
 	{
 		ft_putstr_fd(args[i], 1);
 		if (i < size - 1)
@@ -15,21 +14,20 @@ int	write_args(char **args, int i, int size)
 
 int	skip_nflags(char **args, int i, bool *newline)
 {
-	int j;
+	int	j;
 
-	while(args[i] && args[i][0] == '-')
+	while (args[i] && args[i][0] == '-')
 	{
 		j = 1;
 		while (args[i][j] == 'n')
 			j++;
 		if (args[i][j] != '\0' || j == 1)
 			break ;
-		*newline = false;	
+		*newline = false;
 		i++;
 	}
-	return(i);
+	return (i);
 }
-
 
 int	ft_echo(t_data *data, t_parse *cmd)
 {

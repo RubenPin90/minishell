@@ -1,4 +1,3 @@
-
 #include "builtin.h"
 
 int	builtin_parent(t_parse *cmd_line, char *cmd)
@@ -30,5 +29,3 @@ int	is_builtin(t_parse *cmd_line, char *cmd)
 			return (FAIL);
 	return (SUCCESS);
 }
-
-

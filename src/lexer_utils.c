@@ -6,6 +6,8 @@ int	get_len(t_data *data, char *input, int *i, char quote)
 
 	if (input[*i] == '"' || input[*i] == '\'')
 	{
+		if (data->word->type == HEREDOC)
+			data->word->type = Q_HEREDOC;
 		len = quoted_len(input, i, quote);
 		data->word->start++;
 		data->word->quoted = true;

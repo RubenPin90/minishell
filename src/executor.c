@@ -1,4 +1,3 @@
-
 #include "executor.h"
 
 int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
