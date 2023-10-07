@@ -10,7 +10,8 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/wait.h>
-#include <sys/ioctl.h>
+# include <sys/ioctl.h>
+# include <sys/stat.h>
 
 # include "structs.h"
 # include "expander.h"

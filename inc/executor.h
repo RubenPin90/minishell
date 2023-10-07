@@ -26,11 +26,13 @@ int		heredocfun(t_data *data, t_parse *cmd, char *delim);
 int		cleanup_herefun(char **str, int *fd, int ret);
 
 /*exec_cmdfinder*/
-int		check_access(t_data *data, char *cmdname, char **cmdpath);
-int		is_binary(t_data *data, char **cmdpath, char *cmdname);
+int		check_access(t_data *data, t_parse *cmdl, char *cmdname, char **cmdpath);
+int		check_dir(t_parse *cmdl, char *cmdname);
+int		is_binary(t_data *data, t_parse *cmdl, char **cmdpath, char *cmdname);
 int		cmdfinder(t_data *data, t_parse *cmd_line);
 int		find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths);
 int		is_executable(t_parse *cmdl);
+int		ft_access_wrapper(t_parse *cmdl, char *cmdname);
 
 
 /*exec_fds*/

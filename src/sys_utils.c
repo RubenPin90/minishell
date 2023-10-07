@@ -23,6 +23,7 @@ void cmd_printer(t_data *data)
 	{
 		if (tmp->id > 1)
 			printf(RED"|---------------------------|\n"RESET);
+		printf(YELLOW"execute:"RESET" %d\n", tmp->execute);
 		printf(YELLOW"cmd_path:"RESET" %s\n", tmp->cmd_path);
 		printf(YELLOW"cmd[%d]:"RESET, tmp->id);
 		if (tmp->cmd)
@@ -132,7 +133,7 @@ int	is_executable(t_parse *cmdl)
 		return (FAIL);
 	if (!cmdl->cmd || !cmdl->cmd[0])
 	{
-		cmdl->exstatus = E_ERROR;
+		cmdl->exstatus = E_SUCCESS;
 		return (FAIL);
 	}
 	return (SUCCESS);
