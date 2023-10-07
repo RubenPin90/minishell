@@ -1,14 +1,5 @@
 #include "../inc/lexer.h"
 
-/**
- * @brief Add a new node to the end of the list
- * 
- * Copies a word from the input string into 
- * @param data 
- * @param start 
- * @param len 
- * @param type 
- */
 t_lexer	*add_node(t_data *data, char *lst_word, t_word *word)
 {
 	t_lexer	*node;
@@ -19,15 +10,12 @@ t_lexer	*add_node(t_data *data, char *lst_word, t_word *word)
 		node = new_lexer_node(NULL, EMPTY);
 	else
 		node = new_lexer_node(ft_strdup(lst_word), word->type);
-	// printf("node->word: %s\n", node->word);
 	if (!node || !node->word)
 		return (NULL);
 	lexer_addback(&data->lex, node);
 	return (node);
 }
 
-
-// create a new list node for lexer struct
 t_lexer	*new_lexer_node(char *word, int token)
 {
 	t_lexer		*new;
@@ -42,7 +30,6 @@ t_lexer	*new_lexer_node(char *word, int token)
 	return (new);
 }
 
-// add list node to the back of linked lexer list
 void	lexer_addback(t_lexer **lst, t_lexer *new)
 {
 	t_lexer	*tmp;
@@ -75,12 +62,6 @@ void	count_lexlst(t_lexer *lex)
 	}
 }
 
-/**
- * @brief Destroying & freeing the lexer struct.
- * 
- * Checks if lex exists, if yes loops through the list
- * and frees + sets every node to NULL. 
- */
 void	free_lexer(t_lexer **lex)
 {
 	t_lexer	*tmp;

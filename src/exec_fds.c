@@ -34,7 +34,7 @@ int	handle_infile(t_parse *cmd, t_lexer *redir)
 			{
 				cmd->infile = ft_strdup(redir->word);
 				if (!cmd->infile)
-					cleanup_fd(&cmd->fd_in); 
+					cleanup_fd(&cmd->fd_in);
 			}
 		}
 		redir = redir->next;

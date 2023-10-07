@@ -36,7 +36,7 @@ int	cleanup_herefun(char **str, int *fd, int ret)
 
 void	heredoc_name(t_data *data, t_parse *cmd)
 {
-	char *id;
+	char	*id;
 
 	id = ft_itoa(cmd->id);
 	if (!id)
@@ -60,7 +60,8 @@ int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 			ret = heredocfun(data, cmd, redir->word, redir->token);
 			handle_signals(false);
 			if (ret == FAIL)
-				return (error_msg("warning", HERE_STOP_ERR, redir->word, AGAIN));
+				return (error_msg("warning", HERE_STOP_ERR, \
+						redir->word, AGAIN));
 			else if (ret == AGAIN)
 				return (AGAIN);
 		}

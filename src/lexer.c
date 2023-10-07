@@ -20,12 +20,6 @@
 // 	}
 // }
 
-void	skip_space(char *input, int *i)
-{
-	while (input[*i] == ' ' || (input[*i] >= 9 && input[*i] <= 13))
-		(*i)++;
-}
-
 void	fill_word(char *new, t_word *word)
 {
 	char	*tmp;
@@ -85,6 +79,7 @@ int	create_list(t_data *data, char **datainput)
 		word->type = check_type(input, &(word->i));
 		if (word->type == STOP)
 			break ;
+		skip_token(input, &(word->i));
 		skip_space(input, &(word->i));
 		get_word(data, input, word);
 		add_node(data, word->str, word);

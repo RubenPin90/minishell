@@ -19,10 +19,10 @@ int	print_env(t_data *data, t_parse *cmd)
 	return (SUCCESS);
 }
 
-char **list_to_arr(t_data *data, t_lstenv *lst)
+char	**list_to_arr(t_data *data, t_lstenv *lst)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = env_len(data->env);
 	data->env_arr = ft_calloc(i + 1, sizeof(char *));
@@ -40,10 +40,9 @@ char **list_to_arr(t_data *data, t_lstenv *lst)
 	return (data->env_arr);
 }
 
-
-char *find_envkey(t_lstenv *env, char *var)
+char	*find_envkey(t_lstenv *env, char *var)
 {
-	int len;
+	int	len;
 
 	len = ft_strlen(var);
 	while (env)
@@ -57,7 +56,7 @@ char *find_envkey(t_lstenv *env, char *var)
 
 int	env_len(t_lstenv *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (lst)
@@ -70,10 +69,10 @@ int	env_len(t_lstenv *lst)
 
 void	print_env_arr(char **ar)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(ar[i])
+	while (ar[i])
 	{
 		ft_putstr_fd("declare -x ", 1);
 		ft_putstr_fd(ar[i], 1);

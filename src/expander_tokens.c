@@ -37,18 +37,12 @@ char	*add_quotes_to_tokens(char *val, int count)
 	while (val[i])
 	{
 		if (is_token(val[i]))
-		{
-			new[j] = '"';
-			j++;
-		}
+			new[j++] = '"';
 		new[j] = val[i];
 		i++;
 		j++;
 		if (is_token(val[i - 1]))
-		{
-			new[j] = '"';
-			j++;
-		}
+			new[j++] = '"';
 	}
 	return (new);
 }

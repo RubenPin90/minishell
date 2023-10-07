@@ -12,7 +12,7 @@ int	ft_cd(t_data *data, t_parse *cmd)
 		error_msg("cd", NULL, ARG_ERR, E_ERROR);
 	curpwd = find_envkey(data->env, "PWD");
 	if (num_args == 1 || !ft_strncmp(cmd->cmd[1], "~", 2) || \
-						 !ft_strncmp(cmd->cmd[1], "--", 3))
+						!ft_strncmp(cmd->cmd[1], "--", 3))
 		ret = redir_pwd(data, data->env, curpwd, "HOME");
 	else if (!ft_strncmp(cmd->cmd[1], "-", 2))
 		ret = redir_pwd(data, data->env, curpwd, "OLDPWD");
@@ -25,7 +25,7 @@ int	ft_cd(t_data *data, t_parse *cmd)
 
 int	redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key)
 {
-	char *keyvalue;
+	char	*keyvalue;
 
 	keyvalue = find_envkey(env, key);
 	if (!keyvalue)
@@ -63,7 +63,7 @@ int	changedir(t_data *data, t_lstenv *env, char *curpwd, char *arg)
 
 int	update_path(t_data *data, t_lstenv *env, char *newvalue, char *key)
 {
-	t_lstenv *new_env_node;
+	t_lstenv	*new_env_node;
 
 	if (!env || !newvalue || !key)
 		return (AGAIN);
@@ -93,4 +93,3 @@ int	find_n_update(t_data *data, t_lstenv *env, char *nvalue, char *key)
 	}
 	return (FAIL);
 }
-

@@ -52,9 +52,9 @@ void	lstenv_clear(t_lstenv **head)
 	*head = NULL;
 }
 
-char **free_arr(char **arr)
+char	**free_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	if (!arr)
 		return (NULL);
@@ -68,7 +68,7 @@ char **free_arr(char **arr)
 	return (arr);
 }
 
-t_word *free_word(t_word *word)
+t_word	*free_word(t_word *word)
 {
 	if (word)
 	{
