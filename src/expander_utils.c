@@ -35,7 +35,8 @@ char	*get_value(t_data *data, char *input, int start, int len)
 		token_count = check_for_tokens(val);
 		if (token_count)
 			val = add_quotes_to_tokens(val, token_count);
-		val = ft_strdup(val);
+		else
+			val = ft_strdup(val);
 	}
 	else
 		val = ft_strdup("");
