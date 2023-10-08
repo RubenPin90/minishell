@@ -10,11 +10,7 @@ int cmdfinder(t_data *data, t_parse *cmdl)
 		if (ex_status == SUCCESS)
 		{
 			if (is_builtin(cmdl, cmdl->cmd[0]) == FAIL)
-			{
 				is_binary(data, cmdl, &cmdl->cmd_path, cmdl->cmd[0]);
-				// data->paths = free_arr(data->paths);
-				// error_msg(cmdl->cmd[0], NULL, NOTFOUND_ERR, FAIL);
-			}
 		}
 		else
 			set_exstat(cmdl, &cmdl->execute, cmdl->exstatus);
