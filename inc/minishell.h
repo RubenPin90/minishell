@@ -10,7 +10,8 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/wait.h>
-#include <sys/ioctl.h>
+# include <sys/ioctl.h>
+# include <sys/stat.h>
 
 # include "structs.h"
 # include "expander.h"
@@ -61,7 +62,7 @@ char	**free_arr(char **arr);
 t_word	*free_word(t_word *word);
 
 /*sys_env_create*/
-t_lstenv	*copy_envp(char **env_org);
+t_lstenv	*copy_envp(t_data *data, char **env_org);
 void		env_addback(t_lstenv **lst, t_lstenv *new);
 t_lstenv	*lstenv_create(char *cont);
 t_lstenv	*lstenv_new(char *key, char *value);

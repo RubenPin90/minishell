@@ -8,7 +8,9 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (error_msg(NULL, NULL, ARGC_ERR, FAIL));
 	init_data(&data);
-	data.env = copy_envp(envp);
+	data.env = copy_envp(&data, envp);
+	if (!data.env)
+		return (ft_error(MALLOC_ERR, NULL));
 	while (1)
 	{
 		handle_signals(false);
@@ -16,5 +18,5 @@ int	main(int argc, char **argv, char **envp)
 			executor(&data);
 		ft_cleanup(&data, false);
 	}
-	return (0);
+	return (SUCCESS);
 }

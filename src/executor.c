@@ -11,7 +11,16 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 	{
 		handle_signals(false);
 		replace_fd(data, cmd);
-		execve(cmdpath, cmd->cmd, data->env_arr);
+		if (cmd->execute == false)
+		{
+			data->excode = print_warning(cmd, cmd->exstatus);
+			ft_cleanup(data, true);
+		}
+		if (execve(cmdpath, cmd->cmd, data->env_arr) == -1)
+		{
+			data->excode = error_msg(cmd->cmd[0], "child", strerror(errno), E_ERROR);
+			ft_cleanup(data, true);
+		}
 	}
 	return (SUCCESS);
 }
@@ -39,7 +48,7 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	if (cmd->execute == false)
 	{
-		data->excode = cmd->exstatus;
+		data->excode = print_warning(cmd, cmd->exstatus);
 		return (SUCCESS);
 	}
 	if (cmd->func)
@@ -57,12 +66,10 @@ int	exec_multi_cmds(t_parse *cmd_line, int cmds, t_data *data)
 	create_pipes(data->cmd_line, cmds);
 	while (cmd_line->id != 0)
 	{
-		if (cmd_line->execute && cmd_line->func)
+		if (cmd_line->func)
 			exec_builtin(data, cmd_line, false);
-		else if (cmd_line->execute)
-			exec_child(data, cmd_line, cmd_line->cmd_path);
 		else
-			data->excode = cmd_line->exstatus;
+			exec_child(data, cmd_line, cmd_line->cmd_path);
 		cmd_line++;
 	}
 	close_all_fds(data->cmd_line);
@@ -74,13 +81,10 @@ int	executor(t_data *data)
 {
 	g_signum = 0;
 	data->env_arr = list_to_arr(data, data->env);
-	cmd_printer(data);
-	if (handle_heredoc(data, data->cmd_line))
-		return (AGAIN);
-	if (handle_fds(data->cmd_line))
-		return (AGAIN);
-	if (cmdfinder(data, data->cmd_line))
-		return (AGAIN);
+	handle_heredoc(data, data->cmd_line);
+	handle_fds(data->cmd_line);
+	cmdfinder(data, data->cmd_line);
+	// cmd_printer(data);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else

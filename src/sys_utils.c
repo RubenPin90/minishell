@@ -23,6 +23,7 @@ void	cmd_printer(t_data *data)
 	{
 		if (tmp->id > 1)
 			printf(RED"|---------------------------|\n"RESET);
+		printf(YELLOW"execute:"RESET" %d\n", tmp->execute);
 		printf(YELLOW"cmd_path:"RESET" %s\n", tmp->cmd_path);
 		printf(YELLOW"cmd[%d]:"RESET, tmp->id);
 		if (tmp->cmd)
@@ -37,18 +38,6 @@ void	cmd_printer(t_data *data)
 		printf(YELLOW"outfile:"RESET" %s\n", tmp->outfile);
 		printf(YELLOW"fd_in:"RESET" %d "YELLOW"fd_out:"RESET" %d\n", tmp->fd_in, tmp->fd_out);
 		printf(YELLOW"fd_pipes[0]:"RESET" %d "YELLOW"fd_pipes[1]:"RESET" %d\n", tmp->fd_pipes[0], tmp->fd_pipes[1]);
-    	// if (fstat(tmp->fd_in, &file_stat) == 0) {
-        // 	printf(YELLOW"tmp->fd_in"RESET" [%d] %ld\n", tmp->fd_in, file_stat.st_ino);
-		// }
-    	// if (fstat(tmp->fd_out, &file_stat) == 0) {
-        // 	printf(YELLOW"tmp->fd_out"RESET" [%d] %ld\n", tmp->fd_out, file_stat.st_ino);
-		// }
-    	// if (fstat(tmp->fd_pipes[0], &file_stat) == 0) {
-        // 	printf(YELLOW"tmp->fd_pipes[0]"RESET" [%d] %ld\n", tmp->fd_pipes[0], file_stat.st_ino);
-		// }
-    	// if (fstat(tmp->fd_pipes[1], &file_stat) == 0) {
-        // 	printf(YELLOW"tmp->fd_pipes[1]"RESET" [%d] %ld\n", tmp->fd_pipes[1], file_stat.st_ino);
-		// }
     	if (isatty(fileno(stdin)) == 0) {
         	printf(BLUE"stdin is a file"RESET" [%d]%s\n", STDIN_FILENO, ttyname(STDIN_FILENO));
 		}
@@ -135,5 +124,17 @@ int	ft_arrlen(char **arr)
 	i = 0;
 	while (arr && arr[i])
 		i++;
-	return (i);
+	return(i);
+}
+
+int	is_executable(t_parse *cmdl)
+{
+	if (cmdl->execute == false)
+		return (FAIL);
+	if (!cmdl->cmd || !cmdl->cmd[0])
+	{
+		cmdl->exstatus = E_SUCCESS;
+		return (FAIL);
+	}
+	return (SUCCESS);
 }

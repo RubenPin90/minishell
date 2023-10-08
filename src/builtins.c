@@ -16,7 +16,7 @@ int	builtin_parent(t_parse *cmd_line, char *cmd)
 	return (SUCCESS);
 }
 
-int	check_builtin(t_parse *cmd_line, char *cmd)
+int	is_builtin(t_parse *cmd_line, char *cmd)
 {
 	if (!ft_strncmp(cmd, "pwd", 4))
 		cmd_line->func = &ft_pwd;

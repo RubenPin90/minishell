@@ -11,6 +11,9 @@ typedef	enum	e_status
 	E_SUCCESS,
 	E_ERROR,
 	E_SYNERR,
+	E_NOENT,
+	E_NOPERMS,
+	E_ISDIR = 126,
 	E_NOCMD = 127
 }	t_status;
 
