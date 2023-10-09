@@ -14,14 +14,19 @@ t_lstenv	*copy_envp(t_data *data, char **env_org)
 		ft_cleanup(data, true);
 	}
 	while (env_org[++i])
-		env_addback(&env_list, lstenv_create(env_org[i]));
+	{
+		if (env_addback(&env_list, lstenv_create(env_org[i])))
+			ft_error(MALLOC_ERR, data);	
+	}
 	return (env_list);
 }
 
-void	env_addback(t_lstenv **lst, t_lstenv *new)
+int	env_addback(t_lstenv **lst, t_lstenv *new)
 {
 	t_lstenv	*tmp;
 
+	if (!new)
+		return (FAIL);
 	if (*lst == NULL)
 		*lst = new;
 	else
@@ -31,6 +36,7 @@ void	env_addback(t_lstenv **lst, t_lstenv *new)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+	return (SUCCESS);
 }
 
 t_lstenv	*lstenv_create(char *cont)
@@ -54,6 +60,11 @@ t_lstenv	*lstenv_create(char *cont)
 		return (NULL);
 	}
 	new = lstenv_new(key, value);
+	if (!new)
+	{
+		key = free_null(key);
+		value = free_null(value);
+	}
 	return (new);
 }
 

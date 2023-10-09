@@ -19,10 +19,12 @@ int	create_pipes(t_parse *cmd_line, int cmds)
 
 int	ft_dup2(int fdin, int fdout)
 {
-	if (dup2(fdin, STDIN_FILENO) < 0)
-		return (error_msg("Infile", NULL, strerror(errno), FAIL));
-	if (dup2(fdout, STDOUT_FILENO) < 0)
-		return (error_msg("Outfile", NULL, strerror(errno), FAIL));
+	if (fdin > 0)
+		if (dup2(fdin, STDIN_FILENO) < 0)
+			return (error_msg("Infile", NULL, strerror(errno), FAIL));
+	if (fdout > 0)
+		if (dup2(fdout, STDOUT_FILENO) < 0)
+			return (error_msg("Outfile", NULL, strerror(errno), FAIL));
 	return (SUCCESS);
 }
 

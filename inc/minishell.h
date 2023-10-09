@@ -37,23 +37,23 @@
 # define AGAIN 2
 
 /*signals*/
-void	handle_signals(bool heredoc);
-void	receive_signal(int signum);
+void		handle_signals(bool heredoc);
+void		receive_signal(int signum);
 
 /*sys_input*/
-int		handle_input(t_data *data);
+int			handle_input(t_data *data);
 
 /*sys_init*/
-void	init_data(t_data *data);
+void		init_data(t_data *data);
 
 /*sys_utils*/
-void	cmd_printer(t_data *data);
-void	lexer_printer(t_lexer *lex, int check);
-int		lex_len(t_lstenv *lst);
-char	*ft_strjoin_wrapper(char *str1, char *str2, char *str3);
-char	**arr_expand(char **arr, char *str);
-int		ft_arrlen(char **arr);
-int		is_executable(t_parse *cmdl);
+void		cmd_printer(t_data *data);
+void		lexer_printer(t_lexer *lex, int check);
+int			lex_len(t_lstenv *lst);
+char		*ft_strjoin_wrapper(char *str1, char *str2, char *str3);
+char		**arr_expand(char **arr, char *str);
+int			ft_arrlen(char **arr);
+int			is_executable(t_parse *cmdl);
 
 /*sys_cleanup*/
 void		ft_cleanup(t_data *data, bool check);
@@ -64,7 +64,7 @@ t_word		*free_word(t_word *word);
 
 /*sys_env_create*/
 t_lstenv	*copy_envp(t_data *data, char **env_org);
-void		env_addback(t_lstenv **lst, t_lstenv *new);
+int			env_addback(t_lstenv **lst, t_lstenv *new);
 t_lstenv	*lstenv_create(char *cont);
 t_lstenv	*lstenv_new(char *key, char *value);
 
