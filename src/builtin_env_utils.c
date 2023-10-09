@@ -34,17 +34,17 @@ void	ft_bubsort(char **ar, t_lstenv *env)
 	print_env_arr(ar);
 }
 
-int	update_env(t_lstenv *env, char *arg, t_data *data)
+int	update_env(t_lstenv *env, char *arg)
 {
-	t_lstenv	*exp_arg;
 	int			ret;
+	char		*key;
 
 	ret = 0;
-	exp_arg = lstenv_create(arg);
-	if (!exp_arg)
+	key = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
+	if (!key)
 		return (FAIL);
-	ret = update_path(data, env, exp_arg->value, exp_arg->key);
-	lstenv_clear(&exp_arg);
+	ret = update_path(env, arg, key);
+	key = free_null(key);
 	if (ret == FAIL)
 		return (FAIL);
 	return (SUCCESS);

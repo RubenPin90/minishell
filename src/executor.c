@@ -89,7 +89,6 @@ int	executor(t_data *data)
 	handle_heredoc(data, data->cmd_line);
 	handle_fds(data->cmd_line);
 	cmdfinder(data, data->cmd_line);
-	// cmd_printer(data);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else

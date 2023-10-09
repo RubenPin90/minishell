@@ -91,7 +91,7 @@ ${OBJ_TDIR}/%.o: ${TESTDIR}/%.c
 	${CC} ${CFLAGS} ${INC} -c $< -o $@
 
 ${LIB}:
-	@make -sC ${LDIR_FT}
+	@${MAKE} -sC ${LDIR_FT}
 
 clean:
 	@echo "${GREEN}Removing object files...${RESET}"

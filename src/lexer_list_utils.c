@@ -7,11 +7,11 @@ t_lexer	*add_node(t_data *data, char *lst_word, t_word *word)
 	if (word->type == PIPE)
 		word->len = 1;
 	if (!lst_word)
-		node = new_lexer_node(NULL, EMPTY);
+		node = new_lexer_node(ft_strdup(""), EMPTY);
 	else
 		node = new_lexer_node(ft_strdup(lst_word), word->type);
-	if (!node || !node->word)
-		return (NULL);
+	if (!node)
+		ft_error(MALLOC_ERR, data);
 	lexer_addback(&data->lex, node);
 	return (node);
 }
@@ -20,6 +20,8 @@ t_lexer	*new_lexer_node(char *word, int token)
 {
 	t_lexer		*new;
 
+	if (!word)
+		return (NULL);
 	new = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!new)
 		return (NULL);

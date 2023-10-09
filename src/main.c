@@ -10,7 +10,7 @@ int	main(int argc, char **argv, char **envp)
 	init_data(&data);
 	data.env = copy_envp(&data, envp);
 	if (!data.env)
-		return (ft_error(MALLOC_ERR, NULL));
+		return (ft_error(MALLOC_ERR, &data));
 	while (1)
 	{
 		handle_signals(false);

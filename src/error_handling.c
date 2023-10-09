@@ -30,6 +30,13 @@ int	ft_error(char *msg, t_data *data)
 	return (1);
 }
 
+void	ft_parent_error(char *msg, t_data *data, t_parse *cmd)
+{
+	if (cmd->pid == 0)
+		switch_stdfd(data, cmd, data->stdfd, false);	
+	ft_error(msg, data);
+}
+
 t_status	print_warning(t_parse *cmdl, t_status err)
 {
 	if (err == E_NOENT)
@@ -40,7 +47,5 @@ t_status	print_warning(t_parse *cmdl, t_status err)
 		return (error_msg(cmdl->cmd[0], NULL, ISDIR_ERR, E_ISDIR));
 	else if (err == E_NOCMD)
 		return (error_msg(cmdl->cmd[0], NULL, NOTFOUND_ERR, E_NOCMD));
-	// if (err == E_ERROR)
-	// 	data->excode = error_msg(cmdl->cmd[0], NULL, ISDIR_ERR, E_ISDIR);
 	return (err);
 }

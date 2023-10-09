@@ -21,6 +21,7 @@
 # include "builtin.h"
 # include "error_handling.h"
 # include "tester.h"
+// # include "test_malloc.h"
 
 /*colors*/
 # define RESET "\e[0m"

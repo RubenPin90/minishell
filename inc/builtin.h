@@ -24,14 +24,15 @@ void	print_env_arr(char **ar);
 /*builtin_env_utils*/
 int		ft_keylen(char *str);
 void	ft_bubsort(char **ar, t_lstenv *env);
-int		update_env(t_lstenv *env, char *arg, t_data *data);
+int		update_env(t_lstenv *env, char *arg);
 
 /*builtin_cd*/
 int		ft_cd(t_data *data, t_parse *cmd);
 int		redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key);
 int		changedir(t_data *data, t_lstenv *env, char *curpwd, char *arg);
-int		update_path(t_data *data, t_lstenv *env, char *pathname, char *key);
-int		find_n_update(t_data *data, t_lstenv *env, char *nvalue, char *key);
+int		update_path(t_lstenv *env, char *pathname, char *key);
+int		find_n_update(t_lstenv *env, char *nvalue, char *key);
+char	*set_curpwd(t_data *data, t_lstenv *env);
 
 /*builtin_echo*/
 int		write_args(char **args, int i, int size);
@@ -44,7 +45,7 @@ int		check_exit(char *arg);
 
 /*builtin_export*/
 int		ft_export(t_data *data, t_parse *cmd);
-int		check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data);
+int		check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg);
 void	export_check(t_data *data, t_lexer *lex);
 int		check_valid(char *arg, bool *equal);
 int		export_error(int err, char *cmd);

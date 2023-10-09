@@ -16,7 +16,10 @@ t_lstenv	*copy_envp(t_data *data, char **env_org)
 	while (env_org[++i])
 	{
 		if (env_addback(&env_list, lstenv_create(env_org[i])))
-			ft_error(MALLOC_ERR, data);	
+		{
+			lstenv_clear(&env_list);
+			return (NULL);
+		}	
 	}
 	return (env_list);
 }
@@ -62,6 +65,7 @@ t_lstenv	*lstenv_create(char *cont)
 	new = lstenv_new(key, value);
 	if (!new)
 	{
+		printf("d_point\n");
 		key = free_null(key);
 		value = free_null(value);
 	}
@@ -75,6 +79,7 @@ t_lstenv	*lstenv_new(char *key, char *value)
 	new = (t_lstenv *)malloc(sizeof(t_lstenv));
 	if (!new)
 		return (NULL);
+	printf("e_point\n");
 	new->key = key;
 	new->value = value;
 	new->next = NULL;

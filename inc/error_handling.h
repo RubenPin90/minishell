@@ -20,5 +20,6 @@ int			error_msg(char *cmd, char *arg, char *msg, int ret);
 int			ft_error(char *msg, t_data *data);
 int			set_exstat(t_parse *cmd_line, bool *execute, int status);
 t_status	print_warning(t_parse *cmdl, t_status err);
+void		ft_parent_error(char *msg, t_data *data, t_parse *cmd);
 
 #endif
