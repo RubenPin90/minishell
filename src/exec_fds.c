@@ -60,3 +60,18 @@ int	handle_outfile(t_parse *cmd, t_lexer *redir)
 	}
 	return (SUCCESS);
 }
+
+int	ft_access_wrapper(t_parse *cmdl, char *cmdname)
+{
+	int ret;
+
+	ret = access(cmdname, F_OK);
+	if (ret < 0)
+		return (set_exstat(cmdl, &cmdl->execute, E_NOCMD));
+	ret = access(cmdname, X_OK);
+	if (ret < 0)
+		return (set_exstat(cmdl, &cmdl->execute, E_NOPERMS));
+	cmdl->execute = true;
+	cmdl->exstatus = E_SUCCESS;
+	return (SUCCESS);
+}

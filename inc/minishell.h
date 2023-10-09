@@ -53,13 +53,14 @@ int		lex_len(t_lstenv *lst);
 char	*ft_strjoin_wrapper(char *str1, char *str2, char *str3);
 char	**arr_expand(char **arr, char *str);
 int		ft_arrlen(char **arr);
+int		is_executable(t_parse *cmdl);
 
 /*sys_cleanup*/
-void	ft_cleanup(t_data *data, bool check);
-void	*free_null(void *ptr);
-void	lstenv_clear(t_lstenv **head);
-char	**free_arr(char **arr);
-t_word	*free_word(t_word *word);
+void		ft_cleanup(t_data *data, bool check);
+void		*free_null(void *ptr);
+void		lstenv_clear(t_lstenv **head);
+char		**free_arr(char **arr);
+t_word		*free_word(t_word *word);
 
 /*sys_env_create*/
 t_lstenv	*copy_envp(t_data *data, char **env_org);
