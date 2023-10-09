@@ -90,6 +90,7 @@ typedef struct s_data
 	t_parse			*cmd_line;
 	struct s_lexer	*lex;
 	struct s_word	*word;
+	int				stdfd[2];
 	bool			quoted;
 	bool			expand;
 	int				excode;

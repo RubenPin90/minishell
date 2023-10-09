@@ -95,12 +95,14 @@ ${LIB}:
 
 clean:
 	@echo "${GREEN}Removing object files...${RESET}"
+	@${MAKE} clean -sC ${LDIR_FT}
 	@rm -f ${OBJ}
 	@rm -rf ${OBJDIR}
 	@echo "${BLUE}DONE!${RESET}"
 
 fclean: clean
 	@echo "${GREEN}Removing executables...${RESET}"
+	@${MAKE} fclean -sC ${LDIR_FT}
 	@rm	-rf ${NAME}
 	@echo "${BLUE}DONE!${RESET}"
 

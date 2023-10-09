@@ -28,7 +28,11 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 {
 	if (parent == true)
+	{
+		switch_stdfd(data, cmd, data->stdfd, true);	
 		data->excode = cmd->func(data, cmd);
+		switch_stdfd(data, cmd, data->stdfd, false);	
+	}
 	else
 	{
 		cmd->pid = fork();
@@ -43,6 +47,7 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 	}
 	return (SUCCESS);
 }
+
 
 int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {

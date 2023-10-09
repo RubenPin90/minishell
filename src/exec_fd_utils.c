@@ -53,3 +53,24 @@ int	close_all_fds(t_parse *cmd_line)
 	}
 	return (SUCCESS);
 }
+
+int	switch_stdfd(t_data *data, t_parse *cmd, int *stdfd, bool switch_fd)
+{
+	int err;
+
+	if (switch_fd == true)
+	{
+		stdfd[0] = dup(STDIN_FILENO);
+		stdfd[1] = dup(STDOUT_FILENO);
+		replace_fd(data, cmd);
+	}
+	else
+	{
+		err = ft_dup2(stdfd[0], stdfd[1]);
+		cleanup_fd(&stdfd[0]);
+		cleanup_fd(&stdfd[1]);
+		if (err)
+			ft_error(NULL, data);
+	}
+	return (SUCCESS);
+}

@@ -45,6 +45,7 @@ int		cleanup_fd(int *fd);
 int		update_fd(t_parse *cmd, char **name);
 int		ft_open(char *file, t_type token, char *heredoc);
 int		close_all_fds(t_parse *cmd_line);
+int		switch_stdfd(t_data *data, t_parse *cmd, int *stdfd, bool switch_fd);
 
 /*exec_exstatus*/
 void	ft_waitpid(t_data *data, t_parse *cmd);

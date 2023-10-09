@@ -43,6 +43,7 @@ int	ft_exit(t_data *data, t_parse *cmd)
 		else
 			data->excode = 0;
 	}
+	switch_stdfd(data, cmd, data->stdfd, false);
 	ft_cleanup(data, true);
 	return (SUCCESS);
 }
