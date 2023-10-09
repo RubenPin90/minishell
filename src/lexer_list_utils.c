@@ -7,7 +7,10 @@ t_lexer	*add_node(t_data *data, char *lst_word, t_word *word)
 	if (word->type == PIPE)
 		word->len = 1;
 	if (!lst_word)
+	{
+		printf("EMPTY\n");
 		node = new_lexer_node(NULL, EMPTY);
+	}
 	else
 		node = new_lexer_node(ft_strdup(lst_word), word->type);
 	if (!node || !node->word)

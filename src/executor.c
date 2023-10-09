@@ -18,7 +18,8 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 		}
 		if (execve(cmdpath, cmd->cmd, data->env_arr) == -1)
 		{
-			data->excode = error_msg(cmd->cmd[0], "child", strerror(errno), E_ERROR);
+			data->excode = error_msg(cmd->cmd[0], "child", \
+			strerror(errno), E_ERROR);
 			ft_cleanup(data, true);
 		}
 	}

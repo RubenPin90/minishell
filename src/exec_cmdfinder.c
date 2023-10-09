@@ -1,8 +1,8 @@
 #include "executor.h"
 
-int cmdfinder(t_data *data, t_parse *cmdl)
+int	cmdfinder(t_data *data, t_parse *cmdl)
 {
-	int ex_status;
+	int	ex_status;
 
 	while (cmdl->id != 0)
 	{
@@ -20,7 +20,7 @@ int cmdfinder(t_data *data, t_parse *cmdl)
 	return (SUCCESS);
 }
 
-int is_binary(t_data *data, t_parse *cmdl, char **cmdpath, char *cmdname)
+int	is_binary(t_data *data, t_parse *cmdl, char **cmdpath, char *cmdname)
 {
 	char	*path_line;
 
@@ -32,7 +32,8 @@ int is_binary(t_data *data, t_parse *cmdl, char **cmdpath, char *cmdname)
 		return (FAIL);
 	if (*cmdpath != NULL)
 		return (SUCCESS);
-	if (cmdname[0] == '\0' || !ft_strncmp(cmdname, ".", 2) || !ft_strncmp(cmdname, "..", 3))
+	if (cmdname[0] == '\0' || !ft_strncmp(cmdname, ".", 2) || \
+		!ft_strncmp(cmdname, "..", 3))
 		return (set_exstat(cmdl, &cmdl->execute, E_NOCMD));
 	if (!data->paths)
 	{
@@ -49,7 +50,7 @@ int is_binary(t_data *data, t_parse *cmdl, char **cmdpath, char *cmdname)
 	return (SUCCESS);
 }
 
-int check_access(t_data *data, t_parse *cmdl, char *cmdname, char **cmdpath)
+int	check_access(t_data *data, t_parse *cmdl, char *cmdname, char **cmdpath)
 {
 	if (cmdname[0] == '/' || !ft_strncmp(cmdname, "./", 2) || \
 		!ft_strncmp(cmdname, "../", 3))
@@ -65,8 +66,8 @@ int check_access(t_data *data, t_parse *cmdl, char *cmdname, char **cmdpath)
 
 int	check_dir(t_parse *cmdl, char *cmdname)
 {
-	struct	stat tmp;
-	int		ret;
+	struct stat	tmp;
+	int			ret;
 
 	ret = stat(cmdname, &tmp);
 	if (ret < 0 && errno == ENOENT)
@@ -78,9 +79,9 @@ int	check_dir(t_parse *cmdl, char *cmdname)
 	return (SUCCESS);
 }
 
-int find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths)
+int	find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths)
 {
-	int i;
+	int	i;
 
 	if (!paths)
 	{
@@ -105,7 +106,7 @@ int find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths)
 
 int	ft_access_wrapper(t_parse *cmdl, char *cmdname)
 {
-	int ret;
+	int	ret;
 
 	ret = access(cmdname, F_OK);
 	if (ret < 0)

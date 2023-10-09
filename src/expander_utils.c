@@ -64,9 +64,11 @@ void	skip_delim(char *input, int *i)
 	}
 }
 
-int	is_quoted_dollarsign(t_data *data, char *input, int i)
+int	single_dollarsign(t_data *data, char *input, int i)
 {
-	if (data->quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))
+	if ((input[i] == '$' && (input[i + 1] == ' ' || !input[i + 1])) || \
+		(data->quoted == true && input[i + 1] == '"') || \
+		(data->expand == false && input[i + 1] == '\''))
 		return (1);
 	return (0);
 }

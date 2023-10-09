@@ -42,6 +42,11 @@ char	*expander_time(t_data *data, char *input, int i)
 	return (new);
 }
 
+/*********
+ * Sets the data boolians quoted and expanded to decide whether a variable with $ should be expanded. Doesn't expand heredoc delimiter.
+ * quoted	Sets status to "in a quote", therefore single quotes inside will be ignored (and expansion will not be hindered)
+ * expand	A variable with $ must be expanded
+*/
 void	expander_prep(t_data *data, char *input, int *i)
 {
 	if (input[*i] == '"')
@@ -62,17 +67,17 @@ char	*expander(t_data *data, char *input)
 	while (input[i])
 	{
 		expander_prep(data, input, &i);
-		if (input[i] == '$' && data->expand == true && input[i + 1] && \
-			input[i + 1] != ' ' && !is_quoted_dollarsign(data, input, i))
+		if (input[i] == '$' && input[i + 1] && \
+			!single_dollarsign(data, input, i) && data->expand == true)
 		{
 			new = expander_time(data, input, i);
-			data->quoted = false;
 			tmp = input;
 			input = new;
 			tmp = free_null(tmp);
+			if (input[i] == '"' || input[i] == '\'')
+				i--;
 		}
-		if (input[i])
-			i++;
+		i++;
 	}
 	return (input);
 }

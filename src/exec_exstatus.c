@@ -32,7 +32,6 @@ void	ft_waitpid(t_data *data, t_parse *cmd)
 	}
 }
 
-
 int	set_exstat(t_parse *cmd_line, bool *execute, int status)
 {
 	*execute = false;

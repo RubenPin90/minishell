@@ -17,7 +17,7 @@ char	*add_quotes_to_tokens(char *val, int count);
 int		get_var_len(char *input, int i);
 char	*get_value(t_data *data, char *input, int start, int len);
 void	skip_delim(char *input, int *i);
-int		is_quoted_dollarsign(t_data *data, char *input, int i);
+int		single_dollarsign(t_data *data, char *input, int i);
 bool	toggle_bool(bool ian);
 
 #endif

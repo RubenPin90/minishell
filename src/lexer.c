@@ -7,7 +7,7 @@
 #include "lexer.h"
 // #include "expander.h"
 
-// NOTE: delete this function
+// //NOTE: delete this function
 // void	print_lexlst(t_data *data)
 // {
 // 	t_lexer	*tmp = data->lex;
