@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 15:04:33 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 16:55:14 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtin.h"
 
 int	ft_export(t_data *data, t_parse *cmd)
@@ -18,13 +30,11 @@ int	ft_export(t_data *data, t_parse *cmd)
 		if (err)
 			return (export_error(err, cmd->cmd[i]));
 		if (equal == true)
-			if (update_env(data->env, cmd->cmd[i], data))
-				ft_error(MALLOC_ERR, data);
+			if (update_env(data->env, cmd->cmd[i]))
+				ft_parent_error(MALLOC_ERR, data, cmd);
 		if (equal == false)
-		{
-			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i], data))
-				ft_error(MALLOC_ERR, data);
-		}
+			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i]))
+				ft_parent_error(MALLOC_ERR, data, cmd);
 	}
 	return (SUCCESS);
 }
@@ -49,7 +59,7 @@ int	check_valid(char *arg, bool *equal)
 	return (SUCCESS);
 }
 
-int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data)
+int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg)
 {
 	int	len;
 
@@ -62,7 +72,7 @@ int	check_exp_lst(t_lexer *exp_lst, t_lstenv *env, char *arg, t_data *data)
 		len = ft_keylen(exp_lst->word);
 		if (!ft_strncmp(arg, exp_lst->word, len))
 		{
-			if (update_env(env, exp_lst->word, data) == FAIL)
+			if (update_env(env, exp_lst->word) == FAIL)
 				return (FAIL);
 			break ;
 		}

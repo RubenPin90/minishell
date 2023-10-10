@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 15:02:03 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 17:51:26 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtin.h"
 
 int	ft_cd(t_data *data, t_parse *cmd)
@@ -9,8 +21,8 @@ int	ft_cd(t_data *data, t_parse *cmd)
 	curpwd = NULL;
 	num_args = ft_arrlen(cmd->cmd);
 	if (num_args > 2)
-		error_msg("cd", NULL, ARG_ERR, E_ERROR);
-	curpwd = find_envkey(data->env, "PWD");
+		return (error_msg("cd", NULL, ARG_ERR, E_ERROR));
+	curpwd = set_curpwd(data, data->env);
 	if (num_args == 1 || !ft_strncmp(cmd->cmd[1], "~", 2) || \
 						!ft_strncmp(cmd->cmd[1], "--", 3))
 		ret = redir_pwd(data, data->env, curpwd, "HOME");
@@ -18,9 +30,24 @@ int	ft_cd(t_data *data, t_parse *cmd)
 		ret = redir_pwd(data, data->env, curpwd, "OLDPWD");
 	else
 		ret = changedir(data, data->env, curpwd, cmd->cmd[1]);
+	curpwd = free_null(curpwd);
 	if (ret)
-		return (FAIL);
-	return (SUCCESS);
+		return (E_ERROR);
+	return (E_SUCCESS);
+}
+
+char	*set_curpwd(t_data *data, t_lstenv *env)
+{
+	char	*curpwd;
+
+	curpwd = find_envkey(env, "PWD");
+	if (curpwd)
+		curpwd = ft_strjoin("OLDPWD=", curpwd);
+	else
+		curpwd = ft_strdup("OLDPWD=");
+	if (!curpwd)
+		ft_parent_error(MALLOC_ERR, data, data->cmd_line);
+	return (curpwd);
 }
 
 int	redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key)
@@ -43,53 +70,28 @@ int	redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key)
 int	changedir(t_data *data, t_lstenv *env, char *curpwd, char *arg)
 {
 	char	*cwd;
-	char	*tmp;
+	char	*ncwd;
 	int		ret;
 
+	ret = 0;
+	ncwd = NULL;
 	if (chdir(arg) == -1)
 		return (error_msg("cd", arg, strerror(errno), E_ERROR));
-	tmp = get_pwd();
-	cwd = ft_strdup(tmp);
-	tmp = free_null(tmp);
-	if (!cwd)
-		ft_error(MALLOC_ERR, data);
-	ret = update_path(data, env, curpwd, "OLDPWD");
-	ret = update_path(data, env, cwd, "PWD");
-	cwd = free_null(cwd);
-	if (ret == FAIL)
-		ft_error(MALLOC_ERR, data);
-	return (SUCCESS);
-}
-
-int	update_path(t_data *data, t_lstenv *env, char *newvalue, char *key)
-{
-	t_lstenv	*new_env_node;
-
-	if (!env || !newvalue || !key)
-		return (AGAIN);
-	if (find_n_update(data, env, newvalue, key) == FAIL)
+	cwd = get_pwd();
+	if (cwd)
+		ncwd = ft_strjoin("PWD=", cwd);
+	if (ncwd)
 	{
-		new_env_node = lstenv_new(ft_strdup(key), ft_strdup(newvalue));
-		if (!new_env_node || !new_env_node->key || !new_env_node->value)
-			ft_error(MALLOC_ERR, data);
-		env_addback(&env, new_env_node);
+		ret = update_path(env, curpwd, "OLDPWD");
+		ret = update_path(env, ncwd, "PWD");
+		ncwd = free_null(ncwd);
+		cwd = free_null(cwd);
+	}
+	else if (ret == FAIL || !ncwd)
+	{
+		cwd = free_null(cwd);
+		curpwd = free_null(curpwd);
+		ft_parent_error(MALLOC_ERR, data, data->cmd_line);
 	}
 	return (SUCCESS);
-}
-
-int	find_n_update(t_data *data, t_lstenv *env, char *nvalue, char *key)
-{
-	while (env)
-	{
-		if (!ft_strncmp(env->key, key, ft_strlen(key) + 1))
-		{
-			env->value = free_null(env->value);
-			env->value = ft_strdup(nvalue);
-			if (!env->value)
-				ft_error(MALLOC_ERR, data);
-			return (SUCCESS);
-		}
-		env = env->next;
-	}
-	return (FAIL);
 }

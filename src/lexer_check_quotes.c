@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_check_quotes.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 13:45:23 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 16:05:22 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lexer.h"
 
 int	check_quotes(char *str)
@@ -18,8 +30,8 @@ int	check_quotes(char *str)
 		i++;
 	}
 	if (doubles == true || singles == true)
-		return (1);
-	return (0);
+		return (error_msg(NULL, NULL, QUOTE_ERR, E_SYNERR));
+	return (SUCCESS);
 }
 
 void	skip_quote(char *input, char quote, int *i)

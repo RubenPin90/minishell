@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_env_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 15:04:06 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 17:16:04 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtin.h"
 
 int	ft_keylen(char *str)
@@ -34,18 +46,58 @@ void	ft_bubsort(char **ar, t_lstenv *env)
 	print_env_arr(ar);
 }
 
-int	update_env(t_lstenv *env, char *arg, t_data *data)
+int	update_env(t_lstenv *env, char *arg)
 {
-	t_lstenv	*exp_arg;
 	int			ret;
+	char		*key;
 
 	ret = 0;
-	exp_arg = lstenv_create(arg);
-	if (!exp_arg)
+	key = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
+	if (!key)
 		return (FAIL);
-	ret = update_path(data, env, exp_arg->value, exp_arg->key);
-	lstenv_clear(&exp_arg);
+	ret = update_path(env, arg, key);
+	key = free_null(key);
 	if (ret == FAIL)
 		return (FAIL);
 	return (SUCCESS);
+}
+
+int	update_path(t_lstenv *env, char *newpath, char *key)
+{
+	t_lstenv	*new_env_node;
+	int			ret;
+
+	if (!env || !newpath || !key)
+		return (AGAIN);
+	ret = find_n_update(env, newpath, key);
+	if (ret == FAIL)
+		return (FAIL);
+	else if (ret == AGAIN)
+	{
+		new_env_node = lstenv_create(newpath);
+		if (!new_env_node)
+			return (FAIL);
+		env_addback(&env, new_env_node);
+	}
+	return (SUCCESS);
+}
+
+int	find_n_update(t_lstenv *env, char *nvalue, char *key)
+{
+	char	*delimiter;
+
+	while (env)
+	{
+		if (!ft_strncmp(env->key, key, ft_strlen(key) + 1))
+		{
+			env->value = free_null(env->value);
+			delimiter = ft_strchr(nvalue, '=');
+			env->value = ft_strdup(delimiter + 1);
+			if (!env->value)
+				return (FAIL);
+			return (SUCCESS);
+		}
+		env = env->next;
+	}
+	return (AGAIN);
 }

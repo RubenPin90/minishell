@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 13:28:42 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 16:18:05 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	main(int argc, char **argv, char **envp)
@@ -10,10 +22,10 @@ int	main(int argc, char **argv, char **envp)
 	init_data(&data);
 	data.env = copy_envp(&data, envp);
 	if (!data.env)
-		return (ft_error(MALLOC_ERR, NULL));
+		return (ft_error(MALLOC_ERR, &data));
 	while (1)
 	{
-		handle_signals(false);
+		handle_signals(false, false);
 		if (handle_input(&data) == SUCCESS)
 			executor(&data);
 		ft_cleanup(&data, false);

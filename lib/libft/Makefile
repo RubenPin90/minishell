@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rpinchas <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 18:20:14 by rpinchas          #+#    #+#              #
-#    Updated: 2023/03/13 18:33:04 by rpinchas         ###   ########.fr        #
+#    Updated: 2023/10/10 13:18:39 by rpinchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ SRC := ft_atoi.c\
 PRINTF := ft_printf.c\
 	ft_printf_utils.c
 
+INC := -I./ -I/usr/include
 OBJ := $(SRC:.c=.o)
 OBJ_PRINTF := $(PRINTF:.c=.o)
 CFLAGS := -Wall -Werror -Wextra
@@ -67,6 +68,8 @@ all: $(NAME)
 $(NAME): $(OBJ) $(OBJ_PRINTF)
 	ar -rcs $(NAME) $(OBJ) $(OBJ_PRINTF)
 
+%.o: %.c
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)

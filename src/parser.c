@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:00:20 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:00:21 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
 
 bool	ft_push_redir(t_lexer **a, t_lexer **b, bool first)
@@ -73,6 +85,7 @@ int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 	current_cmd->fd_pipes[1] = -1;
 	current_cmd->execute = true;
 	current_cmd->exstatus = E_SUCCESS;
+	current_cmd->pid = 0;
 	return (SUCCESS);
 }
 

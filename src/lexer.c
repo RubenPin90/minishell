@@ -1,24 +1,16 @@
-/**
- * @file lexer.c
- * @brief Create lex list
- * 
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 13:41:48 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 13:42:44 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lexer.h"
-// #include "expander.h"
-
-// NOTE: delete this function
-// void	print_lexlst(t_data *data)
-// {
-// 	t_lexer	*tmp = data->lex;
-
-// 	tmp = data->lex;
-// 	while (tmp)
-// 	{
-// 		printf("lex[%d]: %s\n", tmp->i, tmp->word);
-// 		tmp = tmp->next;
-// 	}
-// }
 
 void	fill_word(char *new, t_word *word)
 {
@@ -61,7 +53,6 @@ char	*get_word(t_data *data, char *input, t_word *word)
 	return (word->str);
 }
 
-// reads through input string and copies every word/token into a node
 int	create_list(t_data *data, char **datainput)
 {
 	char	*input;
@@ -102,6 +93,5 @@ int	lexer(t_data *data)
 	if (create_list(data, &data->input))
 		return (AGAIN);
 	count_lexlst(data->lex);
-	// print_lexlst(data);
-	return (0);
+	return (SUCCESS);
 }

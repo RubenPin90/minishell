@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:14:55 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 16:16:50 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 
 int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
@@ -9,7 +21,7 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 		signal(SIGINT, SIG_IGN);
 	if (cmd->pid == 0)
 	{
-		handle_signals(false);
+		handle_signals(false, true);
 		replace_fd(data, cmd);
 		if (cmd->execute == false)
 		{
@@ -18,7 +30,8 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 		}
 		if (execve(cmdpath, cmd->cmd, data->env_arr) == -1)
 		{
-			data->excode = error_msg(cmd->cmd[0], "child", strerror(errno), E_ERROR);
+			data->excode = error_msg(cmd->cmd[0], "child", \
+											strerror(errno), E_ERROR);
 			ft_cleanup(data, true);
 		}
 	}
@@ -28,7 +41,11 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 {
 	if (parent == true)
+	{
+		switch_stdfd(data, cmd, data->stdfd, true);
 		data->excode = cmd->func(data, cmd);
+		switch_stdfd(data, cmd, data->stdfd, false);
+	}
 	else
 	{
 		cmd->pid = fork();
@@ -84,7 +101,6 @@ int	executor(t_data *data)
 	handle_heredoc(data, data->cmd_line);
 	handle_fds(data->cmd_line);
 	cmdfinder(data, data->cmd_line);
-	// cmd_printer(data);
 	if (data->cmds == 1)
 		exec_single_cmd(data->cmd_line, data->cmd_line->parent, data);
 	else

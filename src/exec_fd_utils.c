@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_fd_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:15:33 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:24:12 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 
 int	cleanup_fd(int *fd)
@@ -50,6 +62,27 @@ int	close_all_fds(t_parse *cmd_line)
 		cleanup_fd(&cmd_line->fd_pipes[0]);
 		cleanup_fd(&cmd_line->fd_pipes[1]);
 		cmd_line++;
+	}
+	return (SUCCESS);
+}
+
+int	switch_stdfd(t_data *data, t_parse *cmd, int *stdfd, bool switch_fd)
+{
+	int	err;
+
+	if (switch_fd == true)
+	{
+		stdfd[0] = dup(STDIN_FILENO);
+		stdfd[1] = dup(STDOUT_FILENO);
+		replace_fd(data, cmd);
+	}
+	else
+	{
+		err = ft_dup2(stdfd[0], stdfd[1]);
+		cleanup_fd(&stdfd[0]);
+		cleanup_fd(&stdfd[1]);
+		if (err)
+			ft_error(NULL, data);
 	}
 	return (SUCCESS);
 }

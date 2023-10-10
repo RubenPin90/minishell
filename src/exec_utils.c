@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:15:04 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:15:05 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 
 int	create_pipes(t_parse *cmd_line, int cmds)
@@ -19,10 +31,12 @@ int	create_pipes(t_parse *cmd_line, int cmds)
 
 int	ft_dup2(int fdin, int fdout)
 {
-	if (dup2(fdin, STDIN_FILENO) < 0)
-		return (error_msg("Infile", NULL, strerror(errno), AGAIN));
-	if (dup2(fdout, STDOUT_FILENO) < 0)
-		return (error_msg("Outfile", NULL, strerror(errno), AGAIN));
+	if (fdin > 0)
+		if (dup2(fdin, STDIN_FILENO) < 0)
+			return (error_msg("Infile", NULL, strerror(errno), FAIL));
+	if (fdout > 0)
+		if (dup2(fdout, STDOUT_FILENO) < 0)
+			return (error_msg("Outfile", NULL, strerror(errno), FAIL));
 	return (SUCCESS);
 }
 
