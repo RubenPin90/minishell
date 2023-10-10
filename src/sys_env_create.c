@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sys_env_create.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 13:39:38 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 13:40:36 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_lstenv	*copy_envp(t_data *data, char **env_org)
@@ -19,7 +31,7 @@ t_lstenv	*copy_envp(t_data *data, char **env_org)
 		{
 			lstenv_clear(&env_list);
 			return (NULL);
-		}	
+		}
 	}
 	return (env_list);
 }
@@ -65,7 +77,6 @@ t_lstenv	*lstenv_create(char *cont)
 	new = lstenv_new(key, value);
 	if (!new)
 	{
-		printf("d_point\n");
 		key = free_null(key);
 		value = free_null(value);
 	}
@@ -79,7 +90,6 @@ t_lstenv	*lstenv_new(char *key, char *value)
 	new = (t_lstenv *)malloc(sizeof(t_lstenv));
 	if (!new)
 		return (NULL);
-	printf("e_point\n");
 	new->key = key;
 	new->value = value;
 	new->next = NULL;

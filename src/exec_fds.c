@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_fds.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:15:28 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:24:40 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 
 int	handle_fds(t_parse *cmd)
@@ -63,7 +75,7 @@ int	handle_outfile(t_parse *cmd, t_lexer *redir)
 
 int	ft_access_wrapper(t_parse *cmdl, char *cmdname)
 {
-	int ret;
+	int	ret;
 
 	ret = access(cmdname, F_OK);
 	if (ret < 0)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_env_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 15:04:06 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 15:04:07 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtin.h"
 
 int	ft_keylen(char *str)
@@ -48,4 +60,44 @@ int	update_env(t_lstenv *env, char *arg)
 	if (ret == FAIL)
 		return (FAIL);
 	return (SUCCESS);
+}
+
+int	update_path(t_lstenv *env, char *newpath, char *key)
+{
+	t_lstenv	*new_env_node;
+	int			ret;
+
+	if (!env || !newpath || !key)
+		return (AGAIN);
+	ret = find_n_update(env, newpath, key);
+	if (ret == FAIL)
+		return (FAIL);
+	else if (ret == AGAIN)
+	{
+		new_env_node = lstenv_create(newpath);
+		if (!new_env_node)
+			return (FAIL);
+		env_addback(&env, new_env_node);
+	}
+	return (SUCCESS);
+}
+
+int	find_n_update(t_lstenv *env, char *nvalue, char *key)
+{
+	char	*delimiter;
+
+	while (env)
+	{
+		if (!ft_strncmp(env->key, key, ft_strlen(key) + 1))
+		{
+			env->value = free_null(env->value);
+			delimiter = ft_strchr(nvalue, '=');
+			env->value = ft_strdup(delimiter + 1);
+			if (!env->value)
+				return (FAIL);
+			return (SUCCESS);
+		}
+		env = env->next;
+	}
+	return (AGAIN);
 }

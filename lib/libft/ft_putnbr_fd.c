@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:01:11 by rpinchas          #+#    #+#             */
-/*   Updated: 2022/10/13 14:01:34 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:56:21 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 void	ft_putnbr_fd(int n, int fd)
-{	
+{
 	if (n == -2147483648)
 	{
 		write(fd, "-2147483648", 11);

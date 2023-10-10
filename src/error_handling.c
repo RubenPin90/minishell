@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 13:29:04 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 13:30:39 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "error_handling.h"
 
 int	error_msg(char *cmd, char *arg, char *msg, int ret)
@@ -33,7 +45,7 @@ int	ft_error(char *msg, t_data *data)
 void	ft_parent_error(char *msg, t_data *data, t_parse *cmd)
 {
 	if (cmd->pid == 0)
-		switch_stdfd(data, cmd, data->stdfd, false);	
+		switch_stdfd(data, cmd, data->stdfd, false);
 	ft_error(msg, data);
 }
 

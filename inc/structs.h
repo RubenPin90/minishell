@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:06:37 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:11:14 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
 # define STRUCTS_H
 # include "minishell.h"
 
-typedef struct s_data t_data;
-typedef struct s_parse t_parse;
-typedef int (*bltn)(t_data *data, t_parse *cmd);
+typedef struct s_data	t_data;
+typedef struct s_parse	t_parse;
+typedef int				(*t_bltn)(t_data *data, t_parse *cmd);
 
-typedef	enum	e_status
+typedef enum e_status
 {
 	E_SUCCESS,
 	E_ERROR,
@@ -56,10 +68,6 @@ typedef struct s_word
 	bool	quoted;
 }	t_word;
 
-/**
- * @brief Grouping lexer input list together into cmds.
- * 
- */
 typedef struct s_parse
 {
 	int				id;
@@ -67,7 +75,7 @@ typedef struct s_parse
 	t_status		exstatus;
 	char			*cmd_path;
 	char			**cmd;
-	bltn			func;
+	t_bltn			func;
 	bool			parent;
 	t_lexer			*redir;
 	char			*infile;

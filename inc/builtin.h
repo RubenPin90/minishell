@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:54:25 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:56:59 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
@@ -58,4 +69,4 @@ int		ft_pwd(t_data *data, t_parse *cmd);
 void	ft_find_n_del(t_lstenv **env, char *arg);
 int		ft_unset(t_data *data, t_parse *cmd);
 
-# endif
+#endif

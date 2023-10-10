@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 15:02:03 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 15:02:49 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtin.h"
 
 int	ft_cd(t_data *data, t_parse *cmd)
@@ -24,9 +36,9 @@ int	ft_cd(t_data *data, t_parse *cmd)
 	return (E_SUCCESS);
 }
 
-char *set_curpwd(t_data *data, t_lstenv *env)
+char	*set_curpwd(t_data *data, t_lstenv *env)
 {
-	char *curpwd;
+	char	*curpwd;
 
 	curpwd = find_envkey(env, "PWD");
 	if (curpwd)
@@ -77,44 +89,4 @@ int	changedir(t_data *data, t_lstenv *env, char *curpwd, char *arg)
 	if (ret == FAIL)
 		ft_parent_error(MALLOC_ERR, data, data->cmd_line);
 	return (SUCCESS);
-}
-
-int	update_path(t_lstenv *env, char *newpath, char *key)
-{
-	t_lstenv	*new_env_node;
-	int			ret;
-
-	if (!env || !newpath || !key)
-		return (AGAIN);
-	ret = find_n_update(env, newpath, key);
-	if (ret == FAIL)
-		return (FAIL);
-	else if (ret == AGAIN)
-	{
-		new_env_node = lstenv_create(newpath);
-		if (!new_env_node)
-			return (FAIL);
-		env_addback(&env, new_env_node);
-	}
-	return (SUCCESS);
-}
-
-int	find_n_update(t_lstenv *env, char *nvalue, char *key)
-{
-	char	*delimiter;
-
-	while (env)
-	{
-		if (!ft_strncmp(env->key, key, ft_strlen(key) + 1))
-		{
-			env->value = free_null(env->value);
-			delimiter = ft_strchr(nvalue, '=');
-			env->value = ft_strdup(delimiter + 1);
-			if (!env->value)
-				return (FAIL);
-			return (SUCCESS);
-		}
-		env = env->next;
-	}
-	return (AGAIN);
 }

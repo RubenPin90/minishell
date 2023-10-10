@@ -1,9 +1,6 @@
 #SETUP
 NAME := minishell	
 CFLAGS := -Werror -Wall -Wextra -g
-VALGRIND := valgrind --leak-check=full --tool=memcheck \
-			--track-origins=yes --show-leak-kinds=all \
-			--suppressions=rl_leaks.sub --track-fds=yes
 CC := cc
 
 #COLORS
@@ -40,14 +37,14 @@ SRC_F = builtins.c \
 		lexer_check_quotes.c \
 		lexer_list_utils.c \
 		lexer_utils.c \
+		parser.c \
 		signals.c \
-		sys_cleanup.c \
 		sys_env_create.c \
 		sys_init.c \
 		sys_input.c \
-		sys_utils.c \
-		parser.c \
-		parser_utils.c
+		sys_cleanup.c \
+		sys_cleanup2.c \
+		sys_utils.c 
 
 #OBJ FILES
 OBJ_F = ${SRC_F:%.c=%.o}
@@ -76,6 +73,18 @@ INC := -I./inc -I./${LDIR_FT} -I/usr/include
 LIBFT := -L./${LDIR_FT} -lft
 LIB_RL := -L/usr/lib -lreadline
 LIBS := ${LIBFT} ${LIB_RL}
+
+#VALGRIND
+SUP_FILE := rl_leaks.supp
+VALGRIND := valgrind --leak-check=full --tool=memcheck \
+			--track-origins=yes --show-leak-kinds=all \
+			--suppressions=${SUP_FILE} --track-fds=yes
+SUP_TEXT := "{\n \
+    ignore_libreadline_leaks\n \
+    Memcheck:Leak\n \
+    ...\n \
+    obj:*/libreadline.so.*\n \
+}"
 
 #RULES
 all: ${LIB} ${NAME}
@@ -107,6 +116,7 @@ fclean: clean
 	@echo "${GREEN}Removing executables...${RESET}"
 	@${MAKE} fclean -sC ${LDIR_FT}
 	@rm	-rf ${NAME}
+	@rm -rf ${SUP_FILE}
 	@echo "${BLUE}DONE!${RESET}"
 
 re: fclean all
@@ -116,7 +126,9 @@ test: ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIB}
 	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIBS} -o tester
 	@echo "${GREEN}Code ready to run${RESET}"
 
-mini:
-	${VALGRIND} ./${NAME} 
+mini: all
+	@echo ${SUP_TEXT} > ${SUP_FILE}
+	@${VALGRIND} ./${NAME}
+	@rm -rf ${SUP_FILE}
 
-.PHONY: all clean fclean  debug tebug re
+.PHONY: all clean fclean re test mini

@@ -1,4 +1,16 @@
-#include "../inc/lexer.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_list_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 13:45:38 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:01:16 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "lexer.h"
 
 t_lexer	*add_node(t_data *data, char *lst_word, t_word *word)
 {
@@ -62,20 +74,4 @@ void	count_lexlst(t_lexer *lex)
 		lex = lex->next;
 		i++;
 	}
-}
-
-void	free_lexer(t_lexer **lex)
-{
-	t_lexer	*tmp;
-
-	tmp = *lex;
-	while (*lex)
-	{
-		tmp = (*lex)->next;
-		if ((*lex)->word)
-			free((*lex)->word);
-		free(*lex);
-		*lex = tmp;
-	}
-	*lex = NULL;
 }

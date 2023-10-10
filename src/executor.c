@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:14:55 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:25:53 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 
 int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
@@ -18,7 +30,8 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 		}
 		if (execve(cmdpath, cmd->cmd, data->env_arr) == -1)
 		{
-			data->excode = error_msg(cmd->cmd[0], "child", strerror(errno), E_ERROR);
+			data->excode = error_msg(cmd->cmd[0], "child", \
+											strerror(errno), E_ERROR);
 			ft_cleanup(data, true);
 		}
 	}
@@ -29,9 +42,9 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 {
 	if (parent == true)
 	{
-		switch_stdfd(data, cmd, data->stdfd, true);	
+		switch_stdfd(data, cmd, data->stdfd, true);
 		data->excode = cmd->func(data, cmd);
-		switch_stdfd(data, cmd, data->stdfd, false);	
+		switch_stdfd(data, cmd, data->stdfd, false);
 	}
 	else
 	{
@@ -47,7 +60,6 @@ int	exec_builtin(t_data *data, t_parse *cmd, bool parent)
 	}
 	return (SUCCESS);
 }
-
 
 int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {

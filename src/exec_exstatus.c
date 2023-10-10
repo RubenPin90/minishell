@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_exstatus.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 14:15:40 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/10/10 14:15:48 by rpinchas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 
 void	check_status(int status, int *excode)
@@ -31,7 +43,6 @@ void	ft_waitpid(t_data *data, t_parse *cmd)
 		cmd++;
 	}
 }
-
 
 int	set_exstat(t_parse *cmd_line, bool *execute, int status)
 {
