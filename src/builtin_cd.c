@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:02:03 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 15:02:49 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:51:26 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,28 @@ int	redir_pwd(t_data *data, t_lstenv *env, char *curpwd, char *key)
 int	changedir(t_data *data, t_lstenv *env, char *curpwd, char *arg)
 {
 	char	*cwd;
+	char	*ncwd;
 	int		ret;
 
+	ret = 0;
+	ncwd = NULL;
 	if (chdir(arg) == -1)
 		return (error_msg("cd", arg, strerror(errno), E_ERROR));
 	cwd = get_pwd();
 	if (cwd)
-		cwd = ft_strjoin("PWD=", curpwd);
-	if (!cwd)
+		ncwd = ft_strjoin("PWD=", cwd);
+	if (ncwd)
 	{
+		ret = update_path(env, curpwd, "OLDPWD");
+		ret = update_path(env, ncwd, "PWD");
+		ncwd = free_null(ncwd);
+		cwd = free_null(cwd);
+	}
+	else if (ret == FAIL || !ncwd)
+	{
+		cwd = free_null(cwd);
 		curpwd = free_null(curpwd);
 		ft_parent_error(MALLOC_ERR, data, data->cmd_line);
 	}
-	ret = update_path(env, curpwd, "OLDPWD");
-	ret = update_path(env, cwd, "PWD");
-	cwd = free_null(cwd);
-	curpwd = free_null(curpwd);
-	if (ret == FAIL)
-		ft_parent_error(MALLOC_ERR, data, data->cmd_line);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:31:04 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:12:58 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:17:50 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 # define AGAIN 2
 
 /*signals*/
-void		handle_signals(bool heredoc);
+void		handle_signals(bool heredoc, bool child);
 void		receive_signal(int signum);
 
 /*sys_input*/

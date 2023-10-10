@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:14:55 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:25:53 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:16:50 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exec_child(t_data *data, t_parse *cmd, char *cmdpath)
 		signal(SIGINT, SIG_IGN);
 	if (cmd->pid == 0)
 	{
-		handle_signals(false);
+		handle_signals(false, true);
 		replace_fd(data, cmd);
 		if (cmd->execute == false)
 		{

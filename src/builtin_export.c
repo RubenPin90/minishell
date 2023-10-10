@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:04:33 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 15:04:34 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:55:14 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ int	ft_export(t_data *data, t_parse *cmd)
 			if (update_env(data->env, cmd->cmd[i]))
 				ft_parent_error(MALLOC_ERR, data, cmd);
 		if (equal == false)
-		{
 			if (check_exp_lst(data->exp_lst, data->env, cmd->cmd[i]))
 				ft_parent_error(MALLOC_ERR, data, cmd);
-		}
 	}
 	return (SUCCESS);
 }

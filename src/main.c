@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:28:42 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 13:28:43 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:18:05 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 		return (ft_error(MALLOC_ERR, &data));
 	while (1)
 	{
-		handle_signals(false);
+		handle_signals(false, false);
 		if (handle_input(&data) == SUCCESS)
 			executor(&data);
 		ft_cleanup(&data, false);

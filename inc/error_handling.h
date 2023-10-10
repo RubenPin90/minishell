@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:54:44 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:54:45 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:27:04 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ Minishell doesn't need any args"
 # define TOKEN_ERR "syntax error near unexpected token"
 # define EXEC_ERR "exec error detected. try again"
 # define ISDIR_ERR "Is a directory"
+# define QUOTE_ERR "open quotes detected"
 
 /*error_handling*/
 int			error_msg(char *cmd, char *arg, char *msg, int ret);

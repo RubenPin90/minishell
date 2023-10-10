@@ -128,7 +128,7 @@ test: ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIB}
 
 mini: all
 	@echo ${SUP_TEXT} > ${SUP_FILE}
-	@${VALGRIND} ./${NAME}
+	@-${VALGRIND} ./${NAME}
 	@rm -rf ${SUP_FILE}
 
 .PHONY: all clean fclean re test mini

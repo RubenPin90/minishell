@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:15:13 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:15:14 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:17:32 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 	{
 		if (redir->token == HEREDOC || redir->token == Q_HEREDOC)
 		{
-			handle_signals(true);
+			handle_signals(true, false);
 			ret = heredocfun(data, cmd, redir->word, redir->token);
-			handle_signals(false);
+			handle_signals(false, false);
 			if (ret == FAIL)
 				return (error_msg("warning", HERE_STOP_ERR, \
 						redir->word, AGAIN));

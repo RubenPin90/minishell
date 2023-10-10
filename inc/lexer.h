@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:44:29 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 13:59:04 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:36:08 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		check_quotes(char *str);
 void	skip_quote(char *input, char quote, int *i);
 void	skip_space(char *input, int *i);
 
-/* lexer_list_utils.c*/
+/*lexer_list_utils.c*/
 t_lexer	*add_node(t_data *data, char *input, t_word *word);
 t_lexer	*new_lexer_node(char *word, int token);
 void	lexer_addback(t_lexer **lst, t_lexer *new);
