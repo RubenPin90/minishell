@@ -6,7 +6,7 @@
 #    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 18:20:14 by rpinchas          #+#    #+#              #
-#    Updated: 2023/10/09 18:23:58 by rpinchas         ###   ########.fr        #
+#    Updated: 2023/10/10 13:18:39 by rpinchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,8 +56,7 @@ SRC := ft_atoi.c\
 PRINTF := ft_printf.c\
 	ft_printf_utils.c
 
-LDIR_TEST := ../../inc
-INC := -I./ -I$(LDIR_TEST) -I/usr/include
+INC := -I./ -I/usr/include
 OBJ := $(SRC:.c=.o)
 OBJ_PRINTF := $(PRINTF:.c=.o)
 CFLAGS := -Wall -Werror -Wextra

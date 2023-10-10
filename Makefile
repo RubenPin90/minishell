@@ -1,6 +1,9 @@
 #SETUP
 NAME := minishell	
 CFLAGS := -Werror -Wall -Wextra -g
+VALGRIND := valgrind --leak-check=full --tool=memcheck \
+			--track-origins=yes --show-leak-kinds=all \
+			--suppressions=rl_leaks.sub --track-fds=yes
 CC := cc
 
 #COLORS
@@ -112,5 +115,8 @@ test: ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIB}
 	@echo "${YELLOW}Compiling tests....${RESET}"
 	${CC} ${CFLAGS} ${INC} ${OBJ} ${OBJ_T} ${OBJ_TM} ${LIBS} -o tester
 	@echo "${GREEN}Code ready to run${RESET}"
+
+mini:
+	${VALGRIND} ./${NAME} 
 
 .PHONY: all clean fclean  debug tebug re
