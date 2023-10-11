@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:13:23 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:16:13 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/11 16:55:44 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		check_access(t_data *data, t_parse *cmdl, char *cmdn, char **cmdp);
 int		check_dir(t_parse *cmdl, char *cmdname);
 int		is_binary(t_data *data, t_parse *cmdl, char **cmdpath, char *cmdname);
 int		cmdfinder(t_data *data, t_parse *cmd_line);
-int		find_cmd(t_data *data, char *cmdname, char **cmdpath, char **paths);
+int		find_cmd(t_parse *cmdl, char *cmdname, char **cmdpath, t_data *data);
 
 /*exec_fds*/
 int		handle_fds(t_parse *cmd);
