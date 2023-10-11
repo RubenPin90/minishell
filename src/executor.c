@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:14:55 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/11 16:56:28 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/11 22:18:19 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	exec_single_cmd(t_parse *cmd, bool parent, t_data *data)
 {
 	if (cmd->execute == false)
 	{
+		close_all_fds(cmd);
 		data->excode = print_warning(cmd, cmd->exstatus);
 		return (SUCCESS);
 	}
