@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:04:05 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:04:06 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:47:21 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ void	skip_delim(char *input, int *i)
 	}
 }
 
-int	is_quoted_dollarsign(t_data *data, char *input, int i)
+int	single_dollarsign(t_data *data, char *input, int i)
 {
-	if (data->quoted == true && (input[i + 1] == '"' || input[i + 1] == '\''))
+	if ((input[i] == '$' && (input[i + 1] == ' ' || !input[i + 1])) || \
+		(data->quoted == true && input[i + 1] == '"') || \
+		(data->expand == false && input[i + 1] == '\''))
 		return (1);
 	return (0);
 }
