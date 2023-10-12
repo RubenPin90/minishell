@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:00:20 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:00:21 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:18:06 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,28 +79,8 @@ int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 	if (!arr)
 		return (FAIL);
 	current_cmd->cmd = arr;
-	current_cmd->fd_in = -1;
-	current_cmd->fd_out = -1;
-	current_cmd->fd_pipes[0] = -1;
-	current_cmd->fd_pipes[1] = -1;
-	current_cmd->execute = true;
-	current_cmd->exstatus = E_SUCCESS;
-	current_cmd->pid = 0;
+	
 	return (SUCCESS);
-}
-
-void	set_ids(t_parse *cmd_line, int len)
-{
-	int	i;
-
-	i = 1;
-	while (i < len)
-	{
-		cmd_line->id = i;
-		cmd_line++;
-		i++;
-	}
-	cmd_line->id = 0;
 }
 
 int	parser(t_data *data, t_lexer *lst)
@@ -113,7 +93,7 @@ int	parser(t_data *data, t_lexer *lst)
 	data->cmd_line = (t_parse *)ft_calloc(cmd_linelen, sizeof(t_parse));
 	if (!data->cmd_line)
 		ft_error(MALLOC_ERR, data);
-	set_ids(data->cmd_line, cmd_linelen);
+	init_parse(data->cmd_line, cmd_linelen);
 	i = 0;
 	while (lst)
 	{

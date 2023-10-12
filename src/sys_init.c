@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:29:18 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 13:29:19 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:15:09 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,25 @@ void	init_data(t_data *data)
 	data->stdfd[0] = -1;
 	data->stdfd[1] = -1;
 	data->excode = 0;
+}
+
+void init_parse(t_parse *cmd_line, int len)
+{
+	int i;
+
+	i = 1;
+	while (i < len)
+	{
+		cmd_line->id = i;
+		cmd_line->fd_in = -1;
+		cmd_line->fd_out = -1;
+		cmd_line->fd_pipes[0] = -1;
+		cmd_line->fd_pipes[1] = -1;
+		cmd_line->execute = true;
+		cmd_line->exstatus = E_SUCCESS;
+		cmd_line->pid = 0;
+		cmd_line++;
+		i++;
+	}
+	cmd_line->id = 0;
 }

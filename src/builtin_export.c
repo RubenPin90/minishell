@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:04:33 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 16:55:14 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:29:53 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	export_check(t_data *data, t_lexer *lex)
 	equals = false;
 	while (lex)
 	{
+		printf("lexer->word %s\n", lex->word);
 		first = false;
 		if (lex->token == WORD && ft_strchr(lex->word, '=') && \
 							(!lex->prev || lex->prev->token == PIPE))
