@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:02:28 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:03:15 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:42:50 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*add_quotes_to_tokens(char *val, int count);
 int		get_var_len(char *input, int i);
 char	*get_value(t_data *data, char *input, int start, int len);
 void	skip_delim(char *input, int *i);
-int		is_quoted_dollarsign(t_data *data, char *input, int i);
+int		single_dollarsign(t_data *data, char *input, int i);
 bool	toggle_bool(bool ian);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:03:34 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:03:35 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:45:44 by aapostol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,17 @@ char	*expander(t_data *data, char *input)
 	while (input[i])
 	{
 		expander_prep(data, input, &i);
-		if (input[i] == '$' && data->expand == true && input[i + 1] && \
-			input[i + 1] != ' ' && !is_quoted_dollarsign(data, input, i))
+		if (input[i] == '$' && input[i + 1] && \
+			!single_dollarsign(data, input, i) && data->expand == true)
 		{
 			new = expander_time(data, input, i);
-			data->quoted = false;
 			tmp = input;
 			input = new;
 			tmp = free_null(tmp);
+			if (input[i] == '"' || input[i] == '\'')
+				i--;
 		}
-		if (input[i])
-			i++;
+		i++;
 	}
 	return (input);
 }
