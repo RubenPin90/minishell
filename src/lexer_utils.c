@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:45:07 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 13:45:08 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 14:05:19 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	get_len(t_data *data, char *input, int *i, char quote)
 
 	if (input[*i] == '"' || input[*i] == '\'')
 	{
+		data->exp_equal = true;
 		if (data->word->type == HEREDOC)
 			data->word->type = Q_HEREDOC;
 		len = quoted_len(input, i, quote);

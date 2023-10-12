@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:45:38 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:01:16 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:58:01 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@ t_lexer	*add_node(t_data *data, char *lst_word, t_word *word)
 	if (word->type == PIPE)
 		word->len = 1;
 	if (!lst_word)
-		node = new_lexer_node(ft_strdup(""), EMPTY);
+		node = new_lexer_node(ft_strdup(""), EMPTY, data->exp_equal);
 	else
-		node = new_lexer_node(ft_strdup(lst_word), word->type);
+		node = new_lexer_node(ft_strdup(lst_word), word->type, data->exp_equal);
 	if (!node)
 		ft_error(MALLOC_ERR, data);
+	data->exp_equal = false;
 	lexer_addback(&data->lex, node);
 	return (node);
 }
 
-t_lexer	*new_lexer_node(char *word, int token)
+t_lexer	*new_lexer_node(char *word, int token, bool exp_equal)
 {
 	t_lexer		*new;
 
@@ -39,6 +40,7 @@ t_lexer	*new_lexer_node(char *word, int token)
 		return (NULL);
 	new->word = word;
 	new->token = token;
+	new->qu_equal = exp_equal;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);

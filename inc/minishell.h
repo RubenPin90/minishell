@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:31:04 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 16:17:50 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:16:47 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int			handle_input(t_data *data);
 
 /*sys_init*/
 void		init_data(t_data *data);
+void		init_parse(t_parse *cmd_line, int len);
 
 /*sys_utils*/
 char		*ft_strjoin_wrapper(char *str1, char *str2, char *str3);

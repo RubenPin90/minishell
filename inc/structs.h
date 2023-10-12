@@ -56,6 +56,7 @@ typedef struct s_lexer
 	int				i;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
+	bool			qu_equal;
 }	t_lexer;
 
 typedef struct s_word
@@ -102,6 +103,7 @@ typedef struct s_data
 	bool			quoted;
 	bool			expand;
 	int				excode;
+	bool			exp_equal;
 }	t_data;
 
 #endif
