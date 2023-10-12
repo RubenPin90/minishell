@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:06:37 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 14:11:14 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:53:59 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_lexer
 	int				i;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
+	bool			qu_equal;
 }	t_lexer;
 
 typedef struct s_word
@@ -102,6 +103,7 @@ typedef struct s_data
 	bool			quoted;
 	bool			expand;
 	int				excode;
+	bool			exp_equal;
 }	t_data;
 
 #endif

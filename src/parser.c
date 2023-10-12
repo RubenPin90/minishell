@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:00:20 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/12 13:18:06 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/12 14:05:00 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	init_cmd(t_lexer *cmd_list, t_parse *current_cmd)
 	if (!arr)
 		return (FAIL);
 	current_cmd->cmd = arr;
-	
 	return (SUCCESS);
 }
 
