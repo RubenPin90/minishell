@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:04:26 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 16:44:25 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:37:16 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ int	ft_exit(t_data *data, t_parse *cmd)
 		else if (num_args > 2)
 			return (error_msg("exit", NULL, ARG_ERR, E_ERROR));
 		else if (num_args == 2)
+		{
 			data->excode = ft_atoi(cmd->cmd[1]);
+			if (data->excode == -1)
+				data->excode = error_msg("exit", \
+				cmd->cmd[1], NUM_ERR, E_SYNERR);
+		}
 		else
 			data->excode = 0;
 	}

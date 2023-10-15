@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:06:37 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/12 12:47:34 by aapostol         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:04:18 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ typedef enum e_status
 	E_NOENT,
 	E_NOPERMS,
 	E_ISDIR = 126,
-	E_NOCMD = 127
+	E_NOCMD = 127,
+	E_SIGINT = 130
 }	t_status;
 
 typedef enum s_type
