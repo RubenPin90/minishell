@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:15:13 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/10 17:17:32 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:37:30 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	heredocfun(t_data *data, t_parse *cmd, char *delim, int type)
 		if (!str)
 			return (cleanup_herefun(&str, &fd, FAIL));
 		if (g_signum == SIGINT)
-			return (cleanup_herefun(&str, &fd, AGAIN));
+			return (cleanup_herefun(&str, &fd, E_SIGINT));
 		data->quoted = true;
 		if (!ft_strncmp(str, delim, ft_strlen(delim) + 1))
 			break ;
@@ -74,8 +74,8 @@ int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 			if (ret == FAIL)
 				return (error_msg("warning", HERE_STOP_ERR, \
 						redir->word, AGAIN));
-			else if (ret == AGAIN)
-				return (AGAIN);
+			else if (ret > FAIL)
+				return (ret);
 		}
 		redir = redir->next;
 	}
@@ -84,16 +84,20 @@ int	find_heredoc(t_data *data, t_parse *cmd, t_lexer *redir)
 
 int	handle_heredoc(t_data *data, t_parse *cmd_line)
 {
+	int	ret;
+
+	ret = SUCCESS;
 	while (cmd_line->id != 0)
 	{
 		if (cmd_line->redir && (tkn_counter(cmd_line->redir, HEREDOC, STOP) || \
 								tkn_counter(cmd_line->redir, Q_HEREDOC, STOP)))
 		{
 			heredoc_name(data, cmd_line);
-			if (find_heredoc(data, cmd_line, cmd_line->redir))
-				return (set_exstat(cmd_line, &cmd_line->execute, AGAIN));
+			ret = find_heredoc(data, cmd_line, cmd_line->redir);
+			if (ret > SUCCESS)
+				return (set_exstat(cmd_line, &cmd_line->execute, ret));
 		}
 		cmd_line++;
 	}
-	return (SUCCESS);
+	return (ret);
 }

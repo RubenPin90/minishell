@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aapostol <aapostol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:03:34 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/10/12 12:45:44 by aapostol         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:16:37 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ char	*expander(t_data *data, char *input)
 			if (input[i] == '"' || input[i] == '\'')
 				i--;
 		}
-		i++;
+		if (input[i])
+			i++;
 	}
 	return (input);
 }
